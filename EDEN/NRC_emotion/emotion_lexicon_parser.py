@@ -10,13 +10,14 @@ import csv
 
 
 def write_data(tabs):
+    print(tabs)
     with open('nrc_emotion_lexicon.csv', 'w') as csvFile:
         writer = csv.writer(csvFile)
         writer.writerows(tabs)
     csvFile.close()
 
 def read_data():
-    path = 'NRC-Emotion-Lexicon-Senselevel-v0.92.txt'
+    path = 'C:\\Users\\Acer\\Documents\\GitHub\\MHBot\\EDEN\\NRC_emotion\\NRC-Emotion-Lexicon-Senselevel-v0.92.txt'
     days_file = open(path, 'r')
     contents = days_file.read()
 
