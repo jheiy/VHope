@@ -18,12 +18,12 @@ class Logger:
         #
         # Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../logs/emotion classification/' + date + '.txt')
 
-        Logger.__setup_logger__(CONVERSATION_LOG, '../Mod_ORSEN_v2/logs/conversation/' + date + '.txt')
+        Logger.__setup_logger__(CONVERSATION_LOG, '../MHBot/logs/conversation/' + date + '.txt')
         Logger.__setup_logger_basic__(INFORMATION_EXTRACTION_LOG,
-                                      '../Mod_ORSEN_v2/logs/information extraction/' + date + '.txt')
-        Logger.__setup_logger_basic__(DIALOGUE_MODEL_LOG, '../Mod_ORSEN_v2/logs/dialogue model/' + date + '.txt')
-        Logger.__setup_logger_basic__(EVENT_CHAIN_LOG, '../Mod_ORSEN_v2/logs/event chain/' + date + '.txt')
-        Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../Mod_ORSEN_v2/logs/emotion classification/' + date + '.txt')
+                                      '../MHBot/logs/information extraction/' + date + '.txt')
+        Logger.__setup_logger_basic__(DIALOGUE_MODEL_LOG, '../MHBot/logs/dialogue model/' + date + '.txt')
+        Logger.__setup_logger_basic__(EVENT_CHAIN_LOG, '../MHBot/logs/event chain/' + date + '.txt')
+        Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../MHBot/emotion classification/' + date + '.txt')
 
     @staticmethod
     def __setup_logger__(name, log_file, level=logging.INFO):
