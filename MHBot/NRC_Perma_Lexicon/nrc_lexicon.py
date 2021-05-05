@@ -81,15 +81,40 @@ def read_perma(term, word_count):
             # list_perma = perma_row.split(',')
             # print("Perma " + perma_row)
             x = perma_row.split(",")
-           
-            if(x[0].lower().strip() == str(term[0]).lower().strip()):
-                # print("NRC: " + term[0] + " PERMA: " + x[0] + " CATEGORY: " + x[1] + " ID: " + str(word_count))
-                # perma_term_got = []
-                perma_term_got.append([word_count, term[0], x[0], x[1], x[2]])
-            else:
-                if(x[0].lower().strip() == str(term[11]).lower().strip()):
+            if (x[0].lower().strip() != "term"):
+                if len(term) == 14:
+                    if(x[0].lower().strip() == str(term[0]).lower().strip()):
                     # print("NRC: " + term[0] + " PERMA: " + x[0] + " CATEGORY: " + x[1] + " ID: " + str(word_count))
-                    perma_term_got.append([word_count, term[0], x[0], x[1], x[2]])
+                    # perma_term_got = []
+                        perma_term_got.append([word_count, term[0], x[0], x[1], x[2]])
+                    elif (x[0].lower().strip() == str(term[11]).lower().strip()):  #Synonym 1
+                        # if(x[0].lower().strip() == str(term[11]).lower().strip()):
+                        # print("NRC: " + term[0] + " PERMA: " + x[0] + " CATEGORY: " + x[1] + " ID: " + str(word_count))
+                        perma_term_got.append([word_count, term[0], x[0], x[1], x[2]])
+                    elif (x[0].lower().strip() == str(term[12]).lower().strip()):  #Synonym 2
+                        perma_term_got.append([word_count, term[0], x[0], x[1], x[2]]) 
+                    elif (x[0].lower().strip() == str(term[13]).lower().strip()):  #Synonym 3
+                        perma_term_got.append([word_count, term[0], x[0], x[1], x[2]])
+                elif len(term) == 13:
+                    if(x[0].lower().strip() == str(term[0]).lower().strip()):
+                    # print("NRC: " + term[0] + " PERMA: " + x[0] + " CATEGORY: " + x[1] + " ID: " + str(word_count))
+                    # perma_term_got = []
+                        perma_term_got.append([word_count, term[0], x[0], x[1], x[2]])
+                    elif (x[0].lower().strip() == str(term[11]).lower().strip()):  #Synonym 1
+                        # if(x[0].lower().strip() == str(term[11]).lower().strip()):
+                        # print("NRC: " + term[0] + " PERMA: " + x[0] + " CATEGORY: " + x[1] + " ID: " + str(word_count))
+                        perma_term_got.append([word_count, term[0], x[0], x[1], x[2]])
+                    elif (x[0].lower().strip() == str(term[12]).lower().strip()):  #Synonym 2
+                        perma_term_got.append([word_count, term[0], x[0], x[1], x[2]])
+                elif len(term) == 12:
+                    if(x[0].lower().strip() == str(term[0]).lower().strip()):
+                    # print("NRC: " + term[0] + " PERMA: " + x[0] + " CATEGORY: " + x[1] + " ID: " + str(word_count))
+                    # perma_term_got = []
+                        perma_term_got.append([word_count, term[0], x[0], x[1], x[2]])
+                    elif (x[0].lower().strip() == str(term[11]).lower().strip()):  #Synonym 1
+                        # if(x[0].lower().strip() == str(term[11]).lower().strip()):
+                        # print("NRC: " + term[0] + " PERMA: " + x[0] + " CATEGORY: " + x[1] + " ID: " + str(word_count))
+                        perma_term_got.append([word_count, term[0], x[0], x[1], x[2]])
         return perma_term_got
 
 import csv
