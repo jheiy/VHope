@@ -55,9 +55,22 @@ EDEN_DIALOGUE_LIST = [CPumpingDialogueTemplate(),
                       EEndDialogueTemplate(),
                       EEmphasisDialogueTemplate()]
 
+MHBOT_DIALOGUE_LIST = [PPumpingDialogueTemplate(),
+                       PLabellingDialogueTemplate(),
+                       PReevaluatingDialogueTemplate(),
+                       MCPumpingDialogueTemplate(),
+                       SPumpingDialogueTemplate(),
+                       DPraiseDialogueTemplate(),
+                       OReflectDialogueTemplate(),
+                       APumpingDialogueTemplate(),
+                       EFeedbackDialogueTemplate(),
+                       GPraiseDialogueTemplate()]
+
 if CURR_ORSEN_VERSION == ORSEN1:
     DIALOGUE_LIST = ORSEN1_DIALOGUE_LIST
 elif CURR_ORSEN_VERSION == ORSEN2:
     DIALOGUE_LIST = ORSEN2_DIALOGUE_LIST
 elif CURR_ORSEN_VERSION == EDEN:
     DIALOGUE_LIST = DIALOGUE_LIST
+elif CURR_ORSEN_VERSION == MHBOT:
+    DIALOGUE_LIST = MHBOT_DIALOGUE_LIST
