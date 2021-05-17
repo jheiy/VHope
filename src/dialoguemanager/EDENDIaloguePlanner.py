@@ -1,9 +1,10 @@
 from EDEN.OCC import OCCManager
-from EDEN.constants import *
+from EDEN.constants import * 
 from src import *
 from src.dbo.dialogue import DBODialogueTemplate
 from src.dialoguemanager import DialoguePlanner
 from src.models.dialogue.constants import DIALOGUE_LIST, DialogueHistoryTemplate, EDEN_DIALOGUE_LIST
+from MHBot.PERMAnalysis.PERMAnalysis import PERMAnalysis
 import time
 import numpy as np
 
@@ -12,7 +13,9 @@ class EDENDialoguePlanner(DialoguePlanner):
     def __init__(self):
         super().__init__()
         self.occ_manager = OCCManager()
+        self.perma_analysis = PERMAnalysis()
         self.ongoing_c_pumping = False
+        self.perma_state = ''
 
     def reset_new_world(self):
         self.chosen_dialogue_move = None
@@ -32,6 +35,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.usable_templates = []
         np.random.seed(DEFAULT_SEED)
         self.occ_manager.reset_occ()
+        self.perma_analysis.reset()
 
     def perform_dialogue_planner(self, dialogue_move=""):
         #still no triggered phrase
@@ -192,10 +196,16 @@ class EDENDialoguePlanner(DialoguePlanner):
             if move_to_execute != "":
                 set_to_true.append(move_to_execute)
             else:
-                if self.curr_event is not None and self.curr_event.type == EVENT_EMOTION:
-                    set_to_true.append(DIALOGUE_TYPE_E_LABEL)
+                # if self.curr_event is not None and self.curr_event.type == EVENT_EMOTION: #IF EMOTION EVENT IS MADE
+                #     set_to_true.append(DIALOGUE_TYPE_E_LABEL)
+                # else:
+                #     if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0: #NO EMOTION DETECTED THEN PUMPING
+                #         set_to_true.append(DIALOGUE_TYPE_PUMPING_SPECIFIC)
+                #     set_to_true.append(DIALOGUE_TYPE_PUMPING_GENERAL)
+                if self.perma_state != '' and self.perma_analysis.isComplete():
+                    set_to_true.append(DIALOGUE_TYPE_P_REEVALUATE)
                 else:
-                    if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0:
+                    if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0: #INCOMPLETE PERMA
                         set_to_true.append(DIALOGUE_TYPE_PUMPING_SPECIFIC)
                     set_to_true.append(DIALOGUE_TYPE_PUMPING_GENERAL)
         else:
@@ -270,4 +280,4 @@ class EDENDialoguePlanner(DialoguePlanner):
         return ""
 
     def get_welcome_message_type(self):
-        return DIALOGUE_TYPE_EDEN_WELCOME
+        return DIALOGUE_TYPE_MHBOT_WELCOME

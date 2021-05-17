@@ -1,4 +1,5 @@
-from MHBot.PERMAnalysis import PERMAnalysis
+from EDEN.OCC import OCCManager
+from EDEN.constants import *
 from src import *
 from src.dbo.dialogue import DBODialogueTemplate
 from src.dialoguemanager import DialoguePlanner
@@ -6,12 +7,12 @@ from src.models.dialogue.constants import DIALOGUE_LIST, DialogueHistoryTemplate
 import time
 import numpy as np
 
-class EDENDialoguePlanner(DialoguePlanner):
+class MHBotDialoguePlanner(DialoguePlanner):
 
     def __init__(self):
         super().__init__()
-        self.perma_analysis = PERMAnalysis()
-        # self.ongoing_c_pumping = False
+        self.occ_manager = OCCManager()
+        self.ongoing_c_pumping = False
 
     def reset_new_world(self):
         self.chosen_dialogue_move = None

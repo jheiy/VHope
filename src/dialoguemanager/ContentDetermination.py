@@ -28,6 +28,7 @@ class ContentDetermination:
         #choose template
         chosen_template = self.choose_template()
 
+        print(self.choose_template())
         #fill template to use
         # if template has no fillable blanks, enter this particular if statement
         if len(chosen_template.template) == 1:

@@ -14,7 +14,7 @@ from src.textunderstanding.InputDecoder import InputDecoder
 from src.dialoguemanager import *
 from src.models.events import *
 from EDEN.OCC import OCCManager
-
+from MHBot.PERMAnalysis.PERMAnalysis import PERMAnalysis
 
 
 class ORSEN:
@@ -38,6 +38,9 @@ class ORSEN:
         # self.world = None
         self.user_start_time = time.time()
         self.user_end_time = time.time()
+        
+        #MHBOT
+        self.perma_analysis = PERMAnalysis()
 
     def initialize_story_prerequisites(self):
         self.world = World()
@@ -275,6 +278,9 @@ class ORSEN:
 
         elif CURR_ORSEN_VERSION == EDEN:
             response = self.perform_eden_dialogue_manager(response, preselected_move)
+            
+        elif CURR_ORSEN_VERSION == MHBOT:
+            response = self.perform_mhbot_dialogue_manager(response, preselected_move)
 
         self.dialogue_planner.reset_state()
         
@@ -366,9 +372,11 @@ class ORSEN:
 
         else:
             self.perform_text_understanding(response)
-
+            print(response)
+            perma_state = self.perma_analysis.readLex(response)
             print("LAST FETCHED IS: ", len(self.world.last_fetched))
             Logger.log_occ_values_basic(response)
+            
             detected_event = self.dialogue_planner.get_latest_event(self.world.last_fetched)
             if detected_event is not None and detected_event.type == EVENT_EMOTION:
                 print("ADDED EMOTION EVENT: ", detected_event.sequence_number)
@@ -380,14 +388,22 @@ class ORSEN:
 
             if new_move_from_old == "":
                 #no new move found
-                if detected_event is not None and detected_event.type == EVENT_EMOTION and not self.dialogue_planner.ongoing_c_pumping:
-                    self.world.curr_emotion_event = detected_event
-                    self.dialogue_planner.curr_event = self.world.curr_emotion_event
+                # if detected_event is not None and detected_event.type == EVENT_EMOTION and not self.dialogue_planner.ongoing_c_pumping:
+                #     self.world.curr_emotion_event = detected_event
+                #     self.dialogue_planner.curr_event = self.world.curr_emotion_event
 
+                #     move_to_execute = DIALOGUE_TYPE_E_LABEL
+                # else:
+                #     move_to_execute = ""
+                #     self.dialogue_planner.curr_event = self.world.curr_event
+                
+                if perma_state != '' and self.perma_analysis.isComplete() and not self.dialogue_planner.ongoing_c_pumping:
+                    print('PERMA_SCORE: ' + perma_state)
                     move_to_execute = DIALOGUE_TYPE_E_LABEL
                 else:
                     move_to_execute = ""
                     self.dialogue_planner.curr_event = self.world.curr_event
+                    
 
                 print("----------NO MOVE SELECTED: ", move_to_execute)
             else:
@@ -431,7 +447,7 @@ class ORSEN:
             response = response + self.perform_dialogue_manager(response="", preselected_move=followup_move)
 
         return response
-    
+        
     def update_relation_score (self, triggered_move):
         if triggered_move == DIALOGUE_TYPE_SUGGESTING_AFFIRM:
             #add score then general pumping
