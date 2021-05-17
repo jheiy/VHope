@@ -1,0 +1,5 @@
+  >> I was really happy?.
+EVALUATING DESC ATTRIBUTE: happy
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+SIMPLIFIED EMOTIONS: happy
+CHOSEN EMOTION: happy

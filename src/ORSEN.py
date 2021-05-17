@@ -399,6 +399,10 @@ class ORSEN:
                 
                 if perma_state != '' and self.perma_analysis.isComplete() and not self.dialogue_planner.ongoing_c_pumping:
                     print('PERMA_SCORE: ' + perma_state)
+                    print('PERMA DONE: ')
+                    print(self.perma_analysis.isComplete())
+                    self.world.curr_emotion_event = detected_event
+                    self.dialogue_planner.curr_event = self.world.curr_emotion_event
                     move_to_execute = DIALOGUE_TYPE_E_LABEL
                 else:
                     move_to_execute = ""

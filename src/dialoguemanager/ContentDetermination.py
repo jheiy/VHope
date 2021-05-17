@@ -31,6 +31,8 @@ class ContentDetermination:
         print(self.choose_template())
         #fill template to use
         # if template has no fillable blanks, enter this particular if statement
+        print("LENGTH: " )
+        print(len(chosen_template.template))
         if len(chosen_template.template) == 1:
             response = chosen_template.template[0]
             
