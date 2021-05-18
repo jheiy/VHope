@@ -1,0 +1,16 @@
+  >> I was crying all day.
+EVALUATING ACTION: 1 : cry
+INITIAL EMOTIONS FOUND: upset
+  >> LIKED , SELF , LIKED , ATTRACTIVE , UNDESIRABLE , DISPLEASED , UNDESIRABLE , NEUTRAL , CONFIRMED , False , NEUTRAL , True , LOW , NOT OBVIOUS , HIGH , COMMON
+EVALUATING DESC ATTRIBUTE: crying
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+SIMPLIFIED EMOTIONS: upset
+CHOSEN EMOTION: upset
+  >> becos the pandemic a lot is happening.
+EVALUATING ACTION: 3 : happen
+NO EMOTION FOUND
+  >> LIKED , SELF , LIKED , ATTRACTIVE , DESIRABLE , PLEASED , DESIRABLE , NEUTRAL , UNCONFIRMED , False , NEUTRAL , False , LOW , NOT OBVIOUS , HIGH , COMMON
+EVALUATING DESC ATTRIBUTE: happening
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
