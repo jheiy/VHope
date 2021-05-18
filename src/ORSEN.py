@@ -373,6 +373,7 @@ class ORSEN:
         else:
             self.perform_text_understanding(response)
             print(response)
+            self.perma_analysis.reset()
             perma_state = self.perma_analysis.readLex(response)
             print("LAST FETCHED IS: ", len(self.world.last_fetched))
             Logger.log_occ_values_basic(response)

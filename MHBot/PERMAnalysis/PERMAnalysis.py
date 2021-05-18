@@ -40,8 +40,6 @@ class PERMAnalysis:
         pos_p = pos_e = pos_r = pos_m = pos_a = neg_p = neg_e = neg_r = neg_m = neg_a = 0
         unigrams = []
         
-
-        
         for row in reader:
             # row[0] = ''.join((filter(lambda i: i not in bad_chars, row[0]))).strip()
             if row[0] and row[1] != 'category':
@@ -80,8 +78,11 @@ class PERMAnalysis:
             senti_dict[key]['max'] = max(senti_dict[key]['score_list'])
             # print(senti_dict[key]['min'])
             # print(senti_dict[key]['max'])
-            average_score = senti_dict[key]['score'] / senti_dict[key]['ctr']
-            percentage_score = ((average_score - senti_dict[key]['min']) * 10) / (senti_dict[key]['max'] - senti_dict[key]['min'])
+            average_score = 0
+            percentage_score = 0
+            if senti_dict[key]['ctr'] != 0:
+                average_score = senti_dict[key]['score'] / senti_dict[key]['ctr']
+                percentage_score = ((average_score - senti_dict[key]['min']) * 10) / (senti_dict[key]['max'] - senti_dict[key]['min'])
             # print(key)
             # print(senti_dict[key]['score'] / senti_dict[key]['ctr'])     
             # print((((senti_dict[key]['score'] / senti_dict[key]['ctr'])   - senti_dict[key]['min']) * 100) / (senti_dict[key]['max'] - senti_dict[key]['min']))
