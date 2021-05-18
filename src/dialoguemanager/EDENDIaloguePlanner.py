@@ -38,6 +38,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.perma_analysis.reset()
 
     def perform_dialogue_planner(self, dialogue_move=""):
+        print('--==--==-- EDEN - Perform Dialogue Planner --==--==--')
         #still no triggered phrase
         if dialogue_move == "":
             self.setup_templates_is_usable()
@@ -73,6 +74,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         return self.chosen_dialogue_move
 
     def check_auto_response(self, destructive = True, emotion_event = None):
+        print('--==--==-- EDEN - Check auto Response --==--==--')
         next_move = self.check_trigger_phrases()
         if next_move != "":
             return next_move
@@ -87,12 +89,14 @@ class EDENDialoguePlanner(DialoguePlanner):
 
     ###checks only dialogue that does not need to go through text understanding
     def check_trigger_phrases(self, event_chain =[]):
+        print('--==--==-- EDEN - Check Trigger Phrases --==--==--')
         # if self.response in IS_END:
         if self.response in IS_END and not self.ongoing_c_pumping:
             return DIALOGUE_TYPE_E_END
         return ""
 
     def check_affirm_deny(self, destructive = True, emotion_event = None):
+        print('--==--==-- EDEN - Check Affirm Deny --==--==--')
         # check if last dialogue move has yes or no:
         last_move = self.get_last_dialogue_move()
         next_move = ""
@@ -135,6 +139,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         return next_move
 
     def check_based_prev_move(self, destructive = True):
+        print('--==--==-- EDEN - Check based Prev Move --==--==--')
         last_move = self.get_last_dialogue_move()
 
         if last_move is not None:
@@ -169,6 +174,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         return ""
 
     def check_based_curr_event(self, detected_event=None, curr_event=None):
+        print('--==--==-- EDEN - Check based Curr Event --==--==--')
         if self.ongoing_c_pumping:
             if detected_event is not None and curr_event is not None:
                 if detected_event.type == EVENT_EMOTION and detected_event.emotion == curr_event.emotion:
@@ -180,6 +186,7 @@ class EDENDialoguePlanner(DialoguePlanner):
 
     #emotion coaching model
     def is_model_ongoing(self):
+        print('--==--==-- EDEN - Is Model Ongoing --==--==--')
         last_move = self.get_last_dialogue_move()
         if last_move is not None:
             if last_move.dialogue_type != EDEN_LAST_MODEL_MOVE\
@@ -189,6 +196,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         return False
 
     def init_set_dialogue_moves_usable(self, preselected_move=""):
+        print('--==--==-- EDEN - Init set dialogue moves usable --==--==--')
         # check which dialogue moves are usable
         set_to_true = []
         if preselected_move =="":
@@ -213,6 +221,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.set_dialogue_list_true(set_to_true)
 
     def get_latest_event(self, last_fetched):
+        print('--==--==-- EDEN - get latest event --==--==--')
         # returns only the first emotion detected
         emotions_found = []
         for i in range(0, len(last_fetched)):
@@ -261,6 +270,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         # return []
 
     def is_emotion_exist(self, emotion_to_check, emotion_list):
+        print('--==--==-- EDEN - is emotion exist --==--==--')
         if len(emotion_list) > 0:
             for curr_emotion in emotion_list:
                 if curr_emotion.emotion == emotion_to_check:
@@ -268,11 +278,13 @@ class EDENDialoguePlanner(DialoguePlanner):
         return False
 
     def is_repeat_story(self, move_to_execute):
+        print('--==--==-- EDEN - is repeat story --==--==--')
         if move_to_execute == DIALOGUE_TYPE_RECOLLECTION:
             return True
         return False
 
     def finalize_dialogue_move(self, curr_dialogue_move):
+        print('--==--==-- EDEN - Finalize dialogue Move --==--==--')
         if curr_dialogue_move == DIALOGUE_TYPE_D_PRAISE:
             return DIALOGUE_TYPE_EVALUATION
         elif curr_dialogue_move == DIALOGUE_TYPE_RECOLLECTION:

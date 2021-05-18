@@ -273,6 +273,7 @@ class ORSEN:
         # huh? return result
 
     def perform_dialogue_manager(self, response, preselected_move=""):
+        print('--==--==-- Perform Dialogue Manager --==--==--')
         if CURR_ORSEN_VERSION == ORSEN1 or CURR_ORSEN_VERSION == ORSEN2:
             response = self.perform_orsen2_dialogue_manager(response, preselected_move)
 
@@ -287,6 +288,7 @@ class ORSEN:
         return response
     
     def perform_orsen2_dialogue_manager(self, response, preselected_move=""):
+        print('--==--==-- Perform Orsen 2 Dialogue Manager --==--==--')
         curr_event = None
         move_to_execute = preselected_move 
 
@@ -346,6 +348,7 @@ class ORSEN:
         return response
 
     def perform_eden_dialogue_manager(self, response, preselected_move=""):
+        print('--==--==-- Perform EDEN Dialogue Manager --==--==--')
         curr_event = None
         move_to_execute = ""
 
