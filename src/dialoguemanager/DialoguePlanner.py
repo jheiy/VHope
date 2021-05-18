@@ -22,6 +22,7 @@ class DialoguePlanner:
         super().__init__()
     
     def reset_new_world(self):
+        print("--==--Dialogue Planner reset new world--==--")
         self.frequency_count = np.zeros(len(DIALOGUE_LIST))
         self.is_usable = [False] * len(DIALOGUE_LIST)
         self.move_index = -1
@@ -44,10 +45,12 @@ class DialoguePlanner:
         self.response = ""
 
     def set_state(self, curr_event, num_action_events):
+        print("--==--Dialogue Planner set state--==--")
         self.curr_event = curr_event
         self.num_action_events = num_action_events
 
     def reset_state(self):
+        print("--==--Dialogue Planner reset state--==--")
         self.chosen_dialogue_move = None
         self.chosen_dialogue_template = []
         self.chosen_move_index = -1
@@ -61,6 +64,7 @@ class DialoguePlanner:
         self.usable_templates = []
 
     def perform_dialogue_planner(self, dialogue_move=""):
+        print("--==--Dialogue Planner perform dialogue planner--==--")
         Logger.log_dialogue_model("Entering perform_dialogue_planner")
 
         if dialogue_move == "":
@@ -97,6 +101,7 @@ class DialoguePlanner:
         return self.chosen_dialogue_move
 
     def setup_templates_is_usable(self):
+        print("--==--Dialogue Planner setup templates is usable--==--")
         self.init_set_dialogue_moves_usable()
         # fetch all usable dialogue templates
 
@@ -125,6 +130,7 @@ class DialoguePlanner:
             self.is_usable[i] = self.is_dialogue_usable(DIALOGUE_LIST[i].get_type(), self.usable_templates[i])
 
     def init_set_dialogue_moves_usable(self):
+        print("--==--Dialogue Planner init set dialogue moves usable--==--")
         # check which dialogue moves are usable
         set_to_true = []
 
@@ -145,6 +151,7 @@ class DialoguePlanner:
         self.set_dialogue_list_true(set_to_true)
 
     def set_dialogue_list_true(self, set_to_true):
+        print("--==--Dialogue Planner set dialogue list true--==--")
         for i in range(len(set_to_true)):
             for j in range(len(DIALOGUE_LIST)):
                 if DIALOGUE_LIST[j].get_type() == set_to_true[i]:
@@ -166,6 +173,7 @@ class DialoguePlanner:
         return True
 
     def  get_usable_templates(self, move_to_execute):
+        print("--==--Dialogue Planner get usable templates--==--")
         usable_template_list = []
 
         Logger.log_dialogue_model_basic("Fetching all templates of: " + str(move_to_execute))
@@ -184,6 +192,7 @@ class DialoguePlanner:
         return usable_template_list
 
     def get_num_usage(self, dialogue_type):
+        print("--==--Dialogue Planner get num usage--==--")
         # returns number of times it has been used
         count = 0
         for X in self.dialogue_history:
@@ -192,6 +201,7 @@ class DialoguePlanner:
         return count
 
     def select_dialogue_from_weights(self, weights_to_use):
+        print("--==--Dialogue Planner select dialogue from weights--==--")
         # weights_to_use = self.frequency_count
 
         probability = np.repeat(1 / len(weights_to_use), len(weights_to_use))
@@ -214,6 +224,7 @@ class DialoguePlanner:
         return choice
 
     def choose_dialogue(self):
+        print("--==--Dialogue Planner choose dialogue--==--")
         moves_to_eval = self.get_valid_moves_index()
         weights_to_eval = self.get_weights_from_index(moves_to_eval)
 
@@ -222,12 +233,14 @@ class DialoguePlanner:
         return moves_to_eval[dialogue_move_index]
 
     def get_weights_from_index(self, indexes):
+        print("--==--Dialogue Planner get weights from  index--==--")
         weights = []
         for i in indexes:
             weights.append(self.frequency_count[i])
         return weights
 
     def get_valid_moves_index(self):
+        print("--==--Dialogue Planner get valid moves index--==--")
         valid_moves = []
         print(self.is_usable)
         for i in range(len(self.is_usable)):
@@ -236,6 +249,7 @@ class DialoguePlanner:
         return valid_moves
 
     def check_trigger_phrases(self, response, event_chain):
+        print("--==--Dialogue Planner check trigger--==--")
         response = response.lower()   
 
         if self.response in IS_END:
@@ -253,9 +267,11 @@ class DialoguePlanner:
         return None
 
     def set_template_details_history(self, chosen_template):        
+        print("--==--Dialogue Planner set template details hist--==--")
         self.dialogue_history[len(self.dialogue_history) - 1].set_template_details(chosen_template)
 
     def print_dialogue_list(self):
+        print("--==--Dialogue Planner print dial list--==--")
         print("\n\nCHOSEN DIALOGUE MOVE: ", self.chosen_dialogue_move)
 
         print("move", "\t", "is_usable")
