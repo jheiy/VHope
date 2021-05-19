@@ -376,11 +376,15 @@ class ORSEN:
         else:
             self.perform_text_understanding(response)
             print(response)
-            self.perma_analysis.reset()
-            perma_state = self.perma_analysis.readLex(response)
+            # self.perma_analysis.reset()
+            # perma_state = self.perma_analysis.readLex(response)
             print("LAST FETCHED IS: ", len(self.world.last_fetched))
             Logger.log_occ_values_basic(response)
             
+            self.perma_analysis.reset()
+            self.dialogue_planner.curr_perma = self.perma_analysis.readLex(response)
+            print('SET ' + self.dialogue_planner.curr_perma + ' TO ' + response)
+                    
             detected_event = self.dialogue_planner.get_latest_event(self.world.last_fetched)
             if detected_event is not None and detected_event.type == EVENT_EMOTION:
                 print("ADDED EMOTION EVENT: ", detected_event.sequence_number)
@@ -392,25 +396,25 @@ class ORSEN:
 
             if new_move_from_old == "":
                 #no new move found
-                # if detected_event is not None and detected_event.type == EVENT_EMOTION and not self.dialogue_planner.ongoing_c_pumping:
-                #     self.world.curr_emotion_event = detected_event
-                #     self.dialogue_planner.curr_event = self.world.curr_emotion_event
-
-                #     move_to_execute = DIALOGUE_TYPE_E_LABEL
-                # else:
-                #     move_to_execute = ""
-                #     self.dialogue_planner.curr_event = self.world.curr_event
-                
-                if perma_state != '' and self.perma_analysis.isComplete() and not self.dialogue_planner.ongoing_c_pumping:
-                    print('PERMA_SCORE: ' + perma_state)
-                    print('PERMA DONE: ')
-                    print(self.perma_analysis.isComplete())
+                if detected_event is not None and detected_event.type == EVENT_EMOTION and self.perma_analysis.isComplete() and not self.dialogue_planner.ongoing_c_pumping:
                     self.world.curr_emotion_event = detected_event
                     self.dialogue_planner.curr_event = self.world.curr_emotion_event
+
                     move_to_execute = DIALOGUE_TYPE_E_LABEL
                 else:
                     move_to_execute = ""
                     self.dialogue_planner.curr_event = self.world.curr_event
+                
+                # if perma_state != '' and self.perma_analysis.isComplete() and not self.dialogue_planner.ongoing_c_pumping:
+                #     print('PERMA_SCORE: ' + perma_state)
+                #     print('PERMA DONE: ')
+                #     print(self.perma_analysis.isComplete())
+                #     self.world.curr_emotion_event = detected_event
+                #     self.dialogue_planner.curr_event = self.world.curr_emotion_event
+                #     move_to_execute = DIALOGUE_TYPE_E_LABEL
+                # else:
+                #     move_to_execute = ""
+                #     self.dialogue_planner.curr_event = self.world.curr_event
                     
 
                 print("----------NO MOVE SELECTED: ", move_to_execute)
@@ -533,7 +537,7 @@ class ORSEN:
         #     return True
         if CURR_ORSEN_VERSION == EDEN:
             if self.is_end or \
-                    (self.dialogue_planner.get_last_dialogue_move() is not None and self.dialogue_planner.get_last_dialogue_move().dialogue_type == DIALOGUE_TYPE_E_END):
+                    (self.dialogue_planner.get_last_dialogue_move() is not None and self.dialogue_planner.get_last_dialogue_move().dialogue_type == DIALOGUE_TYPE_CLOSING_FOLLOWUP):
                 return True
         elif CURR_ORSEN_VERSION == ORSEN1 or CURR_ORSEN_VERSION == ORSEN2:
             if response in IS_END:

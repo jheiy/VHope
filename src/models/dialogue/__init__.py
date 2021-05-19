@@ -27,4 +27,7 @@ from .RecollectionDialogueTemplate import RecollectionDialogueTemplate
 from .EEndDialogueTemplate import EEndDialogueTemplate
 from .EEmphasisDialogueTemplate import EEmphasisDialogueTemplate
 from .EDENWelcomeDialogueTemplate import EDENWelcomeDialogueTemplate
-
+from .MClosingDialogueTemplate import MClosingDialogueTemplate
+from .PPraiseDialogueTemplate import PPraiseDialogueTemplate
+from .OReflectDialogueTemplate import OReflectDialogueTemplate
+from .MFollowingDialogueTemplate import MFollowingDialogueTemplate

@@ -72,6 +72,14 @@ class DialogueTemplateBuilder:
          return EEmphasisDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_E_FOLLOWUP:
          return EFollowupDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_O_REFLECT:
+         return OReflectDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_PRAISE:
+         return PPraiseDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING:
+         return MClosingDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_CLOSING_FOLLOWUP:
+         return MFollowingDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
 
       ##WELCOME MESSAGE
       elif dialogue_type == DIALOGUE_TYPE_EDEN_WELCOME:
