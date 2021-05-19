@@ -1,0 +1,8 @@
+  >> It was stressful.
+EVALUATING DESC ATTRIBUTE: stressful
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+  >> Very big.
+  >> not really.
+  >> okay, sure.
+  >> nothing really.

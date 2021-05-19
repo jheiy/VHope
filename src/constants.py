@@ -13,6 +13,7 @@ INFORMATION_EXTRACTION_LOG = "information_extraction"
 DIALOGUE_MODEL_LOG = "dialogue_model"
 EVENT_CHAIN_LOG = "event chain"
 EMOTION_CLASSIFICATION = "emotion classification"
+WELLBEING = "wellbeing"
 DUMP_LOG = "dump"
 
 """ PACKAGE VERSIONING CONTROL """
