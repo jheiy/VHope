@@ -1,0 +1,4 @@
+  >> I was really Happy.
+EVALUATING DESC ATTRIBUTE: Happy
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 

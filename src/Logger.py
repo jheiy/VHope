@@ -2,7 +2,7 @@ import datetime
 import logging
 import os
 
-from src.constants import CONVERSATION_LOG, INFORMATION_EXTRACTION_LOG, DIALOGUE_MODEL_LOG, EVENT_CHAIN_LOG, EMOTION_CLASSIFICATION, DUMP_LOG
+from src.constants import CONVERSATION_LOG, INFORMATION_EXTRACTION_LOG, DIALOGUE_MODEL_LOG, EVENT_CHAIN_LOG, EMOTION_CLASSIFICATION, WELLBEING, DUMP_LOG
 class Logger:
 
     def __init__(self):
@@ -24,6 +24,7 @@ class Logger:
         Logger.__setup_logger_basic__(DIALOGUE_MODEL_LOG, '../MHBot/logs/dialogue model/' + date + '.txt')
         Logger.__setup_logger_basic__(EVENT_CHAIN_LOG, '../MHBot/logs/event chain/' + date + '.txt')
         Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../MHBot/emotion classification/' + date + '.txt')
+        Logger.__setup_logger_basic__(WELLBEING, '../MHBot/logs/wellbeing/' + date + '.txt')
 
     @staticmethod
     def __setup_logger__(name, log_file, level=logging.INFO):
@@ -123,6 +124,17 @@ class Logger:
 
         logger = logging.getLogger(INFORMATION_EXTRACTION_LOG)
         logger.info(content)
+
+
+    #LOG PERMA SCORES
+    @staticmethod
+    def log_perma_scores(content):
+        logger = logging.getLogger(WELLBEING)
+        logger.info(content)
+
+    def log_perma_values_input(content):
+        logger = logging.getLogger(WELLBEING)
+        logger.info("  >> " + str(content))
 
 
 
