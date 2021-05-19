@@ -131,6 +131,10 @@ DIALOGUE_TYPE_E_FEEDBACK = "e_feedback"
 DIALOGUE_TYPE_G_PRAISE = "g_praise"
 DIALOGUE_TYPE_MHBOT_CLOSING = "mhbot_closing"
 DIALOGUE_TYPE_CLOSING_FOLLOWUP = "closing_followup"
+DIALOGUE_TYPE_COUNSELING = "counseling"
+DIALOGUE_TYPE_COUNSELING_FOLLOWUP = "counseling_followup"
+DIALOGUE_TYPE_FEEDBACK_Y = "counseling_feedback_y"
+DIALOGUE_TYPE_FEEDBACK_N = "counseling_feedback_n"
 
 
 """ORSEN"""

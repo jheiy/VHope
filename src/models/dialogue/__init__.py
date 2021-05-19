@@ -31,3 +31,15 @@ from .MClosingDialogueTemplate import MClosingDialogueTemplate
 from .PPraiseDialogueTemplate import PPraiseDialogueTemplate
 from .OReflectDialogueTemplate import OReflectDialogueTemplate
 from .MFollowingDialogueTemplate import MFollowingDialogueTemplate
+from .MIntroDialogueTemplate import MIntroDialogueTemplate
+from .IFollowupDialogueTemplate import IFollowupDialogueTemplate
+from .MWelcomeDialogueTemplate import MWelcomeDialogueTemplate
+from .AcknowledgeDialogueTemplate import AcknowledgeDialogueTemplate
+from .EFeedbackDialogueTemplate import EFeedbackDialogueTemplate
+from .GPraiseDialogueTemplate import GPraiseDialogueTemplate
+from .CounselingDialogueTemplate import CounselingDialogueTemplate
+from .CFollowupDialogueTemplate import CFollowupDialogueTemplate
+from .CFeedbackyDialogueTemplate import CFeedbackyDialogueTemplate
+from .CFeedbacknDialogueTemplate import CFeedbacknDialogueTemplate
+
+

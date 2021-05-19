@@ -1,4 +1,0 @@
-  >> I was sad and crying.
-EVALUATING DESC ATTRIBUTE: sad
-NO EMOTION FOUND
-  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 

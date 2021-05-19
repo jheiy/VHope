@@ -16,6 +16,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.perma_analysis = PERMAnalysis()
         self.ongoing_c_pumping = False
         self.perma_state = ''
+        self.isRed = False
 
     def reset_new_world(self):
         self.chosen_dialogue_move = None
@@ -37,6 +38,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.occ_manager.reset_occ()
         self.curr_perma = None
         self.perma_analysis.reset()
+        self.isRed = False
 
     def perform_dialogue_planner(self, dialogue_move=""):
         print('--==--==-- EDEN - Perform Dialogue Planner --==--==--')
@@ -106,6 +108,8 @@ class EDENDialoguePlanner(DialoguePlanner):
         if last_move is not None:
             if last_move.dialogue_type == DIALOGUE_TYPE_E_LABEL:
                 if self.response in IS_AFFIRM:
+                    if self.curr_perma == 'red':
+                        self.isRed = True
                     self.ongoing_c_pumping = True
                     next_move = DIALOGUE_TYPE_C_PUMPING
                 else:
@@ -119,7 +123,12 @@ class EDENDialoguePlanner(DialoguePlanner):
                 if self.response in IS_AFFIRM:
                     next_move = DIALOGUE_TYPE_MHBOT_WELCOME
                 else:
-                    next_move = DIALOGUE_TYPE_E_END
+                    next_move = DIALOGUE_TYPE_E_END 
+            elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO:
+                if self.response in IS_AFFIRM:
+                    next_move = DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP
+                else:
+                    next_move = DIALOGUE_TYPE_MHBOT_WELCOME
             elif last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING and self.response.lower() in IS_DONE_EXPLAINING:
                 if destructive:
                     self.ongoing_c_pumping = False
@@ -149,8 +158,9 @@ class EDENDialoguePlanner(DialoguePlanner):
                         next_move = DIALOGUE_TYPE_O_REFLECT
             if next_move !="" and destructive:
                 self.curr_event = emotion_event
-                self.perma_analysis.reset()
-                self.curr_perma = self.perma_analysis.readLex(self.response)
+                if self.response not in IS_AFFIRM or self.response not in IS_DENY or self.response not in IS_END:
+                    self.perma_analysis.reset()
+                    self.curr_perma = self.perma_analysis.readLex(self.response)
         return next_move
 
     def check_based_prev_move(self, destructive = True):
@@ -174,8 +184,11 @@ class EDENDialoguePlanner(DialoguePlanner):
                         self.curr_event.emotion = retrieved_emotion
                     else:
                         self.curr_event.emotion = self.response.upper()
-                    print("SETTING PERMA TO:", self.response.upper())
-                    self.curr_perma = self.perma_analysis.readLex(self.response)
+                    
+                    if self.response not in IS_AFFIRM or self.response not in IS_DENY or self.response not in IS_END:
+                        self.perma_analysis.reset()
+                        print("UPDATING PERMA TO:", self.response.upper())
+                        self.curr_perma = self.perma_analysis.readLex(self.response)
                     self.ongoing_c_pumping = True
                 return DIALOGUE_TYPE_C_PUMPING
             elif last_move.dialogue_type == DIALOGUE_TYPE_D_PUMPING:
@@ -186,6 +199,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                 return DIALOGUE_TYPE_PUMPING_GENERAL
             elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING:
                 return DIALOGUE_TYPE_CLOSING_FOLLOWUP
+            elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP:
+                return DIALOGUE_TYPE_MHBOT_WELCOME
             elif last_move.dialogue_type == DIALOGUE_TYPE_P_PRAISE or last_move.dialogue_type == DIALOGUE_TYPE_O_REFLECT:
                 return DIALOGUE_TYPE_MHBOT_CLOSING
         else:
@@ -313,4 +328,4 @@ class EDENDialoguePlanner(DialoguePlanner):
         return ""
 
     def get_welcome_message_type(self):
-        return DIALOGUE_TYPE_MHBOT_WELCOME
+        return DIALOGUE_TYPE_MHBOT_INTRO

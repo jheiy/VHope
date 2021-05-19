@@ -1,1 +1,0 @@
-  >> & C:/Users/Acer/AppData/Local/Programs/Python/Python36/python.exe c:/Users/Acer/Documents/GitHub/MHBot/Driver.py.
