@@ -110,7 +110,7 @@ def start_storytelling():
         if not is_end_story:
             orsen_response = orsen.get_response(user_input)
             print("=========================================================")
-            print(CURR_ORSEN_VERSION + ": " + orsen_response)
+            print("MHBOT" + ": " + orsen_response)
             print("=========================================================")
             Logger.log_conversation(CURR_ORSEN_VERSION + ": " + str(orsen_response))
             # is_end_story = orsen.is_end_story(user_input)
@@ -120,14 +120,14 @@ def start_storytelling():
             orsen_response = orsen.get_response("", move_to_execute = DIALOGUE_TYPE_RECOLLECTION)
             # orsen_response = orsen_response + orsen.get_response("", move_to_execute = DIALOGUE_TYPE_RECOLLECTION)
             print("=========================================================")
-            print(CURR_ORSEN_VERSION + ": " + orsen_response)
+            print("MHBOT" + ": " + orsen_response)
             print("=========================================================")
             Logger.log_conversation(CURR_ORSEN_VERSION + ": " + str(orsen_response))
         elif CURR_ORSEN_VERSION == ORSEN1 or CURR_ORSEN_VERSION == ORSEN2:
             # """ORSEN"""
             orsen_response = "Thank you for the story! Do you want to hear it again?"
             print("=========================================================")
-            print(CURR_ORSEN_VERSION + ": " + orsen_response)
+            print("MHBOTNO" + ": " + orsen_response)
             print("=========================================================")
             Logger.log_conversation(CURR_ORSEN_VERSION + ": " + str(orsen_response))
             user_input = get_input()

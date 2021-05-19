@@ -1,0 +1,9 @@
+  >> I'm not sure.
+EVALUATING ACTION: 1 : be
+NO EMOTION FOUND
+EVALUATING DESC ATTRIBUTE: 'm
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+EVALUATING DESC ATTRIBUTE: sure
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 

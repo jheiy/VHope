@@ -1,0 +1,66 @@
+  >> i cried the whole day.
+EVALUATING ACTION: 1 : cry
+INITIAL EMOTIONS FOUND: upset
+  >> LIKED , SELF , LIKED , ATTRACTIVE , UNDESIRABLE , DISPLEASED , UNDESIRABLE , NEUTRAL , CONFIRMED , False , NEUTRAL , True , LOW , NOT OBVIOUS , HIGH , COMMON
+EVALUATING DESC ATTRIBUTE: cried
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+SIMPLIFIED EMOTIONS: upset
+CHOSEN EMOTION: upset
+  >> I failed my exam.
+EVALUATING ACTION: 3 : fail exam
+INITIAL EMOTIONS FOUND: upset
+  >> LIKED , SELF , LIKED , ATTRACTIVE , UNDESIRABLE , DISPLEASED , UNDESIRABLE , NEUTRAL , CONFIRMED , False , NEUTRAL , True , LOW , OBVIOUS , HIGH , UNCOMMON
+EVALUATING DESC ATTRIBUTE: failed
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+EVALUATING DESC ATTRIBUTE: failed
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+SIMPLIFIED EMOTIONS: upset
+CHOSEN EMOTION: upset
+  >> all my friends got good scores but i got the lowest in the class.
+EVALUATING ACTION: 6 : get scores
+NO EMOTION FOUND
+EVALUATING DESC ATTRIBUTE: got
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+EVALUATING DESC ATTRIBUTE: got
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+EVALUATING DESC ATTRIBUTE: good
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+EVALUATING ACTION: 10 : get
+NO EMOTION FOUND
+EVALUATING DESC ATTRIBUTE: got
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+EVALUATING DESC ATTRIBUTE: got
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+  >> 10.
+  >> i want to cry.
+EVALUATING ACTION: 13 : want
+INITIAL EMOTIONS FOUND: happy
+  >> LIKED , SELF , LIKED , ATTRACTIVE , DESIRABLE , PLEASED , DESIRABLE , NEUTRAL , UNCONFIRMED , False , NEUTRAL , True , HIGH , NOT OBVIOUS , HIGH , COMMON
+EVALUATING ACTION: 14 : cry
+INITIAL EMOTIONS FOUND: upset
+  >> LIKED , SELF , LIKED , ATTRACTIVE , UNDESIRABLE , DISPLEASED , UNDESIRABLE , NEUTRAL , UNCONFIRMED , False , NEUTRAL , True , LOW , NOT OBVIOUS , HIGH , COMMON
+EVALUATING DESC ATTRIBUTE: want
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+EVALUATING DESC ATTRIBUTE: cry
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+SIMPLIFIED EMOTIONS: happy upset
+CHOSEN EMOTION: upset
+  >> i cried yesterday too.
+EVALUATING ACTION: 17 : cry
+INITIAL EMOTIONS FOUND: upset
+  >> LIKED , SELF , LIKED , ATTRACTIVE , UNDESIRABLE , DISPLEASED , UNDESIRABLE , NEUTRAL , CONFIRMED , False , NEUTRAL , True , LOW , OBVIOUS , HIGH , COMMON
+EVALUATING DESC ATTRIBUTE: cried
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+SIMPLIFIED EMOTIONS: upset
+CHOSEN EMOTION: upset

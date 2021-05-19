@@ -1,0 +1,12 @@
+  >> i saw my friends today.
+EVALUATING ACTION: 1 : see friends
+INITIAL EMOTIONS FOUND: happy
+  >> LIKED , SELF , LIKED , NEUTRAL , DESIRABLE , PLEASED , DESIRABLE , NEUTRAL , CONFIRMED , False , BLAMEWORTHY , True , HIGH , OBVIOUS , HIGH , UNCOMMON
+EVALUATING DESC ATTRIBUTE: saw
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+EVALUATING DESC ATTRIBUTE: saw
+NO EMOTION FOUND
+  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
+SIMPLIFIED EMOTIONS: happy
+CHOSEN EMOTION: happy
