@@ -13,8 +13,8 @@
 .idea/vcs.xml
 
 logs/
-
-
+env/
+emotion classification/
 venv/
 
 .spyproject/
