@@ -16,6 +16,8 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.perma_analysis = PERMAnalysis()
         self.ongoing_c_pumping = False
         self.perma_state = ''
+        self.perma_texts = ''
+        self.isRed = False
 
     def reset_new_world(self):
         self.chosen_dialogue_move = None
@@ -35,7 +37,10 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.usable_templates = []
         np.random.seed(DEFAULT_SEED)
         self.occ_manager.reset_occ()
+        self.curr_perma = None
         self.perma_analysis.reset()
+        self.isRed = False
+        self.perma_texts = ''
 
     def perform_dialogue_planner(self, dialogue_move=""):
         print('--==--==-- EDEN - Perform Dialogue Planner --==--==--')
@@ -68,6 +73,8 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.dialogue_history.append(DialogueHistoryTemplate(dialogue_type=self.chosen_dialogue_move))
         print("FINAL DIALOGUE LIST: ", self.chosen_dialogue_move)
         self.print_dialogue_list()
+        
+        print(self.chosen_dialogue_move)
 
         Logger.log_conversation("CHOSEN DIALOGUE MOVE: " + self.chosen_dialogue_move)
 
@@ -103,6 +110,8 @@ class EDENDialoguePlanner(DialoguePlanner):
         if last_move is not None:
             if last_move.dialogue_type == DIALOGUE_TYPE_E_LABEL:
                 if self.response in IS_AFFIRM:
+                    if self.curr_perma == 'red':
+                        self.isRed = True
                     self.ongoing_c_pumping = True
                     next_move = DIALOGUE_TYPE_C_PUMPING
                 else:
@@ -112,6 +121,26 @@ class EDENDialoguePlanner(DialoguePlanner):
                     next_move = DIALOGUE_TYPE_EVALUATION
                 else:
                     next_move = DIALOGUE_TYPE_D_PUMPING
+            elif last_move.dialogue_type == DIALOGUE_TYPE_CLOSING_FOLLOWUP:
+                if self.response in IS_AFFIRM:
+                    next_move = DIALOGUE_TYPE_MHBOT_WELCOME
+                else:
+                    next_move = DIALOGUE_TYPE_E_END 
+            elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO:
+                if self.response in IS_AFFIRM:
+                    next_move = DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP
+                else:
+                    next_move = DIALOGUE_TYPE_MHBOT_WELCOME
+            elif last_move.dialogue_type == DIALOGUE_TYPE_COUNSELING:
+                if self.response in IS_AFFIRM:
+                    next_move = DIALOGUE_TYPE_E_END
+                else:
+                    next_move = DIALOGUE_TYPE_COUNSELING_FOLLOWUP
+            elif last_move.dialogue_type == DIALOGUE_TYPE_COUNSELING_FOLLOWUP:
+                if self.response in IS_AFFIRM:
+                    next_move = DIALOGUE_TYPE_COUNSELING_FEEDBACK_Y
+                else:
+                    next_move = DIALOGUE_TYPE_COUNSELING_FEEDBACK_N
             elif last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING and self.response.lower() in IS_DONE_EXPLAINING:
                 if destructive:
                     self.ongoing_c_pumping = False
@@ -121,21 +150,35 @@ class EDENDialoguePlanner(DialoguePlanner):
             elif self.ongoing_c_pumping and self.response.lower() in IS_END:
                 if destructive:
                     self.ongoing_c_pumping = False
-                if emotion_event is not None:
+                if emotion_event is not None and self.curr_perma is not None:
                 # if self.curr_event.emotion is not None:
                     # check if emotion should be disciplined
                     # if self.curr_event.emotion in DISCIPLINARY_EMOTIONS:
-                    if emotion_event.emotion in DISCIPLINARY_EMOTIONS:
-                        next_move = DIALOGUE_TYPE_D_CORRECTING
-                    else:
-                        # check if emotion is + or -
-                        # if self.curr_event.emotion in POSITIVE_EMOTIONS:
-                        if emotion_event.emotion in POSITIVE_EMOTIONS:
-                            next_move = DIALOGUE_TYPE_D_PRAISE
-                        else:
-                            next_move = DIALOGUE_TYPE_EVALUATION
+                    # if emotion_event.emotion in DISCIPLINARY_EMOTIONS:
+                    #     next_move = DIALOGUE_TYPE_D_CORRECTING
+                    # else:
+                    #     # check if emotion is + or -
+                    #     # if self.curr_event.emotion in POSITIVE_EMOTIONS:
+                    #     if emotion_event.emotion in POSITIVE_EMOTIONS:
+                    #         next_move = DIALOGUE_TYPE_D_PRAISE
+                    #     else:
+                    #         next_move = DIALOGUE_TYPE_EVALUATION
+                    print('CURRENT PERMA SCORE:' + self.curr_perma)
+                    if self.curr_perma == 'green':
+                        next_move = DIALOGUE_TYPE_P_PRAISE
+                    elif self.curr_perma == 'orange':
+                        next_move = DIALOGUE_TYPE_O_REFLECT
+                    # elif self.isRed:
+                    #     if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                    #         next_move = DIALOGUE_TYPE_ACKNOWLEDGE
+                    #     else:
+                    #         next_move = DIALOGUE_TYPE_G_PRAISE
             if next_move !="" and destructive:
                 self.curr_event = emotion_event
+                if self.response not in IS_AFFIRM or self.response not in IS_DENY or self.response not in IS_END:
+                    self.perma_analysis.reset()
+                    self.perma_texts = self.perma_texts + ' ' + self.response
+                    self.curr_perma = self.perma_analysis.readLex(self.perma_texts)
         return next_move
 
     def check_based_prev_move(self, destructive = True):
@@ -159,7 +202,12 @@ class EDENDialoguePlanner(DialoguePlanner):
                         self.curr_event.emotion = retrieved_emotion
                     else:
                         self.curr_event.emotion = self.response.upper()
-
+                    
+                    if self.response not in IS_AFFIRM or self.response not in IS_DENY or self.response not in IS_END:
+                        self.perma_analysis.reset()
+                        self.perma_texts = self.perma_texts + ' ' + self.response
+                        print("UPDATING PERMA TO:", self.response.upper())
+                        self.curr_perma = self.perma_analysis.readLex(self.perma_texts)
                     self.ongoing_c_pumping = True
                 return DIALOGUE_TYPE_C_PUMPING
             elif last_move.dialogue_type == DIALOGUE_TYPE_D_PUMPING:
@@ -168,7 +216,14 @@ class EDENDialoguePlanner(DialoguePlanner):
                 return DIALOGUE_TYPE_RECOLLECTION
             elif last_move.dialogue_type == DIALOGUE_TYPE_E_FOLLOWUP:
                 return DIALOGUE_TYPE_PUMPING_GENERAL
-
+            elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING:
+                return DIALOGUE_TYPE_CLOSING_FOLLOWUP
+            elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP:
+                return DIALOGUE_TYPE_MHBOT_WELCOME
+            elif last_move.dialogue_type == DIALOGUE_TYPE_ACKNOWLEDGE or last_move.dialogue_type == DIALOGUE_TYPE_G_PRAISE:
+                return DIALOGUE_TYPE_COUNSELING
+            elif last_move.dialogue_type == DIALOGUE_TYPE_P_PRAISE or last_move.dialogue_type == DIALOGUE_TYPE_O_REFLECT:
+                return DIALOGUE_TYPE_MHBOT_CLOSING
         else:
             print("NO PREVIOUS DIALOGUE")
         return ""
@@ -204,18 +259,18 @@ class EDENDialoguePlanner(DialoguePlanner):
             if move_to_execute != "":
                 set_to_true.append(move_to_execute)
             else:
-                # if self.curr_event is not None and self.curr_event.type == EVENT_EMOTION: #IF EMOTION EVENT IS MADE
-                #     set_to_true.append(DIALOGUE_TYPE_E_LABEL)
-                # else:
-                #     if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0: #NO EMOTION DETECTED THEN PUMPING
-                #         set_to_true.append(DIALOGUE_TYPE_PUMPING_SPECIFIC)
-                #     set_to_true.append(DIALOGUE_TYPE_PUMPING_GENERAL)
-                if self.perma_state != '' and self.perma_analysis.isComplete():
-                    set_to_true.append(DIALOGUE_TYPE_P_REEVALUATE)
+                if self.curr_event is not None and self.curr_event.type == EVENT_EMOTION and self.curr_perma is not None: #IF EMOTION EVENT IS MADE
+                    set_to_true.append(DIALOGUE_TYPE_E_LABEL)
                 else:
-                    if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0: #INCOMPLETE PERMA
+                    if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0: #NO EMOTION DETECTED THEN PUMPING
                         set_to_true.append(DIALOGUE_TYPE_PUMPING_SPECIFIC)
                     set_to_true.append(DIALOGUE_TYPE_PUMPING_GENERAL)
+                # if self.perma_state != '' and self.perma_analysis.isComplete():
+                #     set_to_true.append(DIALOGUE_TYPE_P_REEVALUATE)
+                # else:
+                #     if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0: #INCOMPLETE PERMA
+                #         set_to_true.append(DIALOGUE_TYPE_PUMPING_SPECIFIC)
+                #     set_to_true.append(DIALOGUE_TYPE_PUMPING_GENERAL)
         else:
             set_to_true.append(preselected_move)
         self.set_dialogue_list_true(set_to_true)
@@ -289,7 +344,9 @@ class EDENDialoguePlanner(DialoguePlanner):
             return DIALOGUE_TYPE_EVALUATION
         elif curr_dialogue_move == DIALOGUE_TYPE_RECOLLECTION:
             return DIALOGUE_TYPE_E_END
+        # if curr_dialogue_move == DIALOGUE_TYPE_P_PRAISE or curr_dialogue_move == DIALOGUE_TYPE_O_REFLECT:
+        #     return DIALOGUE_TYPE_MHBOT_CLOSING
         return ""
 
     def get_welcome_message_type(self):
-        return DIALOGUE_TYPE_MHBOT_WELCOME
+        return DIALOGUE_TYPE_MHBOT_INTRO

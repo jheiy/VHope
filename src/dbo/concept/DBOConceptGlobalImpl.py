@@ -11,7 +11,7 @@ from pypika import Query, Table, Criterion, Field
 """
 class DBOConceptGlobalImpl(DBOConcept):
     def __init__(self):
-        DBOConcept.__init__(self, "concepts", GlobalConcept)
+        DBOConcept.__init__(self, "mhbot_concepts", GlobalConcept)
 
     def add_concept(self, concept):
         q = Query\

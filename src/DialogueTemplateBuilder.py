@@ -72,6 +72,34 @@ class DialogueTemplateBuilder:
          return EEmphasisDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_E_FOLLOWUP:
          return EFollowupDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_O_REFLECT:
+         return OReflectDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_PRAISE:
+         return PPraiseDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING:
+         return MClosingDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_CLOSING_FOLLOWUP:
+         return MFollowingDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO:
+         return MIntroDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP:
+         return IFollowupDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_MHBOT_WELCOME:
+         return MWelcomeDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_ACKNOWLEDGE:
+         return AcknowledgeDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_E_FEEDBACK:
+         return EFeedbackDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_G_PRAISE:
+         return GPraiseDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_COUNSELING:
+         return CounselingDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_COUNSELING_FOLLOWUP:
+         return CFollowupDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_CONSELING_FEEDBACK_Y:
+         return CFeedbackyDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_COUNSELING_FEEDBACK_N:
+         return CFeedbacknDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
 
       ##WELCOME MESSAGE
       elif dialogue_type == DIALOGUE_TYPE_EDEN_WELCOME:

@@ -1,10 +1,9 @@
-  >> I'm happy.
+  >> I'm not sure.
 EVALUATING ACTION: 1 : be
 NO EMOTION FOUND
 EVALUATING DESC ATTRIBUTE: 'm
 NO EMOTION FOUND
   >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
-EVALUATING DESC ATTRIBUTE: happy
+EVALUATING DESC ATTRIBUTE: sure
+NO EMOTION FOUND
   >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
-SIMPLIFIED EMOTIONS: happy
-CHOSEN EMOTION: happy

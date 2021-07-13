@@ -53,7 +53,14 @@ EDEN_DIALOGUE_LIST = [CPumpingDialogueTemplate(),
                       EvaluationDialogueTemplate(),
                       RecollectionDialogueTemplate(),
                       EEndDialogueTemplate(),
-                      EEmphasisDialogueTemplate()]
+                      EEmphasisDialogueTemplate(),
+                      MClosingDialogueTemplate(),
+                      OReflectDialogueTemplate(),
+                      PPraiseDialogueTemplate(),
+                      MFollowingDialogueTemplate(),
+                      MIntroDialogueTemplate(),
+                      IFollowupDialogueTemplate(),
+                      MWelcomeDialogueTemplate()]
 
 # MHBOT_DIALOGUE_LIST = [PPumpingDialogueTemplate(),
 #                        PLabellingDialogueTemplate(),
