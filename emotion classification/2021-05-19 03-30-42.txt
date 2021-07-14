@@ -1,9 +1,0 @@
-  >> I was crying all day.
-EVALUATING ACTION: 1 : cry
-INITIAL EMOTIONS FOUND: upset
-  >> LIKED , SELF , LIKED , ATTRACTIVE , UNDESIRABLE , DISPLEASED , UNDESIRABLE , NEUTRAL , CONFIRMED , False , NEUTRAL , True , LOW , NOT OBVIOUS , HIGH , COMMON
-EVALUATING DESC ATTRIBUTE: crying
-NO EMOTION FOUND
-  >>  ,  ,  ,  ,  ,  ,  ,  ,  , False ,  , False ,  ,  ,  , 
-SIMPLIFIED EMOTIONS: upset
-CHOSEN EMOTION: upset

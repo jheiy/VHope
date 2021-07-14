@@ -533,7 +533,7 @@ class ORSEN:
         #     return True
         if CURR_ORSEN_VERSION == EDEN:
             if self.is_end or \
-                    (self.dialogue_planner.get_last_dialogue_move() is not None and self.dialogue_planner.get_last_dialogue_move().dialogue_type == DIALOGUE_TYPE_E_END):
+                    (self.dialogue_planner.get_last_dialogue_move() is not None and self.dialogue_planner.get_last_dialogue_move().dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING):
                 return True
         elif CURR_ORSEN_VERSION == ORSEN1 or CURR_ORSEN_VERSION == ORSEN2:
             if response in IS_END:

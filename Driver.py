@@ -117,7 +117,7 @@ def start_storytelling():
         elif CURR_ORSEN_VERSION == EDEN:
             """EDEN"""
             # orsen_response = orsen.get_response("", move_to_execute = DIALOGUE_TYPE_E_END)
-            orsen_response = orsen.get_response("", move_to_execute = DIALOGUE_TYPE_RECOLLECTION)
+            # orsen_response = orsen.get_response("", move_to_execute = DIALOGUE_TYPE_RECOLLECTION)
             # orsen_response = orsen_response + orsen.get_response("", move_to_execute = DIALOGUE_TYPE_RECOLLECTION)
             print("=========================================================")
             print(CURR_ORSEN_VERSION + ": " + orsen_response)
@@ -205,7 +205,9 @@ while is_engaged:
 
     # orsen_welcome()
     temp_welcome = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
-    print(temp_welcome)
+    print("=========================================================")
+    print("MHBOT" + ": " + temp_welcome)
+    print("=========================================================")
     
     start_storytelling()
 
