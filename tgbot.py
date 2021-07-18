@@ -8,7 +8,7 @@ from src.textunderstanding.InputDecoder import InputDecoder
 import datetime, time
 import telebot
 
-TOKEN = '1772588897:AAEykF5UTlq7qWQXuFqpGfjPSrFkliQcaes'
+TOKEN = 'TOKEN'
 
 bot = telebot.TeleBot(TOKEN)
 orsen = ORSEN()
