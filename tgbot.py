@@ -30,7 +30,7 @@ def clean_user_input(response):
 # Message Handlers
 @bot.message_handler(commands=['start'])
 def opening_message(message):
-    bot.send_message(message.chat.id, "Hey")
+    bot.send_message(message.chat.id, "Hi! This is MHBot, a chatbot dedicated to Maintaining Optimal Mental Health among College Students, an undergraduate thesis by Rebecalyn Lao, Melody Go, Jaime Pastor, and Lenard To. You can input `/start_chatting` to begin our conversation.")
     
 @bot.message_handler(commands=['start_chatting'])
 def start_conversation(message):
@@ -43,7 +43,7 @@ def start_conversation(message):
 
     temp_welcome = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
     bot.send_message(message.chat.id, temp_welcome)
-    print(triggers.is_engaged)
+    # print(triggers.is_engaged)
 
 @bot.message_handler(func=lambda m:True)
 def continue_conversation(message):
@@ -57,12 +57,19 @@ def continue_conversation(message):
 
         triggers.is_end_story = orsen.is_end_story(user_input)
         orsen_response = orsen.get_response(user_input)
-        print("ending: ", triggers.is_end_story)
+        # print("ending: ", triggers.is_end_story)
         bot.send_message(message.chat.id, orsen_response)
-        
         Logger.log_conversation(CURR_ORSEN_VERSION + ": " + str(orsen_response))
-    else:
-        bot.send_message(message.chat.id, message.text)
+
+        if triggers.is_end_story:
+            # no login functionalities yet; can be looked into in future development updates
+            # try:
+            #     Pickle.pickle_world_wb(pickle_filepath, orsen.world.get_pickled_world())
+            # except Exception as e:
+            #     Logger.log_conversation("ERROR: " + str(e))
+            bot.send_message(message.chat.id, "This ends our conversation for now. If you want to start again, let's talk starting with `/start_chatting`")
+    elif triggers.is_engaged:
+        bot.send_message(message.chat.id, "No current conversation ongoing. Let's talk about your day by typing `/start_chatting`")
         pass
 
 
