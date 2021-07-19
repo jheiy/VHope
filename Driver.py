@@ -205,7 +205,10 @@ while is_engaged:
 
     # orsen_welcome()
     temp_welcome = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
-    print(temp_welcome)
+   
+    print("=========================================================")
+    print(CURR_ORSEN_VERSION + ": " + temp_welcome)
+    print("=========================================================")
     
     start_storytelling()
 
