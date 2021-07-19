@@ -96,9 +96,9 @@ class DialogueTemplateBuilder:
          return CounselingDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_COUNSELING_FOLLOWUP:
          return CFollowupDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
-      elif dialogue_type == DIALOGUE_TYPE_CONSELING_FEEDBACK_Y:
+      elif dialogue_type == DIALOGUE_TYPE_FEEDBACK_Y:
          return CFeedbackyDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
-      elif dialogue_type == DIALOGUE_TYPE_COUNSELING_FEEDBACK_N:
+      elif dialogue_type == DIALOGUE_TYPE_FEEDBACK_N:
          return CFeedbacknDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
 
       ##WELCOME MESSAGE
