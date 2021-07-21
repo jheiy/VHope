@@ -138,9 +138,9 @@ class EDENDialoguePlanner(DialoguePlanner):
                     next_move = DIALOGUE_TYPE_COUNSELING_FOLLOWUP
             elif last_move.dialogue_type == DIALOGUE_TYPE_COUNSELING_FOLLOWUP:
                 if self.response in IS_AFFIRM:
-                    next_move = DIALOGUE_TYPE_COUNSELING_FEEDBACK_Y
+                    next_move = DIALOGUE_TYPE_FEEDBACK_Y
                 else:
-                    next_move = DIALOGUE_TYPE_COUNSELING_FEEDBACK_N
+                    next_move = DIALOGUE_TYPE_FEEDBACK_N
             elif last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING and self.response.lower() in IS_DONE_EXPLAINING:
                 if destructive:
                     self.ongoing_c_pumping = False
@@ -168,14 +168,14 @@ class EDENDialoguePlanner(DialoguePlanner):
                         next_move = DIALOGUE_TYPE_P_PRAISE
                     elif self.curr_perma == 'orange':
                         next_move = DIALOGUE_TYPE_O_REFLECT
-                    # elif self.isRed:
-                    #     if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
-                    #         next_move = DIALOGUE_TYPE_ACKNOWLEDGE
-                    #     else:
-                    #         next_move = DIALOGUE_TYPE_G_PRAISE
+                    elif self.isRed:
+                        if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                            next_move = DIALOGUE_TYPE_ACKNOWLEDGE
+                        else:
+                            next_move = DIALOGUE_TYPE_G_PRAISE
             if next_move !="" and destructive:
                 self.curr_event = emotion_event
-                if self.response not in IS_AFFIRM or self.response not in IS_DENY or self.response not in IS_END:
+                if self.response not in IS_AFFIRM and self.response not in IS_DENY and self.response not in IS_END:
                     self.perma_analysis.reset()
                     self.perma_texts = self.perma_texts + ' ' + self.response
                     self.curr_perma = self.perma_analysis.readLex(self.perma_texts)
@@ -201,9 +201,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                     if retrieved_emotion != "":
                         self.curr_event.emotion = retrieved_emotion
                     else:
-                        self.curr_event.emotion = self.response.upper()
-                    
-                    if self.response not in IS_AFFIRM or self.response not in IS_DENY or self.response not in IS_END:
+                        self.curr_event.emotion = self.response.upper()                    
+                    if self.response not in IS_AFFIRM and self.response not in IS_DENY and self.response not in IS_END:
                         self.perma_analysis.reset()
                         self.perma_texts = self.perma_texts + ' ' + self.response
                         print("UPDATING PERMA TO:", self.response.upper())
@@ -216,8 +215,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                 return DIALOGUE_TYPE_RECOLLECTION
             elif last_move.dialogue_type == DIALOGUE_TYPE_E_FOLLOWUP:
                 return DIALOGUE_TYPE_PUMPING_GENERAL
-            elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING:
-                return DIALOGUE_TYPE_CLOSING_FOLLOWUP
+            # elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING:
+            #     return DIALOGUE_TYPE_CLOSING_FOLLOWUP
             elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP:
                 return DIALOGUE_TYPE_MHBOT_WELCOME
             elif last_move.dialogue_type == DIALOGUE_TYPE_ACKNOWLEDGE or last_move.dialogue_type == DIALOGUE_TYPE_G_PRAISE:
