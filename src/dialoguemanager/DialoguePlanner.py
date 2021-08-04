@@ -181,6 +181,7 @@ class DialoguePlanner:
         for x in template_list:
             Logger.log_dialogue_model_basic_example(x)
 
+        print(template_list)
         # check which template is usable
         for X in template_list:
             print("Checking:", X)
