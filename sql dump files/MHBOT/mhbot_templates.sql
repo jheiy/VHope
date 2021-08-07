@@ -71,7 +71,11 @@ INSERT INTO `templates` VALUES (1,'feedback','I see, that\'s interesting.',NULL,
 (216,'a_goal_q1','Try to make your goals more specific for you to be able to achieve them more.',NULL,NULL,NULL,NULL),
 (217,'a_goal_q2','It’s nice that you set goals! You should practice that more often.',NULL,NULL,NULL,NULL),
 (218,'a_success_q1','Be grateful and thankful for these accomplishments.',NULL,NULL,NULL,NULL),
-(219,'a_achieve_q1','That’s amazing! How did you celebrate?',NULL,NULL,NULL,NULL);
+(219,'a_achieve_q1','That’s amazing! How did you celebrate?',NULL,NULL,NULL,NULL),
+(220,'pe_advice','Whenever you _1_, don’t forget to _2_','1 Activity, 1 HasPrerequisite 2','Activity,HasPrerequisite','1,2','1,2'),
+(221,'prm_suggest','Why don’t you _1_ with your _2_','2 CanDo 1, 2 Person','CanDo,Person','1,2','1,2'),
+(222,'a_advice','You should celebrate your _1_ Whenever you _1_, don’t forget to celebrate.','1 Accomplishment','Accomplishment','1','1'),
+(223,'m_suggest','Why don’t you try _1_?','1 Activity','Activity','1','1');
 /*!40000 ALTER TABLE `templates` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
