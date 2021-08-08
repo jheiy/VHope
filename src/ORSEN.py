@@ -421,9 +421,13 @@ class ORSEN:
             else:
                 #for emphasis
                 self.dialogue_planner.curr_event = self.world.curr_emotion_event
-
                 move_to_execute = new_move_from_old
 
+        print("EVENT CHAIN")
+        # print(self.world)
+        for x in self.world.objects:
+            print("OOBJECT")
+            print(x.get_objectrelations())
         self.dialogue_planner.perform_dialogue_planner(move_to_execute)
         #fetches templates of chosen dialogue move
         available_templates = self.dialogue_planner.chosen_dialogue_template
@@ -537,7 +541,7 @@ class ORSEN:
         #     return True
         if CURR_ORSEN_VERSION == EDEN:
             if self.is_end or \
-                    (self.dialogue_planner.get_last_dialogue_move() is not None and self.dialogue_planner.get_last_dialogue_move().dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING):
+                    (self.dialogue_planner.get_last_dialogue_move() is not None and (self.dialogue_planner.get_last_dialogue_move().dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING or self.dialogue_planner.get_last_dialogue_move().dialogue_type == DIALOGUE_TYPE_FEEDBACK_N or self.dialogue_planner.get_last_dialogue_move().dialogue_type == DIALOGUE_TYPE_FEEDBACK_Y)):
                 return True
         elif CURR_ORSEN_VERSION == ORSEN1 or CURR_ORSEN_VERSION == ORSEN2:
             if response in IS_END:

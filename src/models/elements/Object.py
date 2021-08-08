@@ -21,7 +21,7 @@ class Object:
 
     def add_in_setting(self, setting):
         self.in_setting.append(setting)
-
+        
     def __str__(self):
         my_string = "Entity " + self.id + " (" + self.name + ")\n"
 
@@ -90,8 +90,11 @@ class Object:
 
         return new_object
 
-
-
+    def get_objectrelations(self):
+        print(self.name)
+        for a in self.attribute:
+            print(a)
+            
     def get_pickled_object(self):
         pickled_object = PickleObject()
         pickled_object.id = str(self.id)

@@ -96,10 +96,74 @@ class DialogueTemplateBuilder:
          return CounselingDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_COUNSELING_FOLLOWUP:
          return CFollowupDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
-      elif dialogue_type == DIALOGUE_TYPE_CONSELING_FEEDBACK_Y:
+      elif dialogue_type == DIALOGUE_TYPE_FEEDBACK_Y:
          return CFeedbackyDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
-      elif dialogue_type == DIALOGUE_TYPE_COUNSELING_FEEDBACK_N:
+      elif dialogue_type == DIALOGUE_TYPE_FEEDBACK_N:
          return CFeedbacknDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_REFLECT_CARE:
+         return PReflectCareDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_REFLECT_ENJOY:
+         return PReflectEnjoyDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_REFLECT_MUSIC:
+         return PReflectMusicDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_REFLECT_MUSIC_F2:
+         return PReflectMusicF2DialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_REFLECT_MUSIC_POS:
+         return PReflectMusicPosDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_REFLECT_MUSIC_NEG:
+         return PReflectMusicNegDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_REFLECT_GRATEFUL:
+         return PReflectGratefulDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_REFLECT_GRATEFUL_YES:
+         return PReflectGratefulYesDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_REFLECT_GRATEFUL_NO:
+         return PReflectGratefulNoDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_REFLECT_GRATEFUL_F2:
+         return PReflectGratefulF2DialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_ACTIVITY:
+         return EReflectActivityDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_ACTIVITY2:
+         return EReflectActivity2DialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_PAST:
+         return EReflectPastDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_PAST_F2:
+         return EReflectPastF2DialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_NATURE:
+         return EReflectNatureDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_NATURE2:
+         return EReflectNature2DialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_EXCEL:
+         return EReflectExcelDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_R_REFLECT_ENJOY:
+         return RReflectEnjoyDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_R_REFLECT_FRIEND:
+         return RReflectFriendDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_R_REFLECT_FRIEND2:
+         return RReflectFriend2DialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_R_REFLECT_FRIEND2_F2:
+         return RReflectFriend2F2DialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_M_REFLECT_ORG:
+         return MReflectOrgDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_M_REFLECT_NEW:
+         return MReflectNewDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_M_REFLECT_BORED:
+         return MReflectOBoredDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_M_REFLECT_FRIEND:
+         return MReflectFriendDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_A_REFLECT_GOAL:
+         return AReflectGoalDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_A_REFLECT_GOAL2:
+         return AReflectGoal2DialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_A_REFLECT_SUCCESS:
+         return AReflectSuccessDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_A_REFLECT_ACHIEVE:
+         return AReflectAchieveDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      
+      
+      
+      
+      
+      
 
       ##WELCOME MESSAGE
       elif dialogue_type == DIALOGUE_TYPE_EDEN_WELCOME:

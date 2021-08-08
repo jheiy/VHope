@@ -133,7 +133,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                     next_move = DIALOGUE_TYPE_MHBOT_WELCOME
             elif last_move.dialogue_type == DIALOGUE_TYPE_COUNSELING:
                 if self.response in IS_AFFIRM:
-                    next_move = DIALOGUE_TYPE_E_END
+                    next_move = DIALOGUE_TYPE_FEEDBACK_Y
                 else:
                     next_move = DIALOGUE_TYPE_COUNSELING_FOLLOWUP
             elif last_move.dialogue_type == DIALOGUE_TYPE_COUNSELING_FOLLOWUP:
@@ -168,7 +168,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                         next_move = DIALOGUE_TYPE_P_PRAISE
                     elif self.curr_perma == 'orange':
                         next_move = DIALOGUE_TYPE_O_REFLECT
-                    elif self.isRed:
+                    elif self.curr_perma == 'red':
                         if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
                             next_move = DIALOGUE_TYPE_ACKNOWLEDGE
                         else:
@@ -201,7 +201,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                     if retrieved_emotion != "":
                         self.curr_event.emotion = retrieved_emotion
                     else:
-                        self.curr_event.emotion = self.response.upper()                    
+                        self.curr_event.emotion = self.response.upper()
+                    
                     if self.response not in IS_AFFIRM and self.response not in IS_DENY and self.response not in IS_END:
                         self.perma_analysis.reset()
                         self.perma_texts = self.perma_texts + ' ' + self.response
