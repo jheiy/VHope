@@ -2,6 +2,7 @@ import numpy as np
 
 from src import DEFAULT_SEED
 from src.constants import DIALOGUE_TYPE_KNOWLEDGE_ACQUISITION_PUMPING #[Celina]
+from src.constants import *
 from EDEN.constants import EVENT_EMOTION
 from src import DEFAULT_SEED, EVENT_ACTION, EVENT_CREATION, EVENT_DESCRIPTION
 
@@ -12,12 +13,16 @@ class ContentDetermination:
         super().__init__()
         self.move_to_execute = ""
         self.curr_event = []
+        self.world = None
+        self.lowest_perma = ''
+        self.subj = ''
         np.random.seed(DEFAULT_SEED)
 
-    def set_state(self, move_to_execute, curr_event, usable_template_list):
+    def set_state(self, move_to_execute, curr_event, usable_template_list, world):
         self.move_to_execute = move_to_execute
         self.curr_event = curr_event
         self.usable_template_list = usable_template_list
+        self.world = world
 
     def reset_state(self):
         self.move_to_execute = ""
@@ -39,6 +44,11 @@ class ContentDetermination:
         # Added the dialogue history for this part
         elif self.move_to_execute == DIALOGUE_TYPE_KNOWLEDGE_ACQUISITION_PUMPING:
             response = chosen_template.fill_blanks(dialogue_history)
+        
+        elif (self.move_to_execute == DIALOGUE_TYPE_PE_ADVICE or self.move_to_execute == DIALOGUE_TYPE_PRM_SUGGEST or 
+            self.move_to_execute == DIALOGUE_TYPE_A_ADVICE or self.move_to_execute == DIALOGUE_TYPE_M_SUGGEST or 
+            self.move_to_execute == DIALOGUE_TYPE_A_SUGGEST):
+            response = chosen_template.fill_blanks(self.world, self.subj, self.lowest_perma)
 
         else:
             print("=============")

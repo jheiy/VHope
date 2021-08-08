@@ -11,6 +11,7 @@ from src import Logger, EVENT_ACTION
 sample_text = "I always loved watching movies with my friends and family then one day we got into a party and celebrated my brothers birthday and it was the happiest day of my life"
 
 POS_P = []
+pos_labels = {}
 
 class PERMAnalysis: 
     def __init__(self):
@@ -29,6 +30,7 @@ class PERMAnalysis:
         senti_dict = self.senti_dict
         global POS_P
         global sample_text
+        global pos_labels
         
         sample_text = input_text
         
@@ -88,6 +90,7 @@ class PERMAnalysis:
             # print(senti_dict[key]['score'] / senti_dict[key]['ctr'])     
             # print((((senti_dict[key]['score'] / senti_dict[key]['ctr'])   - senti_dict[key]['min']) * 100) / (senti_dict[key]['max'] - senti_dict[key]['min']))
             if 'POS' in key:
+                pos_labels[key] = percentage_score
                 positive_scores = percentage_score + positive_scores
             elif 'NEG' in key:
                 negative_scores = percentage_score + negative_scores
@@ -105,6 +108,9 @@ class PERMAnalysis:
         elif positive_scores < 5 or negative_scores > 6.5:
             Logger.log_perma_scores("SPECTRUM: AT RISK")
             return 'red'
+    
+    def get_lowest_score(self):
+        return min(pos_labels, key=pos_labels.get)
     
     def isComplete(self):
         senti_dict = self.senti_dict

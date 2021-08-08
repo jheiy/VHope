@@ -29,7 +29,7 @@ class DBOConcept(ABC):
         concept_type - type of concept (e.g. global, local) that will be used. Takes the class type to be used for 
         initialization of concept objects in latter parts of the code
     """
-
+    
     def __init__(self, table_reference, concept_type):
         super().__init__()
         self.table_reference = Table(table_reference)
@@ -139,6 +139,7 @@ class DBOConcept(ABC):
         concepts = []
         for r in result:
             concepts.append(self.concept_type(*r))
+            
         return concepts
 
     """
@@ -166,7 +167,8 @@ class DBOConcept(ABC):
 
         concepts = []
         for r in result:
-            concepts.append(self.concept_type(*r))
+            # concepts.append(self.concept_type(*r))
+            concepts.append(r)
         return concepts
     
     """

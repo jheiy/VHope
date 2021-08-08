@@ -41,6 +41,8 @@ class ORSEN:
         
         #MHBOT
         self.perma_analysis = PERMAnalysis()
+        self.lowest_perma = None
+        self.subj = None
 
     def initialize_story_prerequisites(self):
         self.world = World()
@@ -371,8 +373,8 @@ class ORSEN:
         elif self.dialogue_planner.check_based_prev_move(destructive = False) != "":
             self.perform_text_understanding(response)
             move_to_execute = self.dialogue_planner.check_based_prev_move()
-            print("----------BASED ON PREV MOVE: ", move_to_execute)
-
+            print("----------BASED ON PREV MOVE: ", move_to_execute)            
+            
         else:
             self.perform_text_understanding(response)
             print(response)
@@ -423,16 +425,20 @@ class ORSEN:
                 self.dialogue_planner.curr_event = self.world.curr_emotion_event
                 move_to_execute = new_move_from_old
 
-        print("EVENT CHAIN")
-        # print(self.world)
-        for x in self.world.objects:
-            print("OOBJECT")
-            print(x.get_objectrelations())
+        self.dialogue_planner.world = self.world
+        self.lowest_perma = self.dialogue_planner.get_curr_low()
+        self.subj = self.dialogue_planner.get_subj()
+
         self.dialogue_planner.perform_dialogue_planner(move_to_execute)
         #fetches templates of chosen dialogue move
         available_templates = self.dialogue_planner.chosen_dialogue_template
 
-        self.content_determination.set_state(move_to_execute, self.dialogue_planner.curr_event, available_templates)
+        self.content_determination.set_state(move_to_execute, self.dialogue_planner.curr_event, available_templates, self.world)
+        if self.lowest_perma:
+            self.content_determination.lowest_perma = self.lowest_perma
+        if self.subj:
+            self.content_determination.subj = self.subj
+        
         response, chosen_template = self.content_determination.perform_content_determination()
 
         """FINALIZE MOVES"""
