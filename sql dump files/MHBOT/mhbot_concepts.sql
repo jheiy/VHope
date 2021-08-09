@@ -4422,4 +4422,7 @@ INSERT INTO `mhbot_concepts` VALUES ( 0 , '2_pencil' , 'AtLocation' , 'school'),
 ( 29518 , 'voting' , 'IsA' , 'activities'),
 ( 29519 , 'entertaining' , 'Causes' , 'fulfillment'),
 ( 29520 , 'seeing_idea_become_reality' , 'Causes' , 'fulfillment'),
-( 29521 , 'self_fulfillment' , 'IsA' , 'fulfillment');
+( 29521 , 'self_fulfillment' , 'IsA' , 'fulfillment'),
+( 29522 , 'achievement' , 'HasPrerequisite' , 'effort'),
+( 29523 , 'attainment' , 'IsA' , 'accomplishment'),
+( 29524 , 'attainment' , 'IsA' , 'arrival');
