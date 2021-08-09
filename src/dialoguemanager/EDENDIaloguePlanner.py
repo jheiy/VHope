@@ -3,6 +3,7 @@ from EDEN.constants import *
 from src import *
 from src.dbo.dialogue import DBODialogueTemplate
 from src.dbo.concept.DBOConceptCustom import DBOConceptCustom
+from src.dbo.concept.DBOConceptGlobalImpl import DBOConceptGlobalImpl
 from src.dialoguemanager import DialoguePlanner
 from src.models.concept import LocalConcept
 from src.models.dialogue.constants import DIALOGUE_LIST, DialogueHistoryTemplate, EDEN_DIALOGUE_LIST
@@ -21,9 +22,10 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.perma_state = ''
         self.perma_texts = ''
         self.isRed = False
-        self.custom_concept = DBOConceptCustom()
+        self.custom_concept = DBOConceptGlobalImpl()
         self.low_perma = ''
         self.subj = ''
+        self.pumping_type = ''
 
     def reset_new_world(self):
         self.world = None
@@ -173,61 +175,141 @@ class EDENDialoguePlanner(DialoguePlanner):
                     #         next_move = DIALOGUE_TYPE_EVALUATION
                     
                     concepts = []
-                    topics = []
+                    concept_and_topics = []
+                    hasTopic_relations = []
+                    topic = ['activity', 'person', 'accomplishment', 'achievement', 'attainment']
                     subject = ''
                     for x in self.world.objects:
                         print("OBJECT")
                         print(x.name)
-                        concepts.append(self.custom_concept.get_concept_by_relation(x.name, 'hasTopic'))
-                        for x in concepts:
-                            for y in x:
-                                topics.append(y)
+                        for y in topic:
+                            concept = self.custom_concept.get_related_concepts(x.name, y)
+                            if concept:
+                                print(type((concept.first, concept.relation, concept.second)))
+                                concept_and_topics.append((concept.first, concept.relation, concept.second))
                                 
                     for x in self.world.get_action_words():
                         print("ACTIONS")
                         print(x)
-                        concepts.append(self.custom_concept.get_concept_by_relation(x, 'hasTopic'))
-                        for x in concepts:
-                            for y in x:
-                                topics.append(y)
+                        for y in topic:
+                            concept = self.custom_concept.get_related_concepts(x, y)
+                            if concept:
+                                print((concept.first, concept.relation, concept.second))
+                                concept_and_topics.append((concept.first, concept.relation, concept.second))
                     
+                    for x in concept_and_topics:
+                        print(concept_and_topics)
+                        print(x)
+                        print(x[0])
                     
                     lowest_label = self.perma_analysis.get_lowest_score()
                     self.low_perma = lowest_label
+                    
+                    self.labeled_perma = self.curr_perma
 
                     print('CURRENT PERMA SCORE:' + self.curr_perma)
                     if self.curr_perma == 'green':
-                        # if lowest_label = "POS_P" or lowest_label = "POS_E"
-                        for x in topics:
-                            if x[3] == 'activity':
-                                if self.custom_concept.get_concept_by_relation(x[1], 'has_prerequisite'):
-                                    self.subj = x[1]
-                                    return DIALOGUE_TYPE_PE_ADVICE
-                            else:
-                                return DIALOGUE_TYPE_P_PRAISE
+                        if lowest_label == "POS_P" or lowest_label == "POS_E":
+                            for x in concept_and_topics:
+                                if x[2] == 'activity':
+                                    if self.custom_concept.get_concept_by_relation(x[0], 'HasPrerequisite'):
+                                        self.subj = x[0]
+                                        return DIALOGUE_TYPE_PE_ADVICE
+                                else:
+                                    if lowest_label == POS_P:
+                                        return DIALOGUE_TYPE_P_GENERAL
+                                    elif lowest_label == POS_E:
+                                        return DIALOGUE_TYPE_E_GENERAL
+                        elif lowest_label == "POS_R":
+                            for x in concept_and_topics:
+                                if x[2] == 'person':
+                                    if self.custom_concept.get_concept_by_relation('person', 'CapableOf'):
+                                        self.subj = x[0]
+                                        return DIALOGUE_TYPE_R_ADVICE
+                                    else: 
+                                        return DIALOGUE_TYPE_R_GENERAL
+                        elif lowest_label == "POS_M":
+                            return DIALOGUE_TYPE_M_ADVICE
+                        elif lowest_label == "POS_A":
+                            for x in concept_and_topics:
+                                if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_A_ADVICE
+                                else: 
+                                    return DIALOGUE_TYPE_A_GENERAL
                     elif self.curr_perma == 'orange':
                         if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
-                            for x in topics:
-                                if x[3] == 'person':
-                                    if self.custom_concept.get_concept_by_relation('person', 'canDO'):
-                                        self.subj = x[1]
+                            for x in concept_and_topics:
+                                if x[2] == 'person':
+                                    if self.custom_concept.get_concept_by_relation('person', 'CapableOf'):
+                                        self.subj = x[0]
                                         return DIALOGUE_TYPE_PRM_SUGGEST
-                                elif x[3] == 'hobby' and lowest_label == "POS_M":
+                                    else: 
+                                        if lowest_label == 'POS_P':
+                                            return DIALOGUE_TYPE_P_GENERAL
+                                        elif lowest_label == 'POS_R':
+                                            return DIALOGUE_TYPE_R_GENERAL
+                                        elif lowest_label == 'POS_M':
+                                            return DIALOGUE_TYPE_M_GENERAL
+                                elif x[2] == 'hobby' and lowest_label == "POS_M":
+                                    self.subj = x[0]
                                     return DIALOGUE_TYPE_M_SUGGEST
                                 else:
-                                    return DIALOGUE_TYPE_O_REFLECT
+                                    return DIALOGUE_TYPE_M_GENERAL
                         elif lowest_label == "POS_A":
-                            for x in topics:
-                                if x[3] == 'accomplishment':
-                                    next_move = DIALOGUE_TYPE_A_SUGGEST
-                                else: next_move = DIALOGUE_TYPE_O_REFLECT
-                    elif self.curr_perma == 'red':
-                        if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
-                            next_move = DIALOGUE_TYPE_ACKNOWLEDGE
-                        else:
-                            next_move = DIALOGUE_TYPE_G_PRAISE
+                            for x in concept_and_topics:
+                                if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_A_SUGGEST
+                                else: 
+                                    return DIALOGUE_TYPE_A_GENERAL
+                        elif lowest_label == "POS_E":
+                            for x in concept_and_topics:
+                                if x[2] == 'activity':
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_E_SUGGEST
+                                else:
+                                    return DIALOGUE_TYPE_E_GENERAL
                             
-                    self.labeled_perma = self.curr_perma
+                    elif self.curr_perma == 'red':
+                        if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
+                            for x in concept_and_topics:
+                                if x[2] == 'person':
+                                    if self.custom_concept.get_concept_by_relation('person', 'CapableOf'):
+                                        self.subj = x[0]
+                                        return DIALOGUE_TYPE_PRM_SUGGEST
+                                    else: 
+                                        if lowest_label == 'POS_P':
+                                            return DIALOGUE_TYPE_P_GENERAL
+                                        elif lowest_label == 'POS_R':
+                                            return DIALOGUE_TYPE_R_GENERAL
+                                        elif lowest_label == 'POS_M':
+                                            return DIALOGUE_TYPE_M_GENERAL
+                                elif x[2] == 'hobby' and lowest_label == "POS_M":
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_M_SUGGEST
+                                else:
+                                    return DIALOGUE_TYPE_M_GENERAL
+                        elif lowest_label == "POS_A":
+                            for x in concept_and_topics:
+                                if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_A_SUGGEST
+                                else: 
+                                    return DIALOGUE_TYPE_A_GENERAL
+                        elif lowest_label == "POS_E":
+                            for x in concept_and_topics:
+                                if x[2] == 'activity':
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_E_SUGGEST
+                                else:
+                                    return DIALOGUE_TYPE_E_GENERAL
+                        # if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                        #     return DIALOGUE_TYPE_ACKNOWLEDGE
+                        # else:
+                        #     return DIALOGUE_TYPE_G_PRAISE
+                            
+                    
                     # else: 
                     #     return general template
                         
@@ -283,15 +365,122 @@ class EDENDialoguePlanner(DialoguePlanner):
                 return DIALOGUE_TYPE_COUNSELING
             elif last_move.dialogue_type == DIALOGUE_TYPE_P_PRAISE or last_move.dialogue_type == DIALOGUE_TYPE_O_REFLECT:
                 return DIALOGUE_TYPE_MHBOT_CLOSING
-            elif last_move.dialogue_type == DIALOGUE_TYPE_A_ADVICE or last_move.dialogue_type == DIALOGUE_TYPE_PE_ADVICE:
+            elif (last_move.dialogue_type == DIALOGUE_TYPE_A_ADVICE or last_move.dialogue_type == DIALOGUE_TYPE_PE_ADVICE or 
+                  last_move.dialogue_type == DIALOGUE_TYPE_R_ADVICE or last_move.dialogue_type == DIALOGUE_TYPE_M_ADVICE):
                     return DIALOGUE_TYPE_P_PRAISE
-            elif last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST:
+            elif (last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_E_SUGGEST or 
+                    last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_A_SUGGEST):
+                print(self.labeled_perma)
+                if self.labeled_perma == 'orange':
+                    return DIALOGUE_TYPE_O_REFLECT
                 #     return DIALOGUE_TYPE_PE_ADVICE
                 # elif last_move.dialogue_type == DIALOGUE_TYPE_A_ADVICE or last_move.dialogue_type == DIALOGUE_TYPE_PE_ADVICE:
-                    return DIALOGUE_TYPE_O_REFLECT
+            elif (last_move.dialogue_type == DIALOGUE_TYPE_P_GENERAL or last_move.dialogue_type == DIALOGUE_TYPE_E_GENERAL or 
+                  last_move.dialogue_type == DIALOGUE_TYPE_R_GENERAL or last_move.dialogue_type == DIALOGUE_TYPE_M_GENERAL or
+                  last_move.dialogue_type == DIALOGUE_TYPE_A_GENERAL):
+                    if self.labeled_perma == 'green':
+                        if lowest_label == "POS_P" or lowest_label == "POS_E":
+                            for x in concept_and_topics:
+                                if x[2] == 'activity':
+                                    if self.custom_concept.get_concept_by_relation(x[0], 'HasPrerequisite'):
+                                        self.subj = x[0]
+                                        return DIALOGUE_TYPE_PE_ADVICE
+                                else:
+                                    return DIALOGUE_TYPE_P_PRAISE
+                        elif lowest_label == "POS_R":
+                            for x in concept_and_topics:
+                                if x[2] == 'person':
+                                    if self.custom_concept.get_concept_by_relation('person', 'CapableOf'):
+                                        self.subj = x[0]
+                                        return DIALOGUE_TYPE_R_ADVICE
+                                    else: 
+                                        return DIALOGUE_TYPE_P_PRAISE
+                        elif lowest_label == "POS_M":
+                            return DIALOGUE_TYPE_M_ADVICE
+                        elif lowest_label == "POS_A":
+                            for x in concept_and_topics:
+                                if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_A_ADVICE
+                                else: 
+                                    return DIALOGUE_TYPE_P_PRAISE
+                    elif self.labeled_perma == 'orange':
+                        if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
+                            for x in concept_and_topics:
+                                if x[2] == 'person':
+                                    if self.custom_concept.get_concept_by_relation('person', 'CapableOf'):
+                                        self.subj = x[0]
+                                        return DIALOGUE_TYPE_PRM_SUGGEST
+                                    else: 
+                                        return DIALOGUE_TYPE_O_REFLECT
+                                elif x[2] == 'hobby' and lowest_label == "POS_M":
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_M_SUGGEST
+                                else:
+                                    return DIALOGUE_TYPE_O_REFLECT
+                        elif lowest_label == "POS_A":
+                            for x in concept_and_topics:
+                                if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_A_SUGGEST
+                                else: 
+                                    return DIALOGUE_TYPE_O_REFLECT
+                        elif lowest_label == "POS_E":
+                            for x in concept_and_topics:
+                                if x[2] == 'activity':
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_E_SUGGEST
+                                else:
+                                    return DIALOGUE_TYPE_O_REFLECT
+                            
+                    elif self.labeled_perma == 'red':
+                        if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
+                            for x in concept_and_topics:
+                                if x[2] == 'person':
+                                    if self.custom_concept.get_concept_by_relation('person', 'CapableOf'):
+                                        self.subj = x[0]
+                                        return DIALOGUE_TYPE_PRM_SUGGEST
+                                    else: 
+                                        if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                                            return DIALOGUE_TYPE_ACKNOWLEDGE
+                                        else:
+                                            return DIALOGUE_TYPE_G_PRAISE
+                                elif x[2] == 'hobby' and lowest_label == "POS_M":
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_M_SUGGEST
+                                else:
+                                    if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                                        return DIALOGUE_TYPE_ACKNOWLEDGE
+                                    else:
+                                        return DIALOGUE_TYPE_G_PRAISE
+                        elif lowest_label == "POS_A":
+                            for x in concept_and_topics:
+                                if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_A_SUGGEST
+                                else: 
+                                    if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                                        return DIALOGUE_TYPE_ACKNOWLEDGE
+                                    else:
+                                        return DIALOGUE_TYPE_G_PRAISE
+                        elif lowest_label == "POS_E":
+                            for x in concept_and_topics:
+                                if x[2] == 'activity':
+                                    self.subj = x[0]
+                                    return DIALOGUE_TYPE_E_SUGGEST
+                                else:
+                                    if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                                        return DIALOGUE_TYPE_ACKNOWLEDGE
+                                    else:
+                                        return DIALOGUE_TYPE_G_PRAISE
+                
             elif self.labeled_perma == 'red':
-                if last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST:
-                    return DIALOGUE_TYPE_ACKNOWLEDGE
+                if (last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_E_SUGGEST or 
+                    last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_A_SUGGEST):
+                        if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                            return DIALOGUE_TYPE_ACKNOWLEDGE
+                        else:
+                            return DIALOGUE_TYPE_G_PRAISE
         else:
             print("NO PREVIOUS DIALOGUE")
         return ""
@@ -330,7 +519,26 @@ class EDENDialoguePlanner(DialoguePlanner):
                 if self.curr_event is not None and self.curr_event.type == EVENT_EMOTION and self.curr_perma is not None: #IF EMOTION EVENT IS MADE
                     set_to_true.append(DIALOGUE_TYPE_E_LABEL)
                 else:
-                    if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0: #NO EMOTION DETECTED THEN PUMPING
+                    for x in self.world.objects:
+                        if type(self.custom_concept.get_concept_by_relation(x, 'AtLocation')) is list:
+                            for y in self.custom_concept.get_concept_by_relation(x, 'AtLocation'):
+                                if self.custom_concept.get_specific_concept(y[3], 'IsA', 'place'):
+                                    set_to_true.append(DIALOGUE_TYPE_M_PUMP)
+                                    self.pumping_type = 'AtPlace'
+                        else:
+                            concept = self.custom_concept.get_concept_by_relation(x, 'AtLocation')
+                            print(concept)
+                            if self.custom_concept.get_specific_concept(concept.second, 'IsA', 'place'):
+                                set_to_true.append(DIALOGUE_TYPE_M_PUMP)
+                                self.pumping_type = 'AtPlace'
+
+                    for x in self.world.get_action_words():
+                        if self.custom_concept.get_related_concepts(x, 'fun'):
+                            set_to_true.append(DIALOGUE_TYPE_M_PUMP)
+                            self.pumping_type = 'isFun'                            
+                    
+                    
+                    if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0 and self.pumping_type == '':
                         set_to_true.append(DIALOGUE_TYPE_PUMPING_SPECIFIC)
                     set_to_true.append(DIALOGUE_TYPE_PUMPING_GENERAL)
                 # if self.perma_state != '' and self.perma_analysis.isComplete():
@@ -423,6 +631,8 @@ class EDENDialoguePlanner(DialoguePlanner):
     def get_subj(self):
         return self.subj
     
+    def get_pump_type(self):
+        return self.pumping_type
     
     def get_welcome_message_type(self):
         return DIALOGUE_TYPE_MHBOT_INTRO

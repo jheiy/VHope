@@ -43,6 +43,7 @@ class ORSEN:
         self.perma_analysis = PERMAnalysis()
         self.lowest_perma = None
         self.subj = None
+        self.pumping_type = None
 
     def initialize_story_prerequisites(self):
         self.world = World()
@@ -428,6 +429,7 @@ class ORSEN:
         self.dialogue_planner.world = self.world
         self.lowest_perma = self.dialogue_planner.get_curr_low()
         self.subj = self.dialogue_planner.get_subj()
+        self.pumping_type = self.dialogue_planner.get_pump_type()
 
         self.dialogue_planner.perform_dialogue_planner(move_to_execute)
         #fetches templates of chosen dialogue move
@@ -438,6 +440,8 @@ class ORSEN:
             self.content_determination.lowest_perma = self.lowest_perma
         if self.subj:
             self.content_determination.subj = self.subj
+        if self.pumping_type:
+            self.content_determination.pumping_type = self.pumping_type
         
         response, chosen_template = self.content_determination.perform_content_determination()
 
