@@ -57,6 +57,10 @@ class DialogueTemplate(ABC):
         decision = False
         if self.relation[0][0] == 'None':
             decision = True
+        elif (self.dialogue_type == DIALOGUE_TYPE_PE_ADVICE or self.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or
+            self.dialogue_type == DIALOGUE_TYPE_A_ADVICE or self.dialogue_type == DIALOGUE_TYPE_M_SUGGEST or
+            self.dialogue_type == DIALOGUE_TYPE_A_SUGGEST):
+            decision = True
         else:
             # Requires a relation
             if curr_event is None:

@@ -23,7 +23,7 @@ class Logger:
                                       '../MHBot/logs/information extraction/' + date + '.txt')
         Logger.__setup_logger_basic__(DIALOGUE_MODEL_LOG, '../MHBot/logs/dialogue model/' + date + '.txt')
         Logger.__setup_logger_basic__(EVENT_CHAIN_LOG, '../MHBot/logs/event chain/' + date + '.txt')
-        Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../MHBot/emotion classification/' + date + '.txt')
+        Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../MHBot/logs/emotion classification/' + date + '.txt')
         Logger.__setup_logger_basic__(WELLBEING, '../MHBot/logs/wellbeing/' + date + '.txt')
 
     @staticmethod

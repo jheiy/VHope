@@ -69,5 +69,14 @@ from .AReflectGoalDialogueTemplate import AReflectGoalDialogueTemplate
 from .AReflectGoal2DialogueTemplate import AReflectGoal2DialogueTemplate
 from .AReflectSuccessDialogueTemplate import AReflectSuccessDialogueTemplate
 from .AReflectAchieveDialogueTemplate import AReflectAchieveDialogueTemplate
+from .PEAdviceDialogueTemplate import PEAdviceDialogueTemplate
+from .PRMSuggestDialogueTemplate import PRMSuggestDialogueTemplate
+from .AAdviceDialogueTemplate import AAdviceDialogueTemplate
+from .MSuggestDialogueTemplate import MSuggestDialogueTemplate
+from .ASuggestDialogueTemplate import ASuggestDialogueTemplate
+
+
+
+
 
 

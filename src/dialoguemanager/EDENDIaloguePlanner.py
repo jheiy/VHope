@@ -2,8 +2,11 @@ from EDEN.OCC import OCCManager
 from EDEN.constants import * 
 from src import *
 from src.dbo.dialogue import DBODialogueTemplate
+from src.dbo.concept.DBOConceptCustom import DBOConceptCustom
 from src.dialoguemanager import DialoguePlanner
+from src.models.concept import LocalConcept
 from src.models.dialogue.constants import DIALOGUE_LIST, DialogueHistoryTemplate, EDEN_DIALOGUE_LIST
+from src.models.dialogue import *
 from MHBot.PERMAnalysis.PERMAnalysis import PERMAnalysis
 import time
 import numpy as np
@@ -18,8 +21,12 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.perma_state = ''
         self.perma_texts = ''
         self.isRed = False
+        self.custom_concept = DBOConceptCustom()
+        self.low_perma = ''
+        self.subj = ''
 
     def reset_new_world(self):
+        self.world = None
         self.chosen_dialogue_move = None
         self.chosen_dialogue_template = []
         self.chosen_move_index = -1
@@ -41,6 +48,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.perma_analysis.reset()
         self.isRed = False
         self.perma_texts = ''
+        self.labeled_perma = ''
 
     def perform_dialogue_planner(self, dialogue_move=""):
         print('--==--==-- EDEN - Perform Dialogue Planner --==--==--')
@@ -163,16 +171,67 @@ class EDENDialoguePlanner(DialoguePlanner):
                     #         next_move = DIALOGUE_TYPE_D_PRAISE
                     #     else:
                     #         next_move = DIALOGUE_TYPE_EVALUATION
+                    
+                    concepts = []
+                    topics = []
+                    subject = ''
+                    for x in self.world.objects:
+                        print("OBJECT")
+                        print(x.name)
+                        concepts.append(self.custom_concept.get_concept_by_relation(x.name, 'hasTopic'))
+                        for x in concepts:
+                            for y in x:
+                                topics.append(y)
+                                
+                    for x in self.world.get_action_words():
+                        print("ACTIONS")
+                        print(x)
+                        concepts.append(self.custom_concept.get_concept_by_relation(x, 'hasTopic'))
+                        for x in concepts:
+                            for y in x:
+                                topics.append(y)
+                    
+                    
+                    lowest_label = self.perma_analysis.get_lowest_score()
+                    self.low_perma = lowest_label
+
                     print('CURRENT PERMA SCORE:' + self.curr_perma)
                     if self.curr_perma == 'green':
-                        next_move = DIALOGUE_TYPE_P_PRAISE
+                        # if lowest_label = "POS_P" or lowest_label = "POS_E"
+                        for x in topics:
+                            if x[3] == 'activity':
+                                if self.custom_concept.get_concept_by_relation(x[1], 'has_prerequisite'):
+                                    self.subj = x[1]
+                                    return DIALOGUE_TYPE_PE_ADVICE
+                            else:
+                                return DIALOGUE_TYPE_P_PRAISE
                     elif self.curr_perma == 'orange':
-                        next_move = DIALOGUE_TYPE_O_REFLECT
+                        if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
+                            for x in topics:
+                                if x[3] == 'person':
+                                    if self.custom_concept.get_concept_by_relation('person', 'canDO'):
+                                        self.subj = x[1]
+                                        return DIALOGUE_TYPE_PRM_SUGGEST
+                                elif x[3] == 'hobby' and lowest_label == "POS_M":
+                                    return DIALOGUE_TYPE_M_SUGGEST
+                                else:
+                                    return DIALOGUE_TYPE_O_REFLECT
+                        elif lowest_label == "POS_A":
+                            for x in topics:
+                                if x[3] == 'accomplishment':
+                                    next_move = DIALOGUE_TYPE_A_SUGGEST
+                                else: next_move = DIALOGUE_TYPE_O_REFLECT
                     elif self.curr_perma == 'red':
                         if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
                             next_move = DIALOGUE_TYPE_ACKNOWLEDGE
                         else:
                             next_move = DIALOGUE_TYPE_G_PRAISE
+                            
+                    self.labeled_perma = self.curr_perma
+                    # else: 
+                    #     return general template
+                        
+
             if next_move !="" and destructive:
                 self.curr_event = emotion_event
                 if self.response not in IS_AFFIRM and self.response not in IS_DENY and self.response not in IS_END:
@@ -224,6 +283,15 @@ class EDENDialoguePlanner(DialoguePlanner):
                 return DIALOGUE_TYPE_COUNSELING
             elif last_move.dialogue_type == DIALOGUE_TYPE_P_PRAISE or last_move.dialogue_type == DIALOGUE_TYPE_O_REFLECT:
                 return DIALOGUE_TYPE_MHBOT_CLOSING
+            elif last_move.dialogue_type == DIALOGUE_TYPE_A_ADVICE or last_move.dialogue_type == DIALOGUE_TYPE_PE_ADVICE:
+                    return DIALOGUE_TYPE_P_PRAISE
+            elif last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST:
+                #     return DIALOGUE_TYPE_PE_ADVICE
+                # elif last_move.dialogue_type == DIALOGUE_TYPE_A_ADVICE or last_move.dialogue_type == DIALOGUE_TYPE_PE_ADVICE:
+                    return DIALOGUE_TYPE_O_REFLECT
+            elif self.labeled_perma == 'red':
+                if last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST:
+                    return DIALOGUE_TYPE_ACKNOWLEDGE
         else:
             print("NO PREVIOUS DIALOGUE")
         return ""
@@ -292,6 +360,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                         emotions_found.append(X)
 
 
+
             # # check if description later
             # if curr_event.type == EVENT_ACTION:
             #     # reset occ values
@@ -348,5 +417,12 @@ class EDENDialoguePlanner(DialoguePlanner):
         #     return DIALOGUE_TYPE_MHBOT_CLOSING
         return ""
 
+    def get_curr_low(self):
+        return self.low_perma
+    
+    def get_subj(self):
+        return self.subj
+    
+    
     def get_welcome_message_type(self):
         return DIALOGUE_TYPE_MHBOT_INTRO

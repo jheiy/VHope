@@ -102,6 +102,14 @@ class World:
             if X.type == EVENT_ACTION:
                 count = count + 1
         return count
+    
+    def get_action_words(self):
+        actions = []
+        for X in self.event_chains:
+            if X.type == EVENT_ACTION:
+                if X.verb is not None and X.direct_object is not None:
+                    actions.append(X.verb.text + "_" + X.direct_object.name)
+        return actions
 
     def get_pickled_world(self):
         pickled_world = []

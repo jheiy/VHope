@@ -122,8 +122,6 @@ class DialogueTemplateBuilder:
          return PReflectGratefulF2DialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_ACTIVITY:
          return EReflectActivityDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
-      elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_ACTIVITY2:
-         return EReflectActivity2DialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_PAST:
          return EReflectPastDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_E_REFLECT_PAST_F2:
@@ -158,6 +156,17 @@ class DialogueTemplateBuilder:
          return AReflectSuccessDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_A_REFLECT_ACHIEVE:
          return AReflectAchieveDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_PE_ADVICE:
+         return PEAdviceDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST:
+         return PRMSuggestDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_A_ADVICE:
+         return AAdviceDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_M_SUGGEST:
+         return MSuggestDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_A_SUGGEST:
+         return ASuggestDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      
       
       
       
