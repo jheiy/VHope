@@ -405,7 +405,7 @@ class ORSEN:
                     self.dialogue_planner.curr_event = self.world.curr_emotion_event
 
                     move_to_execute = DIALOGUE_TYPE_E_LABEL
-                elif self.world.curr_event != []:
+                elif self.world.curr_event:
                     move_to_execute = ""
                     self.dialogue_planner.curr_event = self.world.curr_event
                     print("HATDOG >:(")
