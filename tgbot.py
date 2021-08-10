@@ -8,7 +8,7 @@ from src.textunderstanding.InputDecoder import InputDecoder
 import datetime, time
 import telebot
 
-TOKEN = 'ask jaime for token'
+TOKEN = 'ask jaime for the token'
 
 bot = telebot.TeleBot(TOKEN)
 orsen = ORSEN()
@@ -58,6 +58,13 @@ def start_conversation(message):
     bot.send_message(participants["{0}".format(message.chat.id)].chat_id, temp_welcome)
     # print(triggers.is_engaged)
 
+@bot.message_handler(commands=['stop'])
+def emergency_stop(message):
+    triggers.is_end_story = True
+    triggers.is_engaged = False
+    bot.send_message(participants["{0}".format(message.chat.id)].chat_id, 'Okay. If you want to start a new conversation with me, you can start by typing /start_chatting .')
+    pass
+
 @bot.message_handler(func=lambda m:True)
 def continue_conversation(message):
     if triggers.is_engaged and not triggers.is_end_story == True:
@@ -86,10 +93,6 @@ def continue_conversation(message):
             participants["{0}".format(message.chat.id)] = Participant(message.chat.id, message.from_user.first_name, message.from_user.last_name)
         bot.send_message(participants["{0}".format(message.chat.id)].chat_id, "No current conversation ongoing. Let's talk about your day by typing /start_chatting .")
         pass
-
-@bot.message_handler(commands=['stop'])
-def emergency_stop(message):
-    pass
     
 print('success!')
 bot.polling()
