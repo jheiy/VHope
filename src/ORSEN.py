@@ -396,6 +396,7 @@ class ORSEN:
             new_move_from_old = self.dialogue_planner.\
                 check_based_curr_event(detected_event, self.world.curr_emotion_event)
             print("----------EVENT: ", move_to_execute)
+            
 
             if new_move_from_old == "":
                 #no new move found
@@ -404,9 +405,12 @@ class ORSEN:
                     self.dialogue_planner.curr_event = self.world.curr_emotion_event
 
                     move_to_execute = DIALOGUE_TYPE_E_LABEL
-                else:
+                elif self.world.curr_event != []:
                     move_to_execute = ""
                     self.dialogue_planner.curr_event = self.world.curr_event
+                    print("HATDOG >:(")
+                    print(self.dialogue_planner.curr_event)
+                    print(self.world.curr_event)
                 
                 # if perma_state != '' and self.perma_analysis.isComplete() and not self.dialogue_planner.ongoing_c_pumping:
                 #     print('PERMA_SCORE: ' + perma_state)
@@ -425,6 +429,12 @@ class ORSEN:
                 #for emphasis
                 self.dialogue_planner.curr_event = self.world.curr_emotion_event
                 move_to_execute = new_move_from_old
+                
+        if self.dialogue_planner.curr_event:
+            print("HATDOG")
+            print(self.dialogue_planner.curr_event)
+        else:
+            print("HATDOG2")
 
         self.dialogue_planner.world = self.world
         self.lowest_perma = self.dialogue_planner.get_curr_low()

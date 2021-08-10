@@ -26,6 +26,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.low_perma = ''
         self.subj = ''
         self.pumping_type = ''
+        self.concepts_topics = None
 
     def reset_new_world(self):
         self.world = None
@@ -204,6 +205,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                     
                     lowest_label = self.perma_analysis.get_lowest_score()
                     self.low_perma = lowest_label
+                    self.concepts_topics = concept_and_topics
                     
                     self.labeled_perma = self.curr_perma
 
@@ -216,9 +218,9 @@ class EDENDialoguePlanner(DialoguePlanner):
                                         self.subj = x[0]
                                         return DIALOGUE_TYPE_PE_ADVICE
                                 else:
-                                    if lowest_label == POS_P:
+                                    if lowest_label == 'POS_P':
                                         return DIALOGUE_TYPE_P_GENERAL
-                                    elif lowest_label == POS_E:
+                                    elif lowest_label == 'POS_E':
                                         return DIALOGUE_TYPE_E_GENERAL
                         elif lowest_label == "POS_R":
                             for x in concept_and_topics:
@@ -379,54 +381,54 @@ class EDENDialoguePlanner(DialoguePlanner):
                   last_move.dialogue_type == DIALOGUE_TYPE_R_GENERAL or last_move.dialogue_type == DIALOGUE_TYPE_M_GENERAL or
                   last_move.dialogue_type == DIALOGUE_TYPE_A_GENERAL):
                     if self.labeled_perma == 'green':
-                        if lowest_label == "POS_P" or lowest_label == "POS_E":
-                            for x in concept_and_topics:
+                        if self.low_perma == "POS_P" or lowest_label == "POS_E":
+                            for x in self.concepts_topics:
                                 if x[2] == 'activity':
                                     if self.custom_concept.get_concept_by_relation(x[0], 'HasPrerequisite'):
                                         self.subj = x[0]
                                         return DIALOGUE_TYPE_PE_ADVICE
                                 else:
                                     return DIALOGUE_TYPE_P_PRAISE
-                        elif lowest_label == "POS_R":
-                            for x in concept_and_topics:
+                        elif self.low_perma == "POS_R":
+                            for x in self.concepts_topics:
                                 if x[2] == 'person':
                                     if self.custom_concept.get_concept_by_relation('person', 'CapableOf'):
                                         self.subj = x[0]
                                         return DIALOGUE_TYPE_R_ADVICE
                                     else: 
                                         return DIALOGUE_TYPE_P_PRAISE
-                        elif lowest_label == "POS_M":
+                        elif self.low_perma == "POS_M":
                             return DIALOGUE_TYPE_M_ADVICE
-                        elif lowest_label == "POS_A":
-                            for x in concept_and_topics:
+                        elif self.low_perma == "POS_A":
+                            for x in self.concepts_topics:
                                 if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_A_ADVICE
                                 else: 
                                     return DIALOGUE_TYPE_P_PRAISE
                     elif self.labeled_perma == 'orange':
-                        if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
-                            for x in concept_and_topics:
+                        if self.low_perma == "POS_P" or self.low_perma == "POS_R" or self.low_perma == "POS_M":
+                            for x in self.concepts_topics:
                                 if x[2] == 'person':
                                     if self.custom_concept.get_concept_by_relation('person', 'CapableOf'):
                                         self.subj = x[0]
                                         return DIALOGUE_TYPE_PRM_SUGGEST
                                     else: 
                                         return DIALOGUE_TYPE_O_REFLECT
-                                elif x[2] == 'hobby' and lowest_label == "POS_M":
+                                elif x[2] == 'hobby' and self.low_perma == "POS_M":
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_M_SUGGEST
                                 else:
                                     return DIALOGUE_TYPE_O_REFLECT
-                        elif lowest_label == "POS_A":
-                            for x in concept_and_topics:
+                        elif self.low_perma == "POS_A":
+                            for x in self.concepts_topics:
                                 if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_A_SUGGEST
                                 else: 
                                     return DIALOGUE_TYPE_O_REFLECT
-                        elif lowest_label == "POS_E":
-                            for x in concept_and_topics:
+                        elif self.low_perma == "POS_E":
+                            for x in self.concepts_topics:
                                 if x[2] == 'activity':
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_E_SUGGEST
@@ -434,8 +436,11 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_O_REFLECT
                             
                     elif self.labeled_perma == 'red':
-                        if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
-                            for x in concept_and_topics:
+                        if self.curr_event.type == EVENT_EMOTION:
+                            emotion_event = self.curr_event
+                        
+                        if self.low_perma == "POS_P" or self.low_perma == "POS_R" or self.low_perma == "POS_M":
+                            for x in self.concepts_topics:
                                 if x[2] == 'person':
                                     if self.custom_concept.get_concept_by_relation('person', 'CapableOf'):
                                         self.subj = x[0]
@@ -445,7 +450,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                                             return DIALOGUE_TYPE_ACKNOWLEDGE
                                         else:
                                             return DIALOGUE_TYPE_G_PRAISE
-                                elif x[2] == 'hobby' and lowest_label == "POS_M":
+                                elif x[2] == 'hobby' and self.low_perma == "POS_M":
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_M_SUGGEST
                                 else:
@@ -453,8 +458,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                                         return DIALOGUE_TYPE_ACKNOWLEDGE
                                     else:
                                         return DIALOGUE_TYPE_G_PRAISE
-                        elif lowest_label == "POS_A":
-                            for x in concept_and_topics:
+                        elif self.low_perma == "POS_A":
+                            for x in self.concepts_topics:
                                 if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_A_SUGGEST
@@ -463,8 +468,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                                         return DIALOGUE_TYPE_ACKNOWLEDGE
                                     else:
                                         return DIALOGUE_TYPE_G_PRAISE
-                        elif lowest_label == "POS_E":
-                            for x in concept_and_topics:
+                        elif self.low_perma == "POS_E":
+                            for x in self.concepts_topics:
                                 if x[2] == 'activity':
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_E_SUGGEST
@@ -516,24 +521,25 @@ class EDENDialoguePlanner(DialoguePlanner):
             if move_to_execute != "":
                 set_to_true.append(move_to_execute)
             else:
+                print(self.curr_event)
                 if self.curr_event is not None and self.curr_event.type == EVENT_EMOTION and self.curr_perma is not None: #IF EMOTION EVENT IS MADE
                     set_to_true.append(DIALOGUE_TYPE_E_LABEL)
                 else:
                     for x in self.world.objects:
-                        if type(self.custom_concept.get_concept_by_relation(x, 'AtLocation')) is list:
-                            for y in self.custom_concept.get_concept_by_relation(x, 'AtLocation'):
+                        if type(self.custom_concept.get_concept_by_relation(x.name, 'AtLocation')) is list:
+                            for y in self.custom_concept.get_concept_by_relation(x.name, 'AtLocation'):
                                 if self.custom_concept.get_specific_concept(y[3], 'IsA', 'place'):
                                     set_to_true.append(DIALOGUE_TYPE_M_PUMP)
                                     self.pumping_type = 'AtPlace'
                         else:
-                            concept = self.custom_concept.get_concept_by_relation(x, 'AtLocation')
+                            concept = self.custom_concept.get_concept_by_relation(x.name, 'AtLocation')
                             print(concept)
                             if self.custom_concept.get_specific_concept(concept.second, 'IsA', 'place'):
                                 set_to_true.append(DIALOGUE_TYPE_M_PUMP)
                                 self.pumping_type = 'AtPlace'
 
                     for x in self.world.get_action_words():
-                        if self.custom_concept.get_related_concepts(x, 'fun'):
+                        if self.custom_concept.get_related_concepts(x.name, 'fun'):
                             set_to_true.append(DIALOGUE_TYPE_M_PUMP)
                             self.pumping_type = 'isFun'                            
                     
