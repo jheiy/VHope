@@ -97,7 +97,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         if next_move != "":
             return next_move
         else:
-            next_move = self.check_affirm_deny(destructive, emotion_event)
+            next_move = self.check_affirm_deny(True, emotion_event)
         return next_move
 
     # def choose_dialogue(self):
@@ -109,8 +109,8 @@ class EDENDialoguePlanner(DialoguePlanner):
     def check_trigger_phrases(self, event_chain =[]):
         print('--==--==-- EDEN - Check Trigger Phrases --==--==--')
         # if self.response in IS_END:
-        if self.response in IS_END and not self.ongoing_c_pumping:
-            return DIALOGUE_TYPE_E_END
+        # if self.response in IS_END and not self.ongoing_c_pumping:
+        #     return DIALOGUE_TYPE_E_END
         return ""
 
     def check_affirm_deny(self, destructive = True, emotion_event = None):
@@ -153,13 +153,13 @@ class EDENDialoguePlanner(DialoguePlanner):
                 else:
                     next_move = DIALOGUE_TYPE_FEEDBACK_N
             elif (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
-                  last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC)and self.response.lower() in IS_DONE_EXPLAINING:
+                  last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS) and self.response.lower() in IS_END and self.ongoing_c_pumping:
                 if destructive:
                     self.ongoing_c_pumping = False
                 # return DIALOGUE_TYPE_PUMPING_GENERAL
-                return DIALOGUE_TYPE_E_FOLLOWUP
             # elif self.ongoing_c_pumping and self.response.lower() in IS_DONE_EXPLAINING:
-            elif self.ongoing_c_pumping and self.response.lower() in IS_END:
+            if not self.ongoing_c_pumping and self.response.lower() in IS_END:
+                print("CHECKER3")
                 if destructive:
                     self.ongoing_c_pumping = False
                 if emotion_event is not None and self.curr_perma is not None:
@@ -339,7 +339,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                 if destructive:
                     print("SETTING CURR_EVENT_EMOTION TO: ", self.response.upper())
                     Logger.log_occ_values("UPDATING EMOTION TO: " +  self.response.upper())
-
+                    
 
                     retrieved_emotion = self.occ_manager.get_emotion_by_synonym(self.response.lower())
                     if retrieved_emotion != "":
