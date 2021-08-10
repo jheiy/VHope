@@ -3,6 +3,7 @@ from . import DialogueTemplate
 from src.constants import *
 import random
 from src.dbo.concept.DBOConceptCustom import DBOConceptCustom
+from src.dbo.concept.DBOConceptGlobalImpl import DBOConceptGlobalImpl
 import copy
 
 class PRMSuggestDialogueTemplate(DialogueTemplate):
@@ -17,10 +18,10 @@ class PRMSuggestDialogueTemplate(DialogueTemplate):
         # subj = 'person'
         # lowest_perma = 'POS_M'
         print("LOWEST PERMA IS:", lowest_perma)
-        custom_concept = DBOConceptCustom()
+        custom_concept = DBOConceptGlobalImpl()
         concepts = []
         if lowest_perma == 'POS_P':
-            for x in custom_concept.get_concept_by_relation('person', 'canDO'):
+            for x in custom_concept.get_concept_by_relation('person', 'CapableOf'):
                 concepts.append(x[3])
         else:
             concepts.append("spend quality time")

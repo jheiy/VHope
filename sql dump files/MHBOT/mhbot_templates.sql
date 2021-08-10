@@ -77,7 +77,18 @@ INSERT INTO `templates` VALUES (1,'feedback','I see, that\'s interesting.',NULL,
 (222,'a_advice','You should celebrate your _1_','1 Accomplishment','Accomplishment','1','1'),
 (223,'a_advice','Whenever you _1_, don’t forget to celebrate.','1 Accomplishment','Accomplishment','1','1'),
 (224,'m_suggest','Why don’t you try _1_?','1 Activity','Activity','1','1'),
-(225,'a_suggest','Why don’t you celebrate whenever you _1_?','1 Accomplishment','Accomplishment','1','1');
+(225,'a_suggest','Why don’t you celebrate whenever you _1_?','1 Accomplishment','Accomplishment','1','1'),
+(226,'mhbot_pump','What happened at _1_','1 Place','Place','1','1'),
+(227,'mhbot_pump','Can you tell me more about _1_?','1 Object','Object','1','1')
+(228,'r_advice','Whenever you spend time with _1_, don’t forget to _2_.','1 Person, 2 Activity','Person, Activity','1,2','1,2'),
+(229,'m_advice','Don’t forget to try new activities every once in a while.',NULL,NULL,NULL,NULL),
+(230,'e_suggest','Why don’t you _1_ more often?.','1 Activity','Activity','1','1'),
+(231,'p_general','What is something you enjoy doing?',NULL,NULL,NULL,NULL),
+(232,'e_general','What is something you consider as your strength?',NULL,NULL,NULL,NULL),
+(233,'r_general','Why don’t you try reconnecting with your friends?',NULL,NULL,NULL,NULL),
+(234,'m_general','What are some of your passions?',NULL,NULL,NULL,NULL),
+(235,'a_general','What are some of your accomplishments?',NULL,NULL,NULL,NULL)
+;
 /*!40000 ALTER TABLE `templates` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

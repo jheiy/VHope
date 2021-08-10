@@ -59,7 +59,7 @@ class DialogueTemplate(ABC):
             decision = True
         elif (self.dialogue_type == DIALOGUE_TYPE_PE_ADVICE or self.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or
             self.dialogue_type == DIALOGUE_TYPE_A_ADVICE or self.dialogue_type == DIALOGUE_TYPE_M_SUGGEST or
-            self.dialogue_type == DIALOGUE_TYPE_A_SUGGEST):
+            self.dialogue_type == DIALOGUE_TYPE_A_SUGGEST or self.dialogue_type == DIALOGUE_TYPE_M_PUMP):
             decision = True
         else:
             # Requires a relation

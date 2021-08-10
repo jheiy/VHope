@@ -74,6 +74,16 @@ from .PRMSuggestDialogueTemplate import PRMSuggestDialogueTemplate
 from .AAdviceDialogueTemplate import AAdviceDialogueTemplate
 from .MSuggestDialogueTemplate import MSuggestDialogueTemplate
 from .ASuggestDialogueTemplate import ASuggestDialogueTemplate
+from .MPumpingDialogueTemplate import MPumpingDialogueTemplate
+from .RAdviceDialogueTemplate import RAdviceDialogueTemplate
+from .MAdviceDialogueTemplate import MAdviceDialogueTemplate
+from .ESuggestDialogueTemplate import ESuggestDialogueTemplate
+from .PGeneralDialogueTemplate import PGeneralDialogueTemplate
+from .EGeneralDialogueTemplate import EGeneralDialogueTemplate
+from .RGeneralDialogueTemplate import RGeneralDialogueTemplate
+from .MGeneralDialogueTemplate import MGeneralDialogueTemplate
+from .AGeneralDialogueTemplate import AGeneralDialogueTemplate
+
 
 
 

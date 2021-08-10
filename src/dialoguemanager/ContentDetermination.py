@@ -16,6 +16,7 @@ class ContentDetermination:
         self.world = None
         self.lowest_perma = ''
         self.subj = ''
+        self.pumping_type = ''
         np.random.seed(DEFAULT_SEED)
 
     def set_state(self, move_to_execute, curr_event, usable_template_list, world):
@@ -47,8 +48,12 @@ class ContentDetermination:
         
         elif (self.move_to_execute == DIALOGUE_TYPE_PE_ADVICE or self.move_to_execute == DIALOGUE_TYPE_PRM_SUGGEST or 
             self.move_to_execute == DIALOGUE_TYPE_A_ADVICE or self.move_to_execute == DIALOGUE_TYPE_M_SUGGEST or 
-            self.move_to_execute == DIALOGUE_TYPE_A_SUGGEST):
+            self.move_to_execute == DIALOGUE_TYPE_A_SUGGEST or self.move_to_execute == DIALOGUE_TYPE_R_ADVICE or 
+            self.move_to_execute == DIALOGUE_TYPE_M_ADVICE or self.move_to_execute == DIALOGUE_TYPE_E_SUGGEST):
             response = chosen_template.fill_blanks(self.world, self.subj, self.lowest_perma)
+            
+        elif self.move_to_execute == DIALOGUE_TYPE_M_PUMP:
+            response = chosen_template.fill_blanks(self.world, self.subj, self.pumping_type)
 
         else:
             print("=============")
