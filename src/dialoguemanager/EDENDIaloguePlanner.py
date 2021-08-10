@@ -152,7 +152,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                     next_move = DIALOGUE_TYPE_FEEDBACK_Y
                 else:
                     next_move = DIALOGUE_TYPE_FEEDBACK_N
-            elif last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING and self.response.lower() in IS_DONE_EXPLAINING:
+            elif (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
+                  last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC)and self.response.lower() in IS_DONE_EXPLAINING:
                 if destructive:
                     self.ongoing_c_pumping = False
                 # return DIALOGUE_TYPE_PUMPING_GENERAL
@@ -381,7 +382,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                   last_move.dialogue_type == DIALOGUE_TYPE_R_GENERAL or last_move.dialogue_type == DIALOGUE_TYPE_M_GENERAL or
                   last_move.dialogue_type == DIALOGUE_TYPE_A_GENERAL):
                     if self.labeled_perma == 'green':
-                        if self.low_perma == "POS_P" or lowest_label == "POS_E":
+                        if self.low_perma == "POS_P" or self.low_perma == "POS_E":
                             for x in self.concepts_topics:
                                 if x[2] == 'activity':
                                     if self.custom_concept.get_concept_by_relation(x[0], 'HasPrerequisite'):
