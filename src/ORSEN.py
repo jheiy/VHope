@@ -179,10 +179,16 @@ class ORSEN:
                         subject = Object.create_object(sentence=sentence, token=relation_entity.first_token)
                         self.world.add_object(subject)
                         for t in subject.type:
-                            if t.description.text == "PERSON":
-                                self.world.remove_object(subject)
-                                direct_object = Character.create_character(sentence=sentence, token=relation_entity.first_token)
-                                self.world.add_character(subject)
+                            if type(t.description) is str:
+                                if t.description == "PERSON":
+                                    self.world.remove_object(subject)
+                                    direct_object = Character.create_character(sentence=sentence, token=relation_entity.first_token)
+                                    self.world.add_character(subject)
+                            else:
+                                if t.description.text == "PERSON":
+                                    self.world.remove_object(subject)
+                                    direct_object = Character.create_character(sentence=sentence, token=relation_entity.first_token)
+                                    self.world.add_character(subject)
 
                 subject.mention_count += 1
 
