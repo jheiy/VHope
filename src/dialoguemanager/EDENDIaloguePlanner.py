@@ -526,22 +526,40 @@ class EDENDialoguePlanner(DialoguePlanner):
                     set_to_true.append(DIALOGUE_TYPE_E_LABEL)
                 else:
                     for x in self.world.objects:
-                        if type(self.custom_concept.get_concept_by_relation(x.name, 'AtLocation')) is list:
-                            for y in self.custom_concept.get_concept_by_relation(x.name, 'AtLocation'):
-                                if self.custom_concept.get_specific_concept(y[3], 'IsA', 'place'):
+                        if type(x) is str:
+                            if type(self.custom_concept.get_concept_by_relation(x, 'AtLocation')) is list:
+                                for y in self.custom_concept.get_concept_by_relation(x, 'AtLocation'):
+                                    if self.custom_concept.get_specific_concept(y[3], 'IsA', 'place'):
+                                        set_to_true.append(DIALOGUE_TYPE_M_PUMP)
+                                        self.pumping_type = 'AtPlace'
+                            else:
+                                concept = self.custom_concept.get_concept_by_relation(x, 'AtLocation')
+                                print(concept)
+                                if self.custom_concept.get_specific_concept(concept.second, 'IsA', 'place'):
                                     set_to_true.append(DIALOGUE_TYPE_M_PUMP)
                                     self.pumping_type = 'AtPlace'
-                        else:
-                            concept = self.custom_concept.get_concept_by_relation(x.name, 'AtLocation')
-                            print(concept)
-                            if self.custom_concept.get_specific_concept(concept.second, 'IsA', 'place'):
-                                set_to_true.append(DIALOGUE_TYPE_M_PUMP)
-                                self.pumping_type = 'AtPlace'
+                        else: 
+                            if type(self.custom_concept.get_concept_by_relation(x.name, 'AtLocation')) is list:
+                                for y in self.custom_concept.get_concept_by_relation(x.name, 'AtLocation'):
+                                    if self.custom_concept.get_specific_concept(y[3], 'IsA', 'place'):
+                                        set_to_true.append(DIALOGUE_TYPE_M_PUMP)
+                                        self.pumping_type = 'AtPlace'
+                            else:
+                                concept = self.custom_concept.get_concept_by_relation(x.name, 'AtLocation')
+                                print(concept)
+                                if self.custom_concept.get_specific_concept(concept.second, 'IsA', 'place'):
+                                    set_to_true.append(DIALOGUE_TYPE_M_PUMP)
+                                    self.pumping_type = 'AtPlace'
 
                     for x in self.world.get_action_words():
-                        if self.custom_concept.get_related_concepts(x.name, 'fun'):
-                            set_to_true.append(DIALOGUE_TYPE_M_PUMP)
-                            self.pumping_type = 'isFun'                            
+                        if type(x) is str:
+                            if self.custom_concept.get_related_concepts(x, 'fun'):
+                                set_to_true.append(DIALOGUE_TYPE_M_PUMP)
+                                self.pumping_type = 'isFun'                         
+                        else:
+                            if self.custom_concept.get_related_concepts(x.name, 'fun'):
+                                set_to_true.append(DIALOGUE_TYPE_M_PUMP)
+                                self.pumping_type = 'isFun'     
                     
                     
                     if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0 and self.pumping_type == '':
