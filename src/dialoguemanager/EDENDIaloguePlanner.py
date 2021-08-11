@@ -118,6 +118,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         # check if last dialogue move has yes or no:
         last_move = self.get_last_dialogue_move()
         next_move = ""
+        print("RESPONSE", self.response)
         if last_move is not None:
             if last_move.dialogue_type == DIALOGUE_TYPE_E_LABEL:
                 if self.response in IS_AFFIRM:
@@ -154,6 +155,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                     next_move = DIALOGUE_TYPE_FEEDBACK_N
             elif (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
                   last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS) and self.response.lower() in IS_END and self.ongoing_c_pumping:
+                print("CHECKMATE")
                 if destructive:
                     self.ongoing_c_pumping = False
                 # return DIALOGUE_TYPE_PUMPING_GENERAL
@@ -162,6 +164,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                 print("CHECKER3")
                 if destructive:
                     self.ongoing_c_pumping = False
+                print(emotion_event)
+                print(self.curr_perma)
                 if emotion_event is not None and self.curr_perma is not None:
                 # if self.curr_event.emotion is not None:
                     # check if emotion should be disciplined
@@ -204,11 +208,13 @@ class EDENDialoguePlanner(DialoguePlanner):
                         print(x)
                         print(x[0])
                     
+                
                     lowest_label = self.perma_analysis.get_lowest_score()
                     self.low_perma = lowest_label
                     self.concepts_topics = concept_and_topics
                     
                     self.labeled_perma = self.curr_perma
+                    print(lowest_label)
 
                     print('CURRENT PERMA SCORE:' + self.curr_perma)
                     if self.curr_perma == 'green':
@@ -223,6 +229,11 @@ class EDENDialoguePlanner(DialoguePlanner):
                                         return DIALOGUE_TYPE_P_GENERAL
                                     elif lowest_label == 'POS_E':
                                         return DIALOGUE_TYPE_E_GENERAL
+                            if not concept_and_topics:
+                                if lowest_label == 'POS_P':
+                                        return DIALOGUE_TYPE_P_GENERAL
+                                elif lowest_label == 'POS_E':
+                                    return DIALOGUE_TYPE_E_GENERAL
                         elif lowest_label == "POS_R":
                             for x in concept_and_topics:
                                 if x[2] == 'person':
@@ -231,6 +242,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                                         return DIALOGUE_TYPE_R_ADVICE
                                     else: 
                                         return DIALOGUE_TYPE_R_GENERAL
+                            if not concept_and_topics:
+                                return DIALOGUE_TYPE_R_GENERAL
                         elif lowest_label == "POS_M":
                             return DIALOGUE_TYPE_M_ADVICE
                         elif lowest_label == "POS_A":
@@ -240,6 +253,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_A_ADVICE
                                 else: 
                                     return DIALOGUE_TYPE_A_GENERAL
+                            if not concept_and_topics:
+                                return DIALOGUE_TYPE_A_GENERAL
                     elif self.curr_perma == 'orange':
                         if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
                             for x in concept_and_topics:
@@ -259,6 +274,13 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_M_SUGGEST
                                 else:
                                     return DIALOGUE_TYPE_M_GENERAL
+                            if not concept_and_topics:
+                                if lowest_label == 'POS_P':
+                                    return DIALOGUE_TYPE_P_GENERAL
+                                elif lowest_label == 'POS_R':
+                                    return DIALOGUE_TYPE_R_GENERAL
+                                elif lowest_label == 'POS_M':
+                                    return DIALOGUE_TYPE_M_GENERAL
                         elif lowest_label == "POS_A":
                             for x in concept_and_topics:
                                 if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
@@ -266,6 +288,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_A_SUGGEST
                                 else: 
                                     return DIALOGUE_TYPE_A_GENERAL
+                            if not concept_and_topics:
+                                return DIALOGUE_TYPE_A_GENERAL
                         elif lowest_label == "POS_E":
                             for x in concept_and_topics:
                                 if x[2] == 'activity':
@@ -273,6 +297,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_E_SUGGEST
                                 else:
                                     return DIALOGUE_TYPE_E_GENERAL
+                            if not concept_and_topics:
+                                return DIALOGUE_TYPE_E_GENERAL
                             
                     elif self.curr_perma == 'red':
                         if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
@@ -293,6 +319,12 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_M_SUGGEST
                                 else:
                                     return DIALOGUE_TYPE_M_GENERAL
+                            if not concept_and_topics:
+                                if lowest_label == 'POS_P':
+                                        return DIALOGUE_TYPE_P_GENERAL
+                                elif lowest_label == 'POS_E':
+                                        return DIALOGUE_TYPE_E_GENERAL
+                        
                         elif lowest_label == "POS_A":
                             for x in concept_and_topics:
                                 if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
@@ -300,6 +332,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_A_SUGGEST
                                 else: 
                                     return DIALOGUE_TYPE_A_GENERAL
+                            if not concept_and_topics:
+                                return DIALOGUE_TYPE_A_GENERAL
                         elif lowest_label == "POS_E":
                             for x in concept_and_topics:
                                 if x[2] == 'activity':
@@ -307,6 +341,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_E_SUGGEST
                                 else:
                                     return DIALOGUE_TYPE_E_GENERAL
+                            if not concept_and_topics:
+                                return DIALOGUE_TYPE_E_GENERAL
                         # if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
                         #     return DIALOGUE_TYPE_ACKNOWLEDGE
                         # else:
