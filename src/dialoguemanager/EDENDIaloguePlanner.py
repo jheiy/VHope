@@ -27,6 +27,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.subj = ''
         self.pumping_type = ''
         self.concepts_topics = None
+        self.curr_emotion = None
 
     def reset_new_world(self):
         self.world = None
@@ -301,6 +302,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                                 return DIALOGUE_TYPE_E_GENERAL
                             
                     elif self.curr_perma == 'red':
+                        self.curr_emotion = emotion_event.emotion
                         if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
                             for x in concept_and_topics:
                                 if x[2] == 'person':
@@ -443,6 +445,10 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_A_ADVICE
                                 else: 
                                     return DIALOGUE_TYPE_P_PRAISE
+                        
+                        if not self.concepts_topics:
+                            return DIALOGUE_TYPE_P_PRAISE
+                            
                     elif self.labeled_perma == 'orange':
                         if self.low_perma == "POS_P" or self.low_perma == "POS_R" or self.low_perma == "POS_M":
                             for x in self.concepts_topics:
@@ -471,10 +477,12 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_E_SUGGEST
                                 else:
                                     return DIALOGUE_TYPE_O_REFLECT
+                        
+                        if not self.concepts_topics:
+                            return DIALOGUE_TYPE_O_REFLECT
                             
                     elif self.labeled_perma == 'red':
-                        if self.curr_event.type == EVENT_EMOTION:
-                            emotion_event = self.curr_event
+                        emotion_event = self.curr_emotion
                         
                         if self.low_perma == "POS_P" or self.low_perma == "POS_R" or self.low_perma == "POS_M":
                             for x in self.concepts_topics:
@@ -483,7 +491,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                                         self.subj = x[0]
                                         return DIALOGUE_TYPE_PRM_SUGGEST
                                     else: 
-                                        if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                                        if emotion_event in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
                                             return DIALOGUE_TYPE_ACKNOWLEDGE
                                         else:
                                             return DIALOGUE_TYPE_G_PRAISE
@@ -491,7 +499,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_M_SUGGEST
                                 else:
-                                    if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                                    if emotion_event in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
                                         return DIALOGUE_TYPE_ACKNOWLEDGE
                                     else:
                                         return DIALOGUE_TYPE_G_PRAISE
@@ -501,7 +509,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_A_SUGGEST
                                 else: 
-                                    if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                                    if emotion_event in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
                                         return DIALOGUE_TYPE_ACKNOWLEDGE
                                     else:
                                         return DIALOGUE_TYPE_G_PRAISE
@@ -511,15 +519,21 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_E_SUGGEST
                                 else:
-                                    if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                                    if emotion_event in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
                                         return DIALOGUE_TYPE_ACKNOWLEDGE
                                     else:
                                         return DIALOGUE_TYPE_G_PRAISE
+                        
+                        if not self.concepts_topics:
+                            if emotion_event in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                                return DIALOGUE_TYPE_ACKNOWLEDGE
+                            else:
+                                return DIALOGUE_TYPE_G_PRAISE
                 
             elif self.labeled_perma == 'red':
                 if (last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_E_SUGGEST or 
                     last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_A_SUGGEST):
-                        if emotion_event.emotion in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
+                        if emotion_event in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
                             return DIALOGUE_TYPE_ACKNOWLEDGE
                         else:
                             return DIALOGUE_TYPE_G_PRAISE
