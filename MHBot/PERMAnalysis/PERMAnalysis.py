@@ -101,12 +101,42 @@ class PERMAnalysis:
         Logger.log_perma_scores("Positive Scores: " + str(positive_scores) + " & " + "Negative Scores: " + str(negative_scores))
         if positive_scores >= 8 or negative_scores <= 3:
             Logger.log_perma_scores("SPECTRUM: OPTIMAL")
+            Logger.log_perma_scores('POS_P: ' + str(self.senti_dict['POS_P']['score']))
+            Logger.log_perma_scores('POS_E: ' + str(self.senti_dict['POS_E']['score']))
+            Logger.log_perma_scores('POS_R: ' + str(self.senti_dict['POS_R']['score']))
+            Logger.log_perma_scores('POS_M: ' + str(self.senti_dict['POS_M']['score']))
+            Logger.log_perma_scores('POS_A: ' + str(self.senti_dict['POS_A']['score']))
+            Logger.log_perma_scores('NEG_P: ' + str(self.senti_dict['NEG_P']['score']))
+            Logger.log_perma_scores('NEG_E: ' + str(self.senti_dict['NEG_E']['score']))
+            Logger.log_perma_scores('NEG_R: ' + str(self.senti_dict['NEG_R']['score']))
+            Logger.log_perma_scores('NEG_M: ' + str(self.senti_dict['NEG_M']['score']))
+            Logger.log_perma_scores('NEG_A: ' + str(self.senti_dict['NEG_A']['score']))
             return 'green'
         elif positive_scores >= 5 or negative_scores <= 6.5:
             Logger.log_perma_scores("SPECTRUM: EMERGING")
+            Logger.log_perma_scores('POS_P: ' + str(self.senti_dict['POS_P']['score']))
+            Logger.log_perma_scores('POS_E: ' + str(self.senti_dict['POS_E']['score']))
+            Logger.log_perma_scores('POS_R: ' + str(self.senti_dict['POS_R']['score']))
+            Logger.log_perma_scores('POS_M: ' + str(self.senti_dict['POS_M']['score']))
+            Logger.log_perma_scores('POS_A: ' + str(self.senti_dict['POS_A']['score']))
+            Logger.log_perma_scores('NEG_P: ' + str(self.senti_dict['NEG_P']['score']))
+            Logger.log_perma_scores('NEG_E: ' + str(self.senti_dict['NEG_E']['score']))
+            Logger.log_perma_scores('NEG_R: ' + str(self.senti_dict['NEG_R']['score']))
+            Logger.log_perma_scores('NEG_M: ' + str(self.senti_dict['NEG_M']['score']))
+            Logger.log_perma_scores('NEG_A: ' + str(self.senti_dict['NEG_A']['score']))
             return 'orange'
         elif positive_scores < 5 or negative_scores > 6.5:
             Logger.log_perma_scores("SPECTRUM: AT RISK")
+            Logger.log_perma_scores('POS_P: ' + str(self.senti_dict['POS_P']['score']))
+            Logger.log_perma_scores('POS_E: ' + str(self.senti_dict['POS_E']['score']))
+            Logger.log_perma_scores('POS_R: ' + str(self.senti_dict['POS_R']['score']))
+            Logger.log_perma_scores('POS_M: ' + str(self.senti_dict['POS_M']['score']))
+            Logger.log_perma_scores('POS_A: ' + str(self.senti_dict['POS_A']['score']))
+            Logger.log_perma_scores('NEG_P: ' + str(self.senti_dict['NEG_P']['score']))
+            Logger.log_perma_scores('NEG_E: ' + str(self.senti_dict['NEG_E']['score']))
+            Logger.log_perma_scores('NEG_R: ' + str(self.senti_dict['NEG_R']['score']))
+            Logger.log_perma_scores('NEG_M: ' + str(self.senti_dict['NEG_M']['score']))
+            Logger.log_perma_scores('NEG_A: ' + str(self.senti_dict['NEG_A']['score']))
             return 'red'
     
     def get_lowest_score(self):
