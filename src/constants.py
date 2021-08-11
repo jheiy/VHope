@@ -32,7 +32,7 @@ FETCH_ONE = 1
 FETCH_ALL = 2
 
 """ GENERIC RESPONSES """
-IS_AFFIRM = ['yes', 'yes.', 'yeah', 'yeah.', 'sure', 'sure.', 'yup', 'yup.']
+IS_AFFIRM = ['yes', 'yes.', 'yeah', 'yeah.', 'sure', 'sure.', 'yup', 'yup.', 'yep', 'yep.']
 IS_DENY = ['no', 'no.', 'nope', 'nope.']
 IS_END = ['bye', 'bye.', 'the end', 'the end.', 'STOP', 'that is it', 'no more', 'nope', 'what do you think']
 IS_DONE_EXPLAINING = ['nothing', 'i dont know', 'nothing.', 'i dont know.']
