@@ -8,7 +8,7 @@ from src.textunderstanding.InputDecoder import InputDecoder
 import datetime, time
 import telebot
 
-TOKEN = 'ask jaime for the token'
+TOKEN = 'Ask Jaime'
 
 bot = telebot.TeleBot(TOKEN)
 orsen = ORSEN()
@@ -68,26 +68,30 @@ def emergency_stop(message):
 @bot.message_handler(func=lambda m:True)
 def continue_conversation(message):
     if triggers.is_engaged and not triggers.is_end_story == True:
-        start_time = time.time()
         user_input = message.text
 
         # Logger.log_conversation("LATENCY TIME (seconds): " + str(time.time() - start_time))
         user_input = clean_user_input(user_input)
-        Logger.log_conversation(participants["{0}".format(message.chat.id)].first_name + " " + participants["{0}".format(message.chat.id)].last_name + " : " + str(user_input))
+        Logger.log_conversation(participants["{0}".format(message.chat.id)].first_name + " : " + str(user_input))
 
-        triggers.is_end_story = orsen.is_end_story(user_input)
-        orsen_response = orsen.get_response(user_input)
-        # print("ending: ", triggers.is_end_story)
-        bot.send_message(participants["{0}".format(message.chat.id)].chat_id, orsen_response)
-        Logger.log_conversation("MHBot" + ": " + str(orsen_response))
+        triggers.is_end_story = orsen.is_end_story(user_input)        
 
-        if triggers.is_end_story:
+        if not triggers.is_end_story:
             # no login functionalities yet; can be looked into in future development updates
             # try:
             #     Pickle.pickle_world_wb(pickle_filepath, orsen.world.get_pickled_world())
             # except Exception as e:
             #     Logger.log_conversation("ERROR: " + str(e))
-            bot.send_message(participants["{0}".format(message.chat.id)].chat_id, "This ends our conversation for now. If you want to start again, let's talk starting with /start_chatting .")
+            # print('HELLO')
+            orsen_response = orsen.get_response(user_input)
+            bot.send_message(participants["{0}".format(message.chat.id)].chat_id, orsen_response)
+            Logger.log_conversation("MHBot" + ": " + str(orsen_response))
+            
+        elif triggers.is_end_story:
+            bot.send_message(participants["{0}".format(message.chat.id)].chat_id, orsen_response)
+            Logger.log_conversation("MHBot" + ": " + str(orsen_response))
+            pass
+
     elif triggers.is_engaged is False:
         if message.chat.id not in participants.keys():
             participants["{0}".format(message.chat.id)] = Participant(message.chat.id, message.from_user.first_name, message.from_user.last_name)
