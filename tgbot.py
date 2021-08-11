@@ -88,8 +88,8 @@ def continue_conversation(message):
             Logger.log_conversation("MHBot" + ": " + str(orsen_response))
             
         elif triggers.is_end_story:
-            bot.send_message(participants["{0}".format(message.chat.id)].chat_id, orsen_response)
-            Logger.log_conversation("MHBot" + ": " + str(orsen_response))
+            bot.send_message(participants["{0}".format(message.chat.id)].chat_id, "Thank you for chatting with me today. If you want to start another conversation with me, you can type /start_chatting .")
+            Logger.log_conversation("MHBot: Thank you for chatting with me today. If you want to start another conversation with me, you can type /start_chatting .")
             pass
 
     elif triggers.is_engaged is False:
