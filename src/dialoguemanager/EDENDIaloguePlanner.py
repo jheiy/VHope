@@ -53,6 +53,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.isRed = False
         self.perma_texts = ''
         self.labeled_perma = ''
+        self.check_end = None
 
     def perform_dialogue_planner(self, dialogue_move=""):
         print('--==--==-- EDEN - Perform Dialogue Planner --==--==--')
@@ -180,6 +181,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                     #         next_move = DIALOGUE_TYPE_D_PRAISE
                     #     else:
                     #         next_move = DIALOGUE_TYPE_EVALUATION
+                    
+                    self.check_end = True
                     
                     concepts = []
                     concept_and_topics = []
