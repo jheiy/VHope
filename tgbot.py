@@ -72,7 +72,7 @@ def continue_conversation(message):
 
         # Logger.log_conversation("LATENCY TIME (seconds): " + str(time.time() - start_time))
         user_input = clean_user_input(user_input)
-        Logger.log_conversation(participants["{0}".format(message.chat.id)].first_name + " : " + str(user_input))
+        Logger.log_conversation(participants["{0}".format(message.chat.id)].first_name + " " + " : " + str(user_input))
 
         triggers.is_end_story = orsen.is_end_story(user_input)        
 
