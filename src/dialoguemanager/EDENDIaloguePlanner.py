@@ -53,6 +53,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.isRed = False
         self.perma_texts = ''
         self.labeled_perma = ''
+        self.check_end = None
 
     def perform_dialogue_planner(self, dialogue_move=""):
         print('--==--==-- EDEN - Perform Dialogue Planner --==--==--')
@@ -161,7 +162,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                     self.ongoing_c_pumping = False
                 # return DIALOGUE_TYPE_PUMPING_GENERAL
             # elif self.ongoing_c_pumping and self.response.lower() in IS_DONE_EXPLAINING:
-            if not self.ongoing_c_pumping and self.response.lower() in IS_END:
+            if not self.ongoing_c_pumping and self.response.lower() in IS_END and (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
+                  last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS):
                 print("CHECKER3")
                 if destructive:
                     self.ongoing_c_pumping = False
@@ -180,6 +182,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                     #         next_move = DIALOGUE_TYPE_D_PRAISE
                     #     else:
                     #         next_move = DIALOGUE_TYPE_EVALUATION
+                    
+                    self.check_end = True
                     
                     concepts = []
                     concept_and_topics = []

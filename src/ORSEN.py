@@ -44,6 +44,7 @@ class ORSEN:
         self.lowest_perma = None
         self.subj = None
         self.pumping_type = None
+        self.check_ifend = None
 
     def initialize_story_prerequisites(self):
         self.world = World()
@@ -89,7 +90,13 @@ class ORSEN:
             orsen_reply = "I see. What else can you say about that?"
             Logger.log_dialogue_model("FINAL CHOSEN RESPONSE " + result)
 
-        # Logger.log_conversation("ORSEN LATENCY TIME (seconds): " + str(time.time() - start_time))
+        #Logger.log_conversation("ORSEN LATENCY TIME (seconds): " + str(time.time() - start_time))
+        
+        self.check_ifend = self.dialogue_planner.check_end
+        if self.check_ifend:
+            orsen_reply = "Thank you for sharing with me. " + orsen_reply
+            self.dialogue_planner.check_end = False
+        
 
         self.user_start_time = time.time()
         return orsen_reply
