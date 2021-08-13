@@ -4,6 +4,7 @@ from src import *
 from src.dbo.dialogue import DBODialogueTemplate
 from src.dbo.concept.DBOConceptCustom import DBOConceptCustom
 from src.dbo.concept.DBOConceptGlobalImpl import DBOConceptGlobalImpl
+from nltk.tokenize import regexp_tokenize
 from src.dialoguemanager import DialoguePlanner
 from src.models.concept import LocalConcept
 from src.models.dialogue.constants import DIALOGUE_LIST, DialogueHistoryTemplate, EDEN_DIALOGUE_LIST
@@ -54,6 +55,8 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.perma_texts = ''
         self.labeled_perma = ''
         self.check_end = None
+        self.is_cause = False
+        self.is_deny = False
 
     def perform_dialogue_planner(self, dialogue_move=""):
         print('--==--==-- EDEN - Perform Dialogue Planner --==--==--')
@@ -121,40 +124,54 @@ class EDENDialoguePlanner(DialoguePlanner):
         last_move = self.get_last_dialogue_move()
         next_move = ""
         print("RESPONSE", self.response)
+        tokens = regexp_tokenize(self.response,"[\w']+")
         if last_move is not None:
             if last_move.dialogue_type == DIALOGUE_TYPE_E_LABEL:
-                if self.response in IS_AFFIRM:
-                    if self.curr_perma == 'red':
-                        self.isRed = True
-                    self.ongoing_c_pumping = True
-                    next_move = DIALOGUE_TYPE_C_PUMPING
-                else:
-                    next_move = DIALOGUE_TYPE_E_PUMPING
+                for token in tokens:
+                    if token in IS_AFFIRM:
+                        if self.curr_perma == 'red':
+                            self.isRed = True
+                        self.ongoing_c_pumping = True
+                        if not len(tokens) > 1:
+                            return DIALOGUE_TYPE_C_PUMPING
+                        else: 
+                            self.is_cause = True
+                            next_move =  DIALOGUE_TYPE_PUMPING_GENERAL
+                    else:
+                        self.is_deny = True
+                        next_move = DIALOGUE_TYPE_E_PUMPING
+                
+                    
             elif last_move.dialogue_type == DIALOGUE_TYPE_D_CORRECTING:
-                if self.response in IS_AFFIRM:
-                    next_move = DIALOGUE_TYPE_EVALUATION
-                else:
-                    next_move = DIALOGUE_TYPE_D_PUMPING
+                for token in tokens:
+                    if self.response in IS_AFFIRM:
+                        next_move = DIALOGUE_TYPE_EVALUATION
+                    else:
+                        next_move = DIALOGUE_TYPE_D_PUMPING
             elif last_move.dialogue_type == DIALOGUE_TYPE_CLOSING_FOLLOWUP:
-                if self.response in IS_AFFIRM:
-                    next_move = DIALOGUE_TYPE_MHBOT_WELCOME
-                else:
-                    next_move = DIALOGUE_TYPE_E_END 
+                for token in tokens:
+                    if self.response in IS_AFFIRM:
+                        next_move = DIALOGUE_TYPE_MHBOT_WELCOME
+                    else:
+                        next_move = DIALOGUE_TYPE_E_END 
             elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO:
-                if self.response in IS_AFFIRM:
-                    next_move = DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP
-                else:
-                    next_move = DIALOGUE_TYPE_MHBOT_WELCOME
+                for token in tokens:
+                    if self.response in IS_AFFIRM:
+                        next_move = DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP
+                    else:
+                        next_move = DIALOGUE_TYPE_MHBOT_WELCOME
             elif last_move.dialogue_type == DIALOGUE_TYPE_COUNSELING:
-                if self.response in IS_AFFIRM:
-                    next_move = DIALOGUE_TYPE_FEEDBACK_Y
-                else:
-                    next_move = DIALOGUE_TYPE_COUNSELING_FOLLOWUP
+                for token in tokens:
+                    if self.response in IS_AFFIRM:
+                        next_move = DIALOGUE_TYPE_FEEDBACK_Y
+                    else:
+                        next_move = DIALOGUE_TYPE_COUNSELING_FOLLOWUP
             elif last_move.dialogue_type == DIALOGUE_TYPE_COUNSELING_FOLLOWUP:
-                if self.response in IS_AFFIRM:
-                    next_move = DIALOGUE_TYPE_FEEDBACK_Y
-                else:
-                    next_move = DIALOGUE_TYPE_FEEDBACK_N
+                for token in tokens:
+                    if self.response in IS_AFFIRM:
+                        next_move = DIALOGUE_TYPE_FEEDBACK_Y
+                    else:
+                        next_move = DIALOGUE_TYPE_FEEDBACK_N
             elif (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
                   last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS) and self.response.lower() in IS_END and self.ongoing_c_pumping:
                 print("CHECKMATE")
@@ -360,7 +377,6 @@ class EDENDialoguePlanner(DialoguePlanner):
             if self.is_cause:
                 self.is_cause = False
                 next_move = DIALOGUE_TYPE_PUMPING_GENERAL
-                
                     # else: 
                     #     return general template
                         

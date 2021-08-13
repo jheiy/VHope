@@ -14,11 +14,11 @@ class PEAdviceDialogueTemplate(DialogueTemplate):
 
     def fill_blanks(self, word, subj, lowest_perma):
         response = self.template
-        # subj = 'listening'
+        subj = 'work'
         
         custom_concept = DBOConceptGlobalImpl()
         concepts = []
-        for x in custom_concept.get_concept_by_relation(subj, 'has_prerequisite'):
+        for x in custom_concept.get_concept_by_relation(subj, 'HasPrerequisite'):
             concepts.append(x[3])
 
         response = [x.replace("1", subj) for x in response]
