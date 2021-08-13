@@ -372,11 +372,12 @@ class EDENDialoguePlanner(DialoguePlanner):
                         #     return DIALOGUE_TYPE_G_PRAISE
                             
             if self.is_deny:
+                self.is_deny = False
                 next_move = DIALOGUE_TYPE_E_PUMPING
-                is_deny = False
             if self.is_cause:
+                self.is_cause = False
                 next_move = DIALOGUE_TYPE_PUMPING_GENERAL
-                is_cause = False
+                
                     # else: 
                     #     return general template
                         
