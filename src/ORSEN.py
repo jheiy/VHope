@@ -245,16 +245,10 @@ class ORSEN:
                             direct_object = Object.create_object(sentence=sentence, token=event_entity[DIRECT_OBJECT])
                             self.world.add_object(direct_object)
                             for t in direct_object.type:
-                                if type(t.description) is str:
-                                    if t.description == "PERSON":
-                                        self.world.remove_object(direct_object)
-                                        direct_object = Character.create_character(sentence=sentence, token=event_entity[DIRECT_OBJECT])
-                                        self.world.add_character(direct_object)
-                                else:
-                                    if t.description.text == "PERSON":
-                                        self.world.remove_object(direct_object)
-                                        direct_object = Character.create_character(sentence=sentence, token=event_entity[DIRECT_OBJECT])
-                                        self.world.add_character(direct_object)
+                                if t.description.text == "PERSON":
+                                    self.world.remove_object(direct_object)
+                                    direct_object = Character.create_character(sentence=sentence, token=event_entity[DIRECT_OBJECT])
+                                    self.world.add_character(direct_object)
                     direct_object.mention_count += 1
 
                     for s in settings:
