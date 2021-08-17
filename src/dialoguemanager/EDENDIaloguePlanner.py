@@ -57,6 +57,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.check_end = None
         self.is_cause = False
         self.is_deny = False
+        self.is_label = False
 
     def perform_dialogue_planner(self, dialogue_move=""):
         print('--==--==-- EDEN - Perform Dialogue Planner --==--==--')
@@ -140,6 +141,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                     else:
                         self.is_deny = True
                         next_move = DIALOGUE_TYPE_E_PUMPING
+                self.is_label = True
                 
                     
             elif last_move.dialogue_type == DIALOGUE_TYPE_D_CORRECTING:
@@ -181,6 +183,9 @@ class EDENDialoguePlanner(DialoguePlanner):
             # elif self.ongoing_c_pumping and self.response.lower() in IS_DONE_EXPLAINING:
             if not self.ongoing_c_pumping and self.response.lower() in IS_END and (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
                   last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS):
+                if not self.is_label:
+                    return DIALOGUE_TYPE_P_FEELING
+
                 print("CHECKER3")
                 if destructive:
                     self.ongoing_c_pumping = False

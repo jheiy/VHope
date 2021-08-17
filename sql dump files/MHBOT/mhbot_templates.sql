@@ -87,7 +87,8 @@ INSERT INTO `templates` VALUES (1,'feedback','I see, that\'s interesting.',NULL,
 (232,'e_general','What is something you consider as your strength?',NULL,NULL,NULL,NULL),
 (233,'r_general','Why don’t you try reconnecting with your friends?',NULL,NULL,NULL,NULL),
 (234,'m_general','What are some of your passions?',NULL,NULL,NULL,NULL),
-(235,'a_general','What are some of your accomplishments?',NULL,NULL,NULL,NULL)
+(235,'a_general','What are some of your accomplishments?',NULL,NULL,NULL,NULL),
+(236,'p_feeling','What exactly do you feel?',NULL,NULL,NULL,NULL)
 ;
 /*!40000 ALTER TABLE `templates` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -184,6 +184,8 @@ class DialogueTemplateBuilder:
          return MGeneralDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_A_GENERAL:
          return AGeneralDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_FEELING:
+         return PFeelingDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       
       
       

@@ -180,6 +180,7 @@ DIALOGUE_TYPE_E_GENERAL = "e_general"
 DIALOGUE_TYPE_R_GENERAL = "r_general"
 DIALOGUE_TYPE_M_GENERAL = "m_general"
 DIALOGUE_TYPE_A_GENERAL = "a_general"
+DIALOGUE_TYPE_P_FEELING = "p_feeling"
 
 """ORSEN"""
 DIALOGUE_TYPE_ORSEN_WELCOME = "orsen_welcome"

@@ -83,6 +83,7 @@ from .EGeneralDialogueTemplate import EGeneralDialogueTemplate
 from .RGeneralDialogueTemplate import RGeneralDialogueTemplate
 from .MGeneralDialogueTemplate import MGeneralDialogueTemplate
 from .AGeneralDialogueTemplate import AGeneralDialogueTemplate
+from .PFeelingDialogueTemplate import PFeelingDialogueTemplate
 
 
 
