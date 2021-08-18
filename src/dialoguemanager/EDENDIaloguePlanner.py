@@ -430,6 +430,14 @@ class EDENDialoguePlanner(DialoguePlanner):
                 return DIALOGUE_TYPE_RECOLLECTION
             elif last_move.dialogue_type == DIALOGUE_TYPE_E_FOLLOWUP:
                 return DIALOGUE_TYPE_PUMPING_GENERAL
+            elif last_move.dialogue_type == DIALOGUE_TYPE_PE_ADVICE:
+                return DIALOGUE_TYPE_ACT_WISDOM
+            elif last_move.dialogue_type == DIALOGUE_TYPE_R_ADVICE:
+                return DIALOGUE_TYPE_R_WISDOM
+            elif last_move.dialogue_type == DIALOGUE_TYPE_M_ADVICE:
+                return DIALOGUE_TYPE_M_WISDOM
+            elif last_move.dialogue_type == DIALOGUE_TYPE_A_ADVICE:
+                return DIALOGUE_TYPE_A_WISDOM
             elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING:
                 return DIALOGUE_TYPE_CLOSING_FOLLOWUP
             elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP:
@@ -438,14 +446,26 @@ class EDENDialoguePlanner(DialoguePlanner):
                 return DIALOGUE_TYPE_COUNSELING
             elif last_move.dialogue_type == DIALOGUE_TYPE_P_PRAISE or last_move.dialogue_type == DIALOGUE_TYPE_O_REFLECT:
                 return DIALOGUE_TYPE_MHBOT_CLOSING
-            elif (last_move.dialogue_type == DIALOGUE_TYPE_A_ADVICE or last_move.dialogue_type == DIALOGUE_TYPE_PE_ADVICE or 
-                  last_move.dialogue_type == DIALOGUE_TYPE_R_ADVICE or last_move.dialogue_type == DIALOGUE_TYPE_M_ADVICE):
+            elif (last_move.dialogue_type == DIALOGUE_TYPE_ACT_WISDOM or last_move.dialogue_type == DIALOGUE_TYPE_R_WISDOM or 
+                  last_move.dialogue_type == DIALOGUE_TYPE_M_WISDOM or last_move.dialogue_type == DIALOGUE_TYPE_A_WISDOM or 
+                  last_move.dialogue_type == DIALOGUE_TYPE_P_S_WISDOM or last_move.dialogue_type == DIALOGUE_TYPE_RM_S_WISDOM or
+                  last_move.dialogue_type == DIALOGUE_TYPE_M_S_WISDOM or last_move.dialogue_type == DIALOGUE_TYPE_A_S_WISDOM):
+                if self.labeled_perma == 'orange':
+                    return DIALOGUE_TYPE_O_REFLECT
+                elif self.labeled_perma == 'green':
                     return DIALOGUE_TYPE_P_PRAISE
             elif (last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_E_SUGGEST or 
                     last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_A_SUGGEST):
-                print(self.labeled_perma)
-                if self.labeled_perma == 'orange':
-                    return DIALOGUE_TYPE_O_REFLECT
+                if last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST:
+                    return DIALOGUE_TYPE_ACT_WISDOM
+                elif last_move.dialogue_type == DIALOGUE_TYPE_E_SUGGEST: 
+                    return DIALOGUE_TYPE_ACT_WISDOM
+                elif last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST: 
+                    return DIALOGUE_TYPE_M_S_WISDOM
+                elif last_move.dialogue_type == DIALOGUE_TYPE_A_SUGGEST: 
+                    return DIALOGUE_TYPE_A_S_WISDOM
+                
+
                 #     return DIALOGUE_TYPE_PE_ADVICE
                 # elif last_move.dialogue_type == DIALOGUE_TYPE_A_ADVICE or last_move.dialogue_type == DIALOGUE_TYPE_PE_ADVICE:
             elif (last_move.dialogue_type == DIALOGUE_TYPE_P_GENERAL or last_move.dialogue_type == DIALOGUE_TYPE_E_GENERAL or 
@@ -459,7 +479,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                                         self.subj = x[0]
                                         return DIALOGUE_TYPE_PE_ADVICE
                                 else:
-                                    return DIALOGUE_TYPE_P_PRAISE
+                                    return DIALOGUE_TYPE_P_S_WISDOM
                         elif self.low_perma == "POS_R":
                             for x in self.concepts_topics:
                                 if x[2] == 'person':
@@ -467,7 +487,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                                         self.subj = x[0]
                                         return DIALOGUE_TYPE_R_ADVICE
                                     else: 
-                                        return DIALOGUE_TYPE_P_PRAISE
+                                        return DIALOGUE_TYPE_R_WISDOM
                         elif self.low_perma == "POS_M":
                             return DIALOGUE_TYPE_M_ADVICE
                         elif self.low_perma == "POS_A":
@@ -476,7 +496,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_A_ADVICE
                                 else: 
-                                    return DIALOGUE_TYPE_P_PRAISE
+                                    return DIALOGUE_TYPE_A_WISDOM
                         
                         if not self.concepts_topics:
                             return DIALOGUE_TYPE_P_PRAISE
@@ -489,26 +509,31 @@ class EDENDialoguePlanner(DialoguePlanner):
                                         self.subj = x[0]
                                         return DIALOGUE_TYPE_PRM_SUGGEST
                                     else: 
-                                        return DIALOGUE_TYPE_O_REFLECT
+                                        if self.low_perma == "POS_P":
+                                            return DIALOGUE_TYPE_P_S_WISDOM
+                                        elif self.low_perma == "POS_R":
+                                            return DIALOGUE_TYPE_R_G_FOLLOWUP
+                                        elif self.low_perma == "POS_M":
+                                            return DIALOGUE_TYPE_M_G_FOLLOWUP_N
                                 elif x[2] == 'hobby' and self.low_perma == "POS_M":
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_M_SUGGEST
                                 else:
-                                    return DIALOGUE_TYPE_O_REFLECT
+                                    return DIALOGUE_TYPE_M_G_FOLLOWUP_N
                         elif self.low_perma == "POS_A":
                             for x in self.concepts_topics:
                                 if x[2] == 'accomplishment' or x[2] == 'attainment' or x[2] == 'achievement':
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_A_SUGGEST
                                 else: 
-                                    return DIALOGUE_TYPE_O_REFLECT
+                                    return DIALOGUE_TYPE_A_G_FOLLOWUP_N
                         elif self.low_perma == "POS_E":
                             for x in self.concepts_topics:
                                 if x[2] == 'activity':
                                     self.subj = x[0]
                                     return DIALOGUE_TYPE_E_SUGGEST
                                 else:
-                                    return DIALOGUE_TYPE_O_REFLECT
+                                    return DIALOGUE_TYPE_E_G_FOLLOWUP_N
                         
                         if not self.concepts_topics:
                             return DIALOGUE_TYPE_O_REFLECT

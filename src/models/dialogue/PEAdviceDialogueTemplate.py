@@ -14,7 +14,7 @@ class PEAdviceDialogueTemplate(DialogueTemplate):
 
     def fill_blanks(self, word, subj, lowest_perma):
         response = self.template
-        subj = 'work'
+        # subj = 'work'
         
         custom_concept = DBOConceptGlobalImpl()
         concepts = []
