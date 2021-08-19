@@ -134,6 +134,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                             self.isRed = True
                         self.ongoing_c_pumping = True
                         if not len(tokens) > 1:
+                            self.is_label = True
                             return DIALOGUE_TYPE_C_PUMPING
                         else: 
                             self.is_cause = True
@@ -184,6 +185,8 @@ class EDENDialoguePlanner(DialoguePlanner):
             if not self.ongoing_c_pumping and self.response.lower() in IS_END and (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
                   last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS):
                 if not self.is_label:
+                    print(self.is_label)
+                    self.is_label = False
                     return DIALOGUE_TYPE_P_FEELING
 
                 print("CHECKER3")
@@ -438,6 +441,13 @@ class EDENDialoguePlanner(DialoguePlanner):
                 return DIALOGUE_TYPE_M_WISDOM
             elif last_move.dialogue_type == DIALOGUE_TYPE_A_ADVICE:
                 return DIALOGUE_TYPE_A_WISDOM
+            elif (last_move.dialogue_type == DIALOGUE_TYPE_E_G_FOLLOWUP_N or last_move.dialogue_type == DIALOGUE_TYPE_M_G_FOLLOWUP_N
+                  or last_move.dialogue_type == DIALOGUE_TYPE_R_G_FOLLOWUP or last_move.dialogue_type == DIALOGUE_TYPE_A_G_FOLLOWUP_N
+                  or last_move.dialogue_type == DIALOGUE_TYPE_P_S_WISDOM):
+                if self.labeled_perma == 'orange':
+                    return DIALOGUE_TYPE_O_REFLECT
+                elif self.labeled_perma == 'green':
+                    return DIALOGUE_TYPE_P_PRAISE
             elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING:
                 return DIALOGUE_TYPE_CLOSING_FOLLOWUP
             elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP:
@@ -457,7 +467,7 @@ class EDENDialoguePlanner(DialoguePlanner):
             elif (last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_E_SUGGEST or 
                     last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_A_SUGGEST):
                 if last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST:
-                    return DIALOGUE_TYPE_ACT_WISDOM
+                    return DIALOGUE_TYPE_RM_S_WISDOM
                 elif last_move.dialogue_type == DIALOGUE_TYPE_E_SUGGEST: 
                     return DIALOGUE_TYPE_ACT_WISDOM
                 elif last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST: 
@@ -499,9 +509,20 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_A_WISDOM
                         
                         if not self.concepts_topics:
-                            return DIALOGUE_TYPE_P_PRAISE
+                            if self.low_perma == "POS_P":
+                                return DIALOGUE_TYPE_P_S_WISDOM
+                            elif self.low_perma == "POS_E":
+                                return DIALOGUE_TYPE_E_G_FOLLOWUP_N
+                            elif self.low_perma == "POS_R":
+                                return DIALOGUE_TYPE_R_G_FOLLOWUP
+                            elif self.low_perma == "POS_M":
+                                return DIALOGUE_TYPE_M_G_FOLLOWUP_N
+                            elif self.low_perma == "POS_A":
+                                return DIALOGUE_TYPE_A_G_FOLLOWUP_N
+                            
                             
                     elif self.labeled_perma == 'orange':
+                        print(low_perma)
                         if self.low_perma == "POS_P" or self.low_perma == "POS_R" or self.low_perma == "POS_M":
                             for x in self.concepts_topics:
                                 if x[2] == 'person':
@@ -536,7 +557,16 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_E_G_FOLLOWUP_N
                         
                         if not self.concepts_topics:
-                            return DIALOGUE_TYPE_O_REFLECT
+                            if self.low_perma == "POS_P":
+                                return DIALOGUE_TYPE_P_S_WISDOM
+                            elif self.low_perma == "POS_E":
+                                return DIALOGUE_TYPE_E_G_FOLLOWUP_N
+                            elif self.low_perma == "POS_R":
+                                return DIALOGUE_TYPE_R_G_FOLLOWUP
+                            elif self.low_perma == "POS_M":
+                                return DIALOGUE_TYPE_M_G_FOLLOWUP_N
+                            elif self.low_perma == "POS_A":
+                                return DIALOGUE_TYPE_A_G_FOLLOWUP_N
                             
                     elif self.labeled_perma == 'red':
                         emotion_event = self.curr_emotion
