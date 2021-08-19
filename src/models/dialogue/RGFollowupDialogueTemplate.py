@@ -2,7 +2,7 @@ from . import DialogueTemplate
 from src.constants import *
 
 
-class RGFollowupNDialogueTemplate(DialogueTemplate):
+class RGFollowupDialogueTemplate(DialogueTemplate):
 
     def __init__(self, id=-1, template=[], relation=[], blanks=[], nodes=[], dependent_nodes=[]):
         DialogueTemplate.__init__(self, id, DIALOGUE_TYPE_R_G_FOLLOWUP, template, relation, blanks, nodes,
