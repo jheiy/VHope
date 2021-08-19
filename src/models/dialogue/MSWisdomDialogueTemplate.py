@@ -2,7 +2,7 @@ from . import DialogueTemplate
 from src.constants import *
 
 
-class MSWisdomDialogueTemplate(DialogueTemplate):
+class MWisdomDialogueTemplate(DialogueTemplate):
 
     def __init__(self, id=-1, template=[], relation=[], blanks=[], nodes=[], dependent_nodes=[]):
         DialogueTemplate.__init__(self, id, DIALOGUE_TYPE_M_S_WISDOM, template, relation, blanks, nodes,
