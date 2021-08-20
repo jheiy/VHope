@@ -522,7 +522,6 @@ class EDENDialoguePlanner(DialoguePlanner):
                             
                             
                     elif self.labeled_perma == 'orange':
-                        print(low_perma)
                         if self.low_perma == "POS_P" or self.low_perma == "POS_R" or self.low_perma == "POS_M":
                             for x in self.concepts_topics:
                                 if x[2] == 'person':
