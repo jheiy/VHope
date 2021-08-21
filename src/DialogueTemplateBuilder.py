@@ -184,6 +184,38 @@ class DialogueTemplateBuilder:
          return MGeneralDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_A_GENERAL:
          return AGeneralDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_FEELING:
+         return PFeelingDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_ACT_WISDOM:
+         return ACTWisdomDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_R_WISDOM:
+         return RWisdomDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_M_WISDOM:
+         return MWisdomDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_A_WISDOM:
+         return AWisdomDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_P_S_WISDOM:
+         return PSWisdomDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_RM_S_WISDOM:
+         return RMSWisdomDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_A_S_WISDOM:
+         return ASWisdomDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_M_S_WISDOM:
+         return MSWisdomDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_E_G_FOLLOWUP_Y:
+         return EGFollowupYDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_E_G_FOLLOWUP_N:
+         return EGFollowupNDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_R_G_FOLLOWUP:
+         return RGFollowupDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_M_G_FOLLOWUP_Y:
+         return MGFollowupYDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_M_G_FOLLOWUP_N:
+         return MGFollowupNDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_A_G_FOLLOWUP_Y:
+         return AGFollowupYDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_A_G_FOLLOWUP_N:
+         return AGFollowupNDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       
       
       

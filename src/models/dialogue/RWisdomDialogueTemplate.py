@@ -1,11 +1,11 @@
 from . import DialogueTemplate
-from src.constants import DIALOGUE_TYPE_P_GENERAL
+from src.constants import *
 
 
-class PGeneralDialogueTemplate(DialogueTemplate):
+class RWisdomDialogueTemplate(DialogueTemplate):
 
     def __init__(self, id=-1, template=[], relation=[], blanks=[], nodes=[], dependent_nodes=[]):
-        DialogueTemplate.__init__(self, id, DIALOGUE_TYPE_P_GENERAL , template, relation, blanks, nodes,
+        DialogueTemplate.__init__(self, id, DIALOGUE_TYPE_R_WISDOM, template, relation, blanks, nodes,
                                   dependent_nodes)
 
     def get_template_to_use(self):

@@ -83,6 +83,23 @@ from .EGeneralDialogueTemplate import EGeneralDialogueTemplate
 from .RGeneralDialogueTemplate import RGeneralDialogueTemplate
 from .MGeneralDialogueTemplate import MGeneralDialogueTemplate
 from .AGeneralDialogueTemplate import AGeneralDialogueTemplate
+from .PFeelingDialogueTemplate import PFeelingDialogueTemplate
+from .ACTWisdomDialogueTemplate import ACTWisdomDialogueTemplate
+from .RWisdomDialogueTemplate import RWisdomDialogueTemplate
+from .MWisdomDialogueTemplate import MWisdomDialogueTemplate
+from .AWisdomDialogueTemplate import AWisdomDialogueTemplate
+from .PSWisdomDialogueTemplate import PSWisdomDialogueTemplate
+from .RMSWisdomDialogueTemplate import RMSWisdomDialogueTemplate
+from .ASWisdomDialogueTemplate import ASWisdomDialogueTemplate
+from .MSWisdomDialogueTemplate import MSWisdomDialogueTemplate
+from .EGFollowupYDialogueTemplate import EGFollowupYDialogueTemplate
+from .EGFollowupNDialogueTemplate import EGFollowupNDialogueTemplate
+from .RGFollowupDialogueTemplate import RGFollowupDialogueTemplate
+from .MGFollowupYDialogueTemplate import MGFollowupYDialogueTemplate
+from .MGFollowupNDialogueTemplate import MGFollowupNDialogueTemplate
+from .AGFollowupYDialogueTemplate import AGFollowupYDialogueTemplate
+from .AGFollowupNDialogueTemplate import AGFollowupNDialogueTemplate
+
 
 
 
