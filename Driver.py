@@ -204,8 +204,8 @@ while is_engaged:
     orsen.dialogue_planner.reset_new_world()
 
     # orsen_welcome()
-    temp_welcome = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
-    # temp_welcome = orsen.get_response(move_to_execute =  DIALOGUE_TYPE_PE_ADVICE)
+    # temp_welcome = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
+    temp_welcome = orsen.get_response(move_to_execute =  DIALOGUE_TYPE_R_G_FOLLOWUP)
    
     print("=========================================================")
     print("MHBOT" + ": " + temp_welcome)
