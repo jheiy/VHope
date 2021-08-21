@@ -366,6 +366,7 @@ class ORSEN:
 
         Logger.log_dialogue_model_basic("FINAL CHOSEN TEMPLATE: " + str(chosen_template))
         Logger.log_dialogue_model_basic("FINAL CHOSEN RESPONSE: " + str(response))
+        print(response)
 
         return response
 
