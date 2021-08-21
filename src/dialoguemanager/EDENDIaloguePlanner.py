@@ -749,7 +749,7 @@ class EDENDialoguePlanner(DialoguePlanner):
             final_emotion = self.occ_manager.get_final_emotion(emotions_found)
 
             # Logger.log_occ_values("CHOSEN EMOTION: " + emotions_found[len(emotions_found)-1].emotion)
-            Logger.log_occ_values("CHOSEN EMOTION: " + str(final_emotion.emotion))
+            Logger.log_occ_values("CHOSEN EMOTION: " + final_emotion.emotion)
 
             # return emotions_found[len(emotions_found)-1]
             return final_emotion

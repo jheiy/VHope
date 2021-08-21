@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `templates`;
 CREATE TABLE `templates` (
   `idtemplates` int NOT NULL AUTO_INCREMENT,
   `response_type` varchar(250) NOT NULL,
-  `template` varchar(500) NOT NULL,
+  `template` varchar(250) NOT NULL,
   `relations` varchar(250) DEFAULT NULL,
   `blank_types` varchar(250) DEFAULT NULL,
   `nodes` varchar(45) DEFAULT NULL,

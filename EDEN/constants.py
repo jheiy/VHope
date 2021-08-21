@@ -163,7 +163,7 @@ OCC_SIMPLIFY_SATISFACTION = [OCC_HOPE, OCC_SATISFACTION]
 # OCC_SIMPLIFY_SATISFACTION = [OCC_GRATIFICATION, OCC_SATISFACTION]
 
 """EMOTION SYNONYMS"""
-OCC_SYNONYM_DISTRESS =["upset", "distress", "distressed", "sad", "stressed"]
+OCC_SYNONYM_DISTRESS =["upset", "distress", "distressed", "sad"]
 OCC_SYNONYM_SORRY_FOR =["sorry", "sorry for"]
 OCC_SYNONYM_RESENTMENT =["irritated", "resent", "resentment", "annoyed"]
 OCC_SYNONYM_HOPE =["hopeful", "hope"]
