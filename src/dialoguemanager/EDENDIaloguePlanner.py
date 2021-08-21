@@ -186,6 +186,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                             self.is_end = True
                         else: 
                             next_move = DIALOGUE_TYPE_P_FEELING
+            elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_WELCOME:
+                next_move = DIALOGUE_TYPE_FOLLOWUP
             elif (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
                   last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS) and self.response.lower() in IS_END and self.ongoing_c_pumping:
                 print("CHECKMATE")
@@ -446,8 +448,6 @@ class EDENDialoguePlanner(DialoguePlanner):
                 return DIALOGUE_TYPE_PUMPING_GENERAL
             elif last_move.dialogue_type == DIALOGUE_TYPE_PE_ADVICE:
                 return DIALOGUE_TYPE_ACT_WISDOM
-            elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_WELCOME:
-                return DIALOGUE_TYPE_FOLLOWUP
             elif last_move.dialogue_type == DIALOGUE_TYPE_R_ADVICE:
                 return DIALOGUE_TYPE_R_WISDOM
             elif last_move.dialogue_type == DIALOGUE_TYPE_M_ADVICE:
