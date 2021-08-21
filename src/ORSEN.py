@@ -377,9 +377,9 @@ class ORSEN:
         move_to_execute = ""
 
         #set response in dialogue planner
-        # for x in response:
-        #     if x in punc:
-        #         response = response.replace(x, "")
+        for x in response:
+            if x in punc:
+                response = response.replace(x, "")
         self.dialogue_planner.response = response.lower()
         move_to_execute = ""
 
