@@ -66,6 +66,6 @@ class EmotionDescriptionEvent(DescriptionEvent):
         return pickled_event
 
     def __str__(self):
-        temp_str = "========== DESCRIPTION EMOTION EVENT FOUND ========== \n Event Seq No: " + str(self.event.sequence_number) + "\nEmotion: " + self.emotion
+        temp_str = "========== DESCRIPTION EMOTION EVENT FOUND ========== \n Event Seq No: " + str(self.event.sequence_number) + "\nEmotion: " + str(self.emotion)
 
         return temp_str
