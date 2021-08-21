@@ -99,7 +99,8 @@ from .MGFollowupYDialogueTemplate import MGFollowupYDialogueTemplate
 from .MGFollowupNDialogueTemplate import MGFollowupNDialogueTemplate
 from .AGFollowupYDialogueTemplate import AGFollowupYDialogueTemplate
 from .AGFollowupNDialogueTemplate import AGFollowupNDialogueTemplate
-
+from .FollowupDialogueTemplate import FollowupDialogueTemplate
+from .SAffirmDialogueTemplate import SAffirmDialogueTemplate
 
 
 

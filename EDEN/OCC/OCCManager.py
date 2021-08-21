@@ -816,7 +816,6 @@ class OCCManager():
 
         if curr_term is None:
             print("======= NO EMOTION FROM DATABASE: ", term_to_eval)
-            return None
 
 
         if term_to_eval in OCC_SYNONYM_DISTRESS:
@@ -861,17 +860,19 @@ class OCCManager():
             return OCC_SURPRISE
         if term_to_eval in OCC_SYNONYM_JOY:
             return OCC_JOY
-        if curr_term.joy == 1:
-            return OCC_JOY
-        if curr_term.anger == 1:
-            return OCC_ANGER
-        if curr_term.sadness == 1:
-            return OCC_DISTRESS
-        if curr_term.anticip == 1:
-            return OCC_HOPE
-        if curr_term.anticip == 1:
-            return OCC_HOPE
-        if curr_term.disgust == 1:
-            return OCC_DISAPPOINTMENT
+        
+        if curr_term is not None:
+            if curr_term.joy == 1:
+                return OCC_JOY
+            if curr_term.anger == 1:
+                return OCC_ANGER
+            if curr_term.sadness == 1:
+                return OCC_DISTRESS
+            if curr_term.anticip == 1:
+                return OCC_HOPE
+            if curr_term.anticip == 1:
+                return OCC_HOPE
+            if curr_term.disgust == 1:
+                return OCC_DISAPPOINTMENT
             
         return ""

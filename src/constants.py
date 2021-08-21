@@ -196,6 +196,8 @@ DIALOGUE_TYPE_M_G_FOLLOWUP_Y = "m_g_followup_y"
 DIALOGUE_TYPE_M_G_FOLLOWUP_N = "m_g_followup_n"
 DIALOGUE_TYPE_A_G_FOLLOWUP_Y = "a_g_followup_y"
 DIALOGUE_TYPE_A_G_FOLLOWUP_N = "a_g_followup_n"
+DIALOGUE_TYPE_FOLLOWUP = "followup"
+DIALOGUE_TYPE_S_AFFIRM = "share_affirm"
 
 """ORSEN"""
 DIALOGUE_TYPE_ORSEN_WELCOME = "orsen_welcome"
