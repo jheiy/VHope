@@ -162,7 +162,7 @@ class EDENDialoguePlanner(DialoguePlanner):
             elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO:
                 for token in tokens:
                     if token in IS_AFFIRM:
-                        next_move = DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP
+                        return DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP
                     else:
                         next_move = DIALOGUE_TYPE_MHBOT_WELCOME
             elif last_move.dialogue_type == DIALOGUE_TYPE_COUNSELING:
