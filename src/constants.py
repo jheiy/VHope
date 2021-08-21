@@ -34,7 +34,7 @@ FETCH_ALL = 2
 """ GENERIC RESPONSES """
 IS_AFFIRM = ['yes', 'yes.', 'yeah', 'yeah.', 'sure', 'sure.', 'yup', 'yup.', 'yep', 'yep.']
 IS_DENY = ['no', 'no.', 'nope', 'nope.']
-IS_END = ['bye', 'bye.', 'the end', 'the end.', 'STOP', 'that is it', 'no more', 'nope', 'what do you think'
+IS_END = ['bye', 'bye.', 'the end', 'the end.', 'STOP', 'that is it', 'no more', 'no more.', 'nope', 'what do you think'
           , 'done', 'nothing', 'i dont know', 'nothing.', 'i dont know.', 'that is it', 'that\'s it']
 IS_DONE_EXPLAINING = ['nothing', 'i dont know', 'nothing.', 'i dont know.']
 
