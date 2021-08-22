@@ -179,9 +179,10 @@ class EDENDialoguePlanner(DialoguePlanner):
                         next_move = DIALOGUE_TYPE_FEEDBACK_N
             elif last_move.dialogue_type == DIALOGUE_TYPE_S_AFFIRM:
                 for token in tokens:
-                    if self.response in IS_AFFIRM:
+                    if  token in IS_AFFIRM:
                         self.pump_ctr = 0
                     else:
+                        self.pump_ctr = 0
                         if self.is_label:
                             self.is_end = True
                         else: 
