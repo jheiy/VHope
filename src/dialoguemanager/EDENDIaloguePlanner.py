@@ -198,6 +198,7 @@ class EDENDialoguePlanner(DialoguePlanner):
             # elif self.ongoing_c_pumping and self.response.lower() in IS_DONE_EXPLAINING:
             if not self.ongoing_c_pumping and self.response.lower() in IS_END and (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
                   last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS or last_move.dialogue_type == DIALOGUE_TYPE_FOLLOWUP) or self.is_end:
+                self.is_end = False
                 if not self.is_label:
                     print(self.is_label)
                     self.is_label = False
