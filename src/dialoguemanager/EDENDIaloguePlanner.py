@@ -29,6 +29,8 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.pumping_type = ''
         self.concepts_topics = None
         self.curr_emotion = None
+        self.pump_ctr = 0
+        self.is_end = False
 
     def reset_new_world(self):
         self.world = None
@@ -159,8 +161,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                         next_move = DIALOGUE_TYPE_E_END 
             elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_INTRO:
                 for token in tokens:
-                    if self.response in IS_AFFIRM:
-                        next_move = DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP
+                    if token in IS_AFFIRM:
+                        return DIALOGUE_TYPE_MHBOT_INTRO_FOLLOWUP
                     else:
                         next_move = DIALOGUE_TYPE_MHBOT_WELCOME
             elif last_move.dialogue_type == DIALOGUE_TYPE_COUNSELING:
@@ -175,15 +177,30 @@ class EDENDialoguePlanner(DialoguePlanner):
                         next_move = DIALOGUE_TYPE_FEEDBACK_Y
                     else:
                         next_move = DIALOGUE_TYPE_FEEDBACK_N
+            elif last_move.dialogue_type == DIALOGUE_TYPE_S_AFFIRM:
+                for token in tokens:
+                    if  token in IS_AFFIRM:
+                        self.pump_ctr = 0
+                    else:
+                        self.pump_ctr = 0
+                        if self.is_label:
+                            self.ongoing_c_pumping = False
+                            self.is_end = True
+                        else: 
+                            next_move = DIALOGUE_TYPE_P_FEELING
+            elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_WELCOME:
+                next_move = DIALOGUE_TYPE_FOLLOWUP
             elif (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
-                  last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS) and self.response.lower() in IS_END and self.ongoing_c_pumping:
+                  last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS or 
+                  last_move.dialogue_type == DIALOGUE_TYPE_FOLLOWUP) and self.response.lower() in IS_END and self.ongoing_c_pumping:
                 print("CHECKMATE")
                 if destructive:
                     self.ongoing_c_pumping = False
                 # return DIALOGUE_TYPE_PUMPING_GENERAL
             # elif self.ongoing_c_pumping and self.response.lower() in IS_DONE_EXPLAINING:
             if not self.ongoing_c_pumping and self.response.lower() in IS_END and (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
-                  last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS):
+                  last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_SPECIFIC or last_move.dialogue_type == DIALOGUE_TYPE_E_EMPHASIS or last_move.dialogue_type == DIALOGUE_TYPE_FOLLOWUP) or self.is_end:
+                self.is_end = False
                 if not self.is_label:
                     print(self.is_label)
                     self.is_label = False
@@ -402,7 +419,15 @@ class EDENDialoguePlanner(DialoguePlanner):
         last_move = self.get_last_dialogue_move()
 
         if last_move is not None:
+            print(self.pump_ctr)
+            print(self.pump_ctr == 5)
             print("LAST MOVE IS: ", last_move.dialogue_type)
+            
+            if self.pump_ctr == 5:
+                print("RETURN SOMETHING")
+                self.ongoing_c_pumping = False
+                return DIALOGUE_TYPE_S_AFFIRM
+            
             if self.ongoing_c_pumping:
                 print("currently ongoing c pumping: ", self.response.lower())
             ###START EDEN
@@ -697,7 +722,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                                 set_to_true.append(DIALOGUE_TYPE_M_PUMP)
                                 self.pumping_type = 'isFun'     
                     
-                    
+                    self.pump_ctr += 1
+                    print("PUMPING_CTR IS", self.pump_ctr)
                     if len(self.get_usable_templates(DIALOGUE_TYPE_PUMPING_SPECIFIC)) > 0 and self.pumping_type == '':
                         set_to_true.append(DIALOGUE_TYPE_PUMPING_SPECIFIC)
                     set_to_true.append(DIALOGUE_TYPE_PUMPING_GENERAL)

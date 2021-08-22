@@ -371,10 +371,14 @@ class ORSEN:
 
     def perform_eden_dialogue_manager(self, response, preselected_move=""):
         print('--==--==-- Perform EDEN Dialogue Manager --==--==--')
+        punc = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
         curr_event = None
         move_to_execute = ""
 
         #set response in dialogue planner
+        for x in response:
+            if x in punc:
+                response = response.replace(x, "")
         self.dialogue_planner.response = response.lower()
         move_to_execute = ""
 

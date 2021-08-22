@@ -216,10 +216,10 @@ class DialogueTemplateBuilder:
          return AGFollowupYDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       elif dialogue_type == DIALOGUE_TYPE_A_G_FOLLOWUP_N:
          return AGFollowupNDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
-      
-      
-      
-      
+      elif dialogue_type == DIALOGUE_TYPE_FOLLOWUP:
+         return FollowupDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
+      elif dialogue_type == DIALOGUE_TYPE_S_AFFIRM:
+         return SAffirmDialogueTemplate(id, templates, relations, blanks, nodes, dependent_nodes)
       
       
       
