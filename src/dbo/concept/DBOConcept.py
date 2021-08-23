@@ -154,7 +154,7 @@ class DBOConcept(ABC):
             .from_(self.table_reference) \
             .select("*") \
             .where(
-            ((self.table_reference.first == word) | (self.table_reference.second == word)) & (
+            (self.table_reference.first == word) & (
                         self.table_reference.relation == relation)
         )
 

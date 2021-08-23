@@ -33,7 +33,7 @@ class ContentDetermination:
     def perform_content_determination(self, dialogue_history=[]):
         #choose template
         chosen_template = self.choose_template()
-
+        
         print(self.choose_template())
         #fill template to use
         # if template has no fillable blanks, enter this particular if statement
@@ -49,7 +49,8 @@ class ContentDetermination:
         elif (self.move_to_execute == DIALOGUE_TYPE_PE_ADVICE or self.move_to_execute == DIALOGUE_TYPE_PRM_SUGGEST or 
             self.move_to_execute == DIALOGUE_TYPE_A_ADVICE or self.move_to_execute == DIALOGUE_TYPE_M_SUGGEST or 
             self.move_to_execute == DIALOGUE_TYPE_A_SUGGEST or self.move_to_execute == DIALOGUE_TYPE_R_ADVICE or 
-            self.move_to_execute == DIALOGUE_TYPE_M_ADVICE or self.move_to_execute == DIALOGUE_TYPE_E_SUGGEST):
+            self.move_to_execute == DIALOGUE_TYPE_M_ADVICE or self.move_to_execute == DIALOGUE_TYPE_E_SUGGEST or
+            self.move_to_execute == DIALOGUE_TYPE_ACT_WISDOM or self.move_to_execute == DIALOGUE_TYPE_P_S_WISDOM):
             response = chosen_template.fill_blanks(self.world, self.subj, self.lowest_perma)
             
         elif self.move_to_execute == DIALOGUE_TYPE_M_PUMP:

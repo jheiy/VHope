@@ -10,10 +10,10 @@ class ACTWisdomDialogueTemplate(DialogueTemplate):
         DialogueTemplate.__init__(self, id, DIALOGUE_TYPE_ACT_WISDOM, template, relation, blanks, nodes, dependent_nodes);
 
 
-    def fill_blanks(self, word, subj, lowest_perma):
+    def fill_blanks(self, world, subj, lowest_perma):
         response = self.template
         # subj = 'work'
-
+        # lowest_perma = 'green'
 
         response = [x.replace("1", subj) for x in response]   
 
