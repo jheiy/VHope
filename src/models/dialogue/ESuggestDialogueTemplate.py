@@ -10,6 +10,7 @@ class ESuggestDialogueTemplate(DialogueTemplate):
 
 
     def fill_blanks(self, world, subj, lowest_perma):
+        # subj = 'work'
         response = self.template
         # subj = 'Activity'
 
