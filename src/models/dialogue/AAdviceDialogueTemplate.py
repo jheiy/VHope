@@ -10,7 +10,7 @@ class AAdviceDialogueTemplate(DialogueTemplate):
 
     def fill_blanks(self, world, subj, lowest_perma):
         response = self.template
-        subj = 'ACCOMPLISHMENT'
+        # subj = 'success'
 
         response = [x.replace("1", subj) for x in response]     
 

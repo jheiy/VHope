@@ -120,6 +120,14 @@ def start_storytelling():
             orsen_response = orsen.get_response("", move_to_execute = DIALOGUE_TYPE_RECOLLECTION)
             # orsen_response = orsen_response + orsen.get_response("", move_to_execute = DIALOGUE_TYPE_RECOLLECTION)
             print("=========================================================")
+            print("EREN" + ": " + orsen_response)
+            print("=========================================================")
+            Logger.log_conversation(CURR_ORSEN_VERSION + ": " + str(orsen_response))
+        elif CURR_ORSEN_VERSION == MHBOT:
+            # orsen_response = orsen.get_response("", move_to_execute = DIALOGUE_TYPE_E_END)
+            orsen_response = orsen.get_response("", move_to_execute = DIALOGUE_TYPE_RECOLLECTION)
+            # orsen_response = orsen_response + orsen.get_response("", move_to_execute = DIALOGUE_TYPE_RECOLLECTION)
+            print("=========================================================")
             print("MHBOT" + ": " + orsen_response)
             print("=========================================================")
             Logger.log_conversation(CURR_ORSEN_VERSION + ": " + str(orsen_response))
@@ -203,9 +211,9 @@ while is_engaged:
     orsen.world.reset_world()
     orsen.dialogue_planner.reset_new_world()
 
-    # orsen_welcome()
+    orsen_welcome()
     temp_welcome = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
-    # temp_welcome = orsen.get_response(move_to_execute =  DIALOGUE_TYPE_ACT_WISDOM)
+    # temp_welcome = orsen.get_response(move_to_execute =  DIALOGUE_TYPE_M_PUMP)
    
     print("=========================================================")
     print("MHBOT" + ": " + temp_welcome)

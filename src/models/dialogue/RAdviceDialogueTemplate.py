@@ -15,16 +15,16 @@ class RAdviceDialogueTemplate(DialogueTemplate):
     def fill_blanks(self, world, subj, lowest_perma):
         print("blanks", self.blanks)
         response = self.template
-        # subj = 'person'
+        # subj = 'teacher'
         # lowest_perma = 'POS_M'
         
         custom_concept = DBOConceptGlobalImpl()
         concepts = []
-        for x in custom_concept.get_concept_by_relation('person', 'CapableOf'):
+        for x in custom_concept.get_concept_by_relation(subj, 'CapableOf'):
             concepts.append(x[3])
             
-        response = [x.replace("1", random.choice(concepts).replace("_", " ")) for x in response]        
-        response = [x.replace("2", subj) for x in response]
+        response = [x.replace("2", random.choice(concepts).replace("_", " ")) for x in response]        
+        response = [x.replace("1", subj) for x in response]
         
         return response
 

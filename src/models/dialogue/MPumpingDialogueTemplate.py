@@ -16,8 +16,8 @@ class MPumpingDialogueTemplate(DialogueTemplate):
         print("blanks", self.blanks)
         print("templates", self.template)
         response = self.template
-        # subj = 'bus'
-        # pumping_type = 'AtPlace'
+        # subj = 'playing_basketball'
+        # pumping_type = 'isFun'
         # lowest_perma = 'POS_M'
         
         custom_concept = DBOConceptGlobalImpl()
@@ -36,7 +36,8 @@ class MPumpingDialogueTemplate(DialogueTemplate):
                     concepts.append(x[1])
             else:
                 concept = custom_concept.get_related_concepts(subj, 'fun')
-                concepts.append(concept.first)
+                if concept:
+                    concepts.append(concept.first)
 
             
         response = [x.replace("1", random.choice(concepts).replace("_", " ")) for x in response]
