@@ -11,21 +11,30 @@ import telebot
 TOKEN = 'Ask Jaime'
 
 bot = telebot.TeleBot(TOKEN)
-orsen = ORSEN()
+# orsen = ORSEN()
 Logger.setup_loggers()
 participants = {}
 
-class MHBot_triggers():
-    is_engaged = False
-    is_end_story = False
+# class MHBot_triggers():
+#     is_engaged = False
+#     is_end_story = False
 
-triggers = MHBot_triggers()
+# triggers = MHBot_triggers()
 
+# TODO: Review Multithread libraries
 class Participant:
     def __init__(self, chat_id, first_name, last_name):
         self.chat_id = chat_id
         self.first_name = first_name
         self.last_name = last_name
+        self.is_engaged = False
+        self.is_end_story = True
+
+    def open_orsen(self):
+        self.orsen = ORSEN()
+    
+    # def get_orsen(self):
+    #     return self.orsen_instance
 
 def clean_user_input(response):
     response = response.strip()
@@ -41,62 +50,68 @@ def opening_message(message):
     # bot.send_message(message.chat.id, message.from_user)
     participants["{0}".format(message.chat.id)] = Participant(message.chat.id, message.from_user.first_name, message.from_user.last_name)
     # bot.send_message(participants["{0}".format(message.chat.id)].chat_id, text=participants["{0}".format(message.chat.id)].first_name)
+    # print(participants)
     
 @bot.message_handler(commands=['start_chatting'])
 def start_conversation(message):
+    id = "{0}".format(message.chat.id)
     if message.chat.id not in participants.keys():
-        participants["{0}".format(message.chat.id)] = Participant(message.chat.id, message.from_user.first_name, message.from_user.last_name)
+        participants[id] = Participant(message.chat.id, message.from_user.first_name, message.from_user.last_name)
     # bot.send_message(participants["{0}".format(message.chat.id)].chat_id, text="Hi, " + participants["{0}".format(message.chat.id)].first_name)
-    triggers.is_engaged = True
-    triggers.is_end_story = False
-    # bot.reply_to(message.message_id, message.text)
-    orsen.initialize_story_prerequisites()
-    orsen.world.reset_world()
-    orsen.dialogue_planner.reset_new_world()
+    participants[id].is_engaged = True
+    participants[id].is_end_story = False
+    participants[id].open_orsen()
+        # bot.reply_to(message.message_id, message.text)
+    participants[id].orsen.initialize_story_prerequisites()
+    participants[id].orsen.world.reset_world()
+    participants[id].orsen.dialogue_planner.reset_new_world()
 
-    temp_welcome = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
+    temp_welcome = participants[id].orsen.get_response(move_to_execute = participants[id].orsen.dialogue_planner.get_welcome_message_type())
     bot.send_message(participants["{0}".format(message.chat.id)].chat_id, temp_welcome)
     # print(triggers.is_engaged)
 
 @bot.message_handler(commands=['stop'])
 def emergency_stop(message):
-    triggers.is_end_story = True
-    triggers.is_engaged = False
+    id = "{0}".format(message.chat.id)
+    participants[id].is_engaged = True
+    participants[id].is_end_story = False
     bot.send_message(participants["{0}".format(message.chat.id)].chat_id, 'Okay. If you want to start a new conversation with me, you can start by typing /start_chatting .')
     pass
 
 @bot.message_handler(func=lambda m:True)
 def continue_conversation(message):
-    if triggers.is_engaged and not triggers.is_end_story == True:
+    id = "{0}".format(message.chat.id)
+    if participants[id].is_engaged and not participants[id].is_end_story == True:
         user_input = message.text
 
         # Logger.log_conversation("LATENCY TIME (seconds): " + str(time.time() - start_time))
         user_input = clean_user_input(user_input)
         Logger.log_conversation(participants["{0}".format(message.chat.id)].first_name + " " + " : " + str(user_input))
 
-        triggers.is_end_story = orsen.is_end_story(user_input)        
+        participants[id].is_end_story = participants[id].orsen.is_end_story(user_input)        
 
-        if not triggers.is_end_story:
+        if not participants[id].is_end_story:
             # no login functionalities yet; can be looked into in future development updates
             # try:
             #     Pickle.pickle_world_wb(pickle_filepath, orsen.world.get_pickled_world())
             # except Exception as e:
             #     Logger.log_conversation("ERROR: " + str(e))
             # print('HELLO')
-            orsen_response = orsen.get_response(user_input)
-            bot.send_message(participants["{0}".format(message.chat.id)].chat_id, orsen_response)
+            orsen_response = participants[id].orsen.get_response(user_input)
+            bot.send_message(participants[id].chat_id, orsen_response)
             Logger.log_conversation("MHBot" + ": " + str(orsen_response))
             
-        elif triggers.is_end_story:
-            bot.send_message(participants["{0}".format(message.chat.id)].chat_id, "Thank you for chatting with me today. If you want to start another conversation with me, you can type /start_chatting .")
+        elif participants[id].is_end_story:
+            bot.send_message(participants[id].chat_id, "Thank you for chatting with me today. If you want to start another conversation with me, you can type /start_chatting .")
             Logger.log_conversation("MHBot: Thank you for chatting with me today. If you want to start another conversation with me, you can type /start_chatting .")
             pass
 
-    elif triggers.is_engaged is False:
+    elif participants[id].is_engaged is False:
         if message.chat.id not in participants.keys():
-            participants["{0}".format(message.chat.id)] = Participant(message.chat.id, message.from_user.first_name, message.from_user.last_name)
-        bot.send_message(participants["{0}".format(message.chat.id)].chat_id, "No current conversation ongoing. Let's talk about your day by typing /start_chatting .")
+            participants[id] = Participant(message.chat.id, message.from_user.first_name, message.from_user.last_name)
+        bot.send_message(participants[id].chat_id, "No current conversation ongoing. Let's talk about your day by typing /start_chatting .")
         pass
     
 print('success!')
-bot.polling()
+# timeout is 1 hr (1 second * 60 -> 60 seconds * 60 -> 60 minutes)
+bot.polling(timeout=1*60*60)
