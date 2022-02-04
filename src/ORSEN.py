@@ -88,7 +88,7 @@ class ORSEN:
             Logger.log_conversation("ERROR: " + str(e))
             Logger.log_dialogue_model("ERROR: " + str(e))
             orsen_reply = "I see. What else can you say about that?"
-            Logger.log_dialogue_model("FINAL CHOSEN RESPONSE " + result)
+            Logger.log_dialogue_model("FINAL CHOSEN RESPONSE " + orsen_reply)
 
         #Logger.log_conversation("ORSEN LATENCY TIME (seconds): " + str(time.time() - start_time))
         
