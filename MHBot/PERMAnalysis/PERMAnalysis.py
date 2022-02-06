@@ -1,7 +1,7 @@
 import csv, enchant, nltk
 from MHBot.PERMAnalysis.Unigram import unigram
 from nltk.tokenize import word_tokenize
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from numpy import array
 import numpy as np
 from scipy.stats import skew
