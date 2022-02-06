@@ -9,9 +9,13 @@ from src.dialoguemanager import DialoguePlanner
 from src.models.concept import LocalConcept
 from src.models.dialogue.constants import DIALOGUE_LIST, DialogueHistoryTemplate, EDEN_DIALOGUE_LIST
 from src.models.dialogue import *
-from MHBot.PERMAnalysis.PERMAnalysis import PERMAnalysis
 import time
 import numpy as np
+
+if v_mode:
+    from VHope.PERMA import PERMAnalysis
+else:
+    from MHBot.PERMAnalysis.PERMAnalysis import PERMAnalysis
 
 class EDENDialoguePlanner(DialoguePlanner):
 

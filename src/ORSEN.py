@@ -14,7 +14,11 @@ from src.textunderstanding.InputDecoder import InputDecoder
 from src.dialoguemanager import *
 from src.models.events import *
 from EDEN.OCC import OCCManager
-from MHBot.PERMAnalysis.PERMAnalysis import PERMAnalysis
+
+if v_mode:
+    from VHope.PERMA import PERMAnalysis
+else:
+    from MHBot.PERMAnalysis.PERMAnalysis import PERMAnalysis
 
 
 class ORSEN:
