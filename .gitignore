@@ -18,3 +18,22 @@ emotion classification/
 venv/
 
 .spyproject/
+VHope/FTER/fter-medium-2/checkpoint-10000/config.json
+VHope/FTER/fter-medium-2/checkpoint-10000/merges.txt
+VHope/FTER/fter-medium-2/checkpoint-10000/optimizer.pt
+VHope/FTER/fter-medium-2/checkpoint-10000/pytorch_model.bin
+VHope/FTER/fter-medium-2/checkpoint-10000/scheduler.pt
+VHope/FTER/fter-medium-2/checkpoint-10000/special_tokens_map.json
+VHope/FTER/fter-medium-2/checkpoint-10000/tokenizer.json
+VHope/FTER/fter-medium-2/checkpoint-10000/tokenizer_config.json
+VHope/FTER/fter-medium-2/checkpoint-10000/training_args.bin
+VHope/FTER/fter-medium-2/checkpoint-10000/vocab.json
+VHope/FTER/fter-medium-2/config.json
+VHope/FTER/fter-medium-2/eval_results.txt
+VHope/FTER/fter-medium-2/merges.txt
+VHope/FTER/fter-medium-2/pytorch_model.bin
+VHope/FTER/fter-medium-2/special_tokens_map.json
+VHope/FTER/fter-medium-2/tokenizer.json
+VHope/FTER/fter-medium-2/tokenizer_config.json
+VHope/FTER/fter-medium-2/training_args.bin
+VHope/FTER/fter-medium-2/vocab.json
