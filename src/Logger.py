@@ -2,7 +2,7 @@ import datetime
 import logging
 import os
 
-from src.constants import CONVERSATION_LOG, INFORMATION_EXTRACTION_LOG, DIALOGUE_MODEL_LOG, EVENT_CHAIN_LOG, EMOTION_CLASSIFICATION, WELLBEING, DUMP_LOG
+from src.constants import CONVERSATION_LOG, INFORMATION_EXTRACTION_LOG, DIALOGUE_MODEL_LOG, EVENT_CHAIN_LOG, EMOTION_CLASSIFICATION, WELLBEING, VHOPE
 class Logger:
 
     def __init__(self):
@@ -18,13 +18,14 @@ class Logger:
         #
         # Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../logs/emotion classification/' + date + '.txt')
 
-        Logger.__setup_logger__(CONVERSATION_LOG, '../MHBot/logs/conversation/' + date + '.txt')
+        Logger.__setup_logger__(CONVERSATION_LOG, '../VHope/logs/conversation/' + date + '.txt')
+        Logger.__setup_logger_basic__(DIALOGUE_MODEL_LOG, '../VHope/logs/dialogue model/' + date + '.txt')
+        Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../VHope/logs/emotion classification/' + date + '.txt')
+        Logger.__setup_logger_basic__(EVENT_CHAIN_LOG, '../VHope/logs/event chain/' + date + '.txt')
         Logger.__setup_logger_basic__(INFORMATION_EXTRACTION_LOG,
-                                      '../MHBot/logs/information extraction/' + date + '.txt')
-        Logger.__setup_logger_basic__(DIALOGUE_MODEL_LOG, '../MHBot/logs/dialogue model/' + date + '.txt')
-        Logger.__setup_logger_basic__(EVENT_CHAIN_LOG, '../MHBot/logs/event chain/' + date + '.txt')
-        Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../MHBot/logs/emotion classification/' + date + '.txt')
-        Logger.__setup_logger_basic__(WELLBEING, '../MHBot/logs/wellbeing/' + date + '.txt')
+                                      '../VHope/logs/information extraction/' + date + '.txt')
+        Logger.__setup_logger_basic__(WELLBEING, '../VHope/logs/wellbeing/' + date + '.txt')
+        Logger.__setup_logger_basic__(VHOPE, '../VHope/logs/vhope/' + date + '.txt')
 
     @staticmethod
     def __setup_logger__(name, log_file, level=logging.INFO):

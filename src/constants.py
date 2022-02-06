@@ -4,6 +4,9 @@ ORSEN2 = "ORSEN2"
 EDEN = "EREN"
 MHBOT = "MHBOT"
 
+"""TRUE IF USING VHOPE or NOT"""
+v_mode = True
+
 """UPDATE DEPENDING ON THE MODULE TO BE USED"""
 CURR_ORSEN_VERSION = EDEN
 
@@ -15,6 +18,7 @@ EVENT_CHAIN_LOG = "event chain"
 EMOTION_CLASSIFICATION = "emotion classification"
 WELLBEING = "wellbeing"
 DUMP_LOG = "dump"
+VHOPE = "vhope_logs"
 
 """ PACKAGE VERSIONING CONTROL """
 SPACY_VERSION = '2.1.0'
