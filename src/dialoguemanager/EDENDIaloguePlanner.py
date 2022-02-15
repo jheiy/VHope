@@ -825,4 +825,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         return self.pumping_type
     
     def get_welcome_message_type(self):
-        return DIALOGUE_TYPE_MHBOT_INTRO
+        if v_mode:
+            return DIALOGUE_TYPE_VHOPE_INTRO
+        else:
+            return DIALOGUE_TYPE_MHBOT_INTRO
