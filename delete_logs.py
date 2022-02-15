@@ -1,6 +1,6 @@
 import os, shutil
 
-folder = ['logs/conversation', 'logs/dialogue model', 'logs/emotion classification', 'logs/event chain', 'logs/information extraction', 'logs/user world', 'logs/vhope']
+folder = ['logs/conversation', 'logs/dialogue model', 'logs/emotion classification', 'logs/event chain', 'logs/information extraction','logs/wellbeing', 'logs/user world', 'logs/vhope']
 
 for names in folder:
     for filename in os.listdir(names):
