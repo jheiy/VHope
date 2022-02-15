@@ -18,14 +18,14 @@ class Logger:
         #
         # Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../logs/emotion classification/' + date + '.txt')
 
-        Logger.__setup_logger__(CONVERSATION_LOG, '../VHope/logs/conversation/' + date + '.txt')
-        Logger.__setup_logger_basic__(DIALOGUE_MODEL_LOG, '../VHope/logs/dialogue model/' + date + '.txt')
-        Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../VHope/logs/emotion classification/' + date + '.txt')
-        Logger.__setup_logger_basic__(EVENT_CHAIN_LOG, '../VHope/logs/event chain/' + date + '.txt')
+        Logger.__setup_logger__(CONVERSATION_LOG, '../jacky/Documents/GitHub/VHope/logs/conversation/' + date + '.txt')
+        Logger.__setup_logger_basic__(DIALOGUE_MODEL_LOG, '../jacky/Documents/GitHub/VHope/logs/dialogue model/' + date + '.txt')
+        Logger.__setup_logger_basic__(EMOTION_CLASSIFICATION, '../jacky/Documents/GitHub/VHope/logs/emotion classification/' + date + '.txt')
+        Logger.__setup_logger_basic__(EVENT_CHAIN_LOG, '../jacky/Documents/GitHub/VHope/logs/event chain/' + date + '.txt')
         Logger.__setup_logger_basic__(INFORMATION_EXTRACTION_LOG,
-                                      '../VHope/logs/information extraction/' + date + '.txt')
-        Logger.__setup_logger_basic__(WELLBEING, '../VHope/logs/wellbeing/' + date + '.txt')
-        Logger.__setup_logger_basic__(VHOPE, '../VHope/logs/vhope/' + date + '.txt')
+                                      '../jacky/Documents/GitHub/VHope/logs/information extraction/' + date + '.txt')
+        Logger.__setup_logger_basic__(WELLBEING, '../jacky/Documents/GitHub/VHope/logs/wellbeing/' + date + '.txt')
+        Logger.__setup_logger_basic__(VHOPE, '../jacky/Documents/GitHub/VHope/logs/vhope/' + date + '.txt')
 
     @staticmethod
     def __setup_logger__(name, log_file, level=logging.INFO):
@@ -137,6 +137,8 @@ class Logger:
         logger = logging.getLogger(WELLBEING)
         logger.info("  >> " + str(content))
 
-
-
-
+    # Logger for VHope
+    @staticmethod
+    def V_log(content):
+        logger = logging.getLogger(VHOPE)
+        logger.info(content)

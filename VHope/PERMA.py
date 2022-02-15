@@ -1,10 +1,11 @@
+import sys
+sys.path.append('/home/jacky/Documents/GitHub/VHope')
+
 import csv, enchant, nltk      # pip install pyenchant
 from Unigram import unigram
 from nltk.tokenize import word_tokenize
 from numpy import array
 import numpy as np
-import sys
-sys.path.append('/home/jacky/Documents/GitHub/Mod_ORSEN_v2')
 from src import Logger, EVENT_ACTION, WELLBEING
 # nltk.download('punkt')
 

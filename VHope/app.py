@@ -80,4 +80,4 @@ def get_bot_response():
         print("HISTORY: " + session['history'])
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0") # host="0.0.0.0" for running on own ip address
+    app.run(host = "0.0.0.0") # host="0.0.0.0" for running on own ip address
