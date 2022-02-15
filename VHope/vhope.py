@@ -8,7 +8,6 @@ from src.constants import *
 from src.ORSEN import ORSEN
 from src.textunderstanding.InputDecoder import InputDecoder
 
-import time
 from flask import request, session
 
 orsen = ORSEN()
@@ -40,7 +39,7 @@ class VHope:
 
         # welcome_msg = "Hello, I am VHope. Please send me a message."
         welcome_msg = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
-        Logger.V_log("EREN >> " + welcome_msg)
+        Logger.V_log("MHBOT >> " + welcome_msg)
         session['history'] = welcome_msg
 
         return welcome_msg
@@ -62,13 +61,13 @@ class VHope:
         else:
             response_text = orsen.get_response(usr_text)
 
-        # if may emotion, check well-being
-        print("EMOTION TYPE " + str(type(orsen.world.curr_emotion_event.emotion)))
+        # if with emotion, check well-being
         if orsen.world.curr_emotion_event.emotion != None:
             Logger.V_log("EMOTION: " + orsen.world.curr_emotion_event.emotion)
+            print("EMOTION TYPE " + str(type(orsen.world.curr_emotion_event.emotion)))
 
         print("J: REPONSE TEXT= " + response_text)
-        Logger.V_log("EREN >> " + response_text)
+        Logger.V_log("MHBOT RESPONSE >> " + response_text)
         session['history'] = session['history'] + " eof " + response_text
 
         return response_text

@@ -91,8 +91,13 @@ class ORSEN:
         except Exception as e:
             Logger.log_conversation("ERROR: " + str(e))
             Logger.log_dialogue_model("ERROR: " + str(e))
+
             orsen_reply = "I see. What else can you say about that?"
             Logger.log_dialogue_model("FINAL CHOSEN RESPONSE " + orsen_reply)
+
+            if(v_mode):
+                Logger.V_log("!! ERROR: " + str(e))
+                Logger.V_log("EREN MOVE >> general pumping")
 
         #Logger.log_conversation("ORSEN LATENCY TIME (seconds): " + str(time.time() - start_time))
         
@@ -303,7 +308,7 @@ class ORSEN:
         if CURR_ORSEN_VERSION == ORSEN1 or CURR_ORSEN_VERSION == ORSEN2:
             response = self.perform_orsen2_dialogue_manager(response, preselected_move)
 
-        elif CURR_ORSEN_VERSION == EDEN:
+        elif CURR_ORSEN_VERSION == EDEN: # used for VHope too
             response = self.perform_eden_dialogue_manager(response, preselected_move)
             
         elif CURR_ORSEN_VERSION == MHBOT:
@@ -392,16 +397,25 @@ class ORSEN:
             move_to_execute = preselected_move
             print("----------PRESELECTED: ", move_to_execute)
 
+            if(v_mode):
+                Logger.V_log("EREN MOVE >> preselected - " + str(move_to_execute))
+
         elif self.dialogue_planner.check_auto_response(destructive = False, emotion_event = self.world.curr_emotion_event) != "":
             # check if trigger phrases, affirm, deny responses
             move_to_execute = self.dialogue_planner.check_auto_response(emotion_event = self.world.curr_emotion_event)
             print("----------AUTO: ", move_to_execute)
 
+            if(v_mode):
+                Logger.V_log("EREN MOVE >> auto - " + str(move_to_execute))
+
         # regardless if model is done or not, undergo text understanding
         elif self.dialogue_planner.check_based_prev_move(destructive = False) != "":
             self.perform_text_understanding(response)
             move_to_execute = self.dialogue_planner.check_based_prev_move()
-            print("----------BASED ON PREV MOVE: ", move_to_execute)            
+            print("----------BASED ON PREV MOVE: ", move_to_execute)
+
+            if(v_mode):
+                Logger.V_log("EREN MOVE >> on previous - " + str(move_to_execute))       
             
         else:
             self.perform_text_understanding(response)
@@ -456,6 +470,10 @@ class ORSEN:
                 #for emphasis
                 self.dialogue_planner.curr_event = self.world.curr_emotion_event
                 move_to_execute = new_move_from_old
+
+            
+            if(v_mode):
+                Logger.V_log("EREN MOVE >> new from event - " + str(move_to_execute))
                 
         if self.dialogue_planner.curr_event:
             print("HATDOG")
