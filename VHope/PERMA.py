@@ -1,6 +1,9 @@
 import sys
 sys.path.append('/home/jacky/Documents/GitHub/VHope')
 
+# import os
+# print(os.getcwd())
+
 import csv, enchant, nltk      # pip install pyenchant
 from Unigram import unigram
 from nltk.tokenize import word_tokenize
@@ -50,10 +53,10 @@ class PERMAnalysis:
         
         bad_chars = [';', ':', '!', '*', '.', ',']
         d = enchant.Dict("en_US")
-        lex = open("FTER/permaV3_dd.csv", 'rt', encoding='utf-8')
+        lex = open("Documents/GitHub/VHope/VHope/permaV3_dd.csv", 'rt', encoding='utf-8')
         reader = csv.reader(lex)
-        # nrc_lex = open("nrc_perma_lexicon.csv", 'rt', encoding='utf-8')
-        # nrc_reader = csv.reader(nrc_lex)
+        nrc_lex = open("Documents/GitHub/VHope/VHope/nrc_perma_lexicon.csv", 'rt', encoding='utf-8')
+        nrc_reader = csv.reader(nrc_lex)
         pos_p = pos_e = pos_r = pos_m = pos_a = neg_p = neg_e = neg_r = neg_m = neg_a = 0
         unigrams = []
         
@@ -66,10 +69,10 @@ class PERMAnalysis:
                     unigrams.append(unigram(row))
                     senti_dict[row[1]]['score_list'].append(float(row[2]))
 
-        # for row in nrc_reader:
-        #     if row[4] != '-' and row[4] != 'perma_score' and row[1] != '':
-        #         unigrams.append(unigram(row))
-        #         senti_dict[row[3]]['score_list'].append(float(row[4]))
+        for row in nrc_reader:
+            if row[4] != '-' and row[4] != 'perma_score' and row[1] != '':
+                unigrams.append(unigram(row))
+                senti_dict[row[3]]['score_list'].append(float(row[4]))
         
         words = word_tokenize(sample_text)
         # print(words)
