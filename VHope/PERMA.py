@@ -32,16 +32,16 @@ class PERMAnalysis:
 
     def logPERMA(self):
         Logger.V_log('PERMA SCORES >>')
-        Logger.V_log('POS_P: ' + str(self.senti_dict['POS_P']['score']))
-        Logger.V_log('POS_E: ' + str(self.senti_dict['POS_E']['score']))
-        Logger.V_log('POS_R: ' + str(self.senti_dict['POS_R']['score']))
-        Logger.V_log('POS_M: ' + str(self.senti_dict['POS_M']['score']))
-        Logger.V_log('POS_A: ' + str(self.senti_dict['POS_A']['score']))
-        Logger.V_log('NEG_P: ' + str(self.senti_dict['NEG_P']['score']))
-        Logger.V_log('NEG_E: ' + str(self.senti_dict['NEG_E']['score']))
-        Logger.V_log('NEG_R: ' + str(self.senti_dict['NEG_R']['score']))
-        Logger.V_log('NEG_M: ' + str(self.senti_dict['NEG_M']['score']))
-        Logger.V_log('NEG_A: ' + str(self.senti_dict['NEG_A']['score']))
+        Logger.V_log('   POS_P: ' + str(self.senti_dict['POS_P']['score']))
+        Logger.V_log('   POS_E: ' + str(self.senti_dict['POS_E']['score']))
+        Logger.V_log('   POS_R: ' + str(self.senti_dict['POS_R']['score']))
+        Logger.V_log('   POS_M: ' + str(self.senti_dict['POS_M']['score']))
+        Logger.V_log('   POS_A: ' + str(self.senti_dict['POS_A']['score']))
+        Logger.V_log('   NEG_P: ' + str(self.senti_dict['NEG_P']['score']))
+        Logger.V_log('   NEG_E: ' + str(self.senti_dict['NEG_E']['score']))
+        Logger.V_log('   NEG_R: ' + str(self.senti_dict['NEG_R']['score']))
+        Logger.V_log('   NEG_M: ' + str(self.senti_dict['NEG_M']['score']))
+        Logger.V_log('   NEG_A: ' + str(self.senti_dict['NEG_A']['score']))
     
     def readLex(self, input_text):
         senti_dict = self.senti_dict
@@ -113,9 +113,10 @@ class PERMAnalysis:
                 negative_scores = percentage_score + negative_scores
         positive_scores = positive_scores / 5
         negative_scores = negative_scores / 5
+        # overall_score = ((positive_scores/10)*5) + ((negative_scores/10)*5)
         
-        Logger.V_log(input_text)
         Logger.V_log("Positive Scores: " + str(positive_scores) + " & " + "Negative Scores: " + str(negative_scores))
+        # Logger.V_log("OVERALL: " + str(overall_score))
         # print("Positive Scores: " + str(positive_scores) + " & " + "Negative Scores: " + str(negative_scores))
 
         if positive_scores >= 7 or negative_scores <= 1.9:
@@ -133,7 +134,7 @@ class PERMAnalysis:
         elif positive_scores >= 3 or negative_scores <= 4:
             Logger.V_log("SPECTRUM: STRUGGLING")
             self.logPERMA()
-            return 'struglling'
+            return 'struggling'
         elif positive_scores < 3 or negative_scores > 5:
             Logger.V_log("SPECTRUM: IN CRISIS")
             self.logPERMA()
@@ -149,21 +150,10 @@ class PERMAnalysis:
         for key in senti_dict:
             if senti_dict[key]['score'] == 0:
                 flag = False
-        print("BOWCHIKAWAWABOOM")
 
-        Logger.V_log(sample_text)
+        # Logger.V_log(sample_text)
         Logger.V_log("CHECK IS PERMA COMPLETE: " + str(flag))
-        Logger.V_log('POS_P: ' + str(self.senti_dict['POS_P']['score']))
-        Logger.V_log('POS_E: ' + str(self.senti_dict['POS_E']['score']))
-        Logger.V_log('POS_R: ' + str(self.senti_dict['POS_R']['score']))
-        Logger.V_log('POS_M: ' + str(self.senti_dict['POS_M']['score']))
-        Logger.V_log('POS_A: ' + str(self.senti_dict['POS_A']['score']))
-        Logger.V_log('NEG_P: ' + str(self.senti_dict['NEG_P']['score']))
-        Logger.V_log('NEG_E: ' + str(self.senti_dict['NEG_E']['score']))
-        Logger.V_log('NEG_R: ' + str(self.senti_dict['NEG_R']['score']))
-        Logger.V_log('NEG_M: ' + str(self.senti_dict['NEG_M']['score']))
-        Logger.V_log('NEG_A: ' + str(self.senti_dict['NEG_A']['score']))
-
+        # self.logPERMA()
 
         return flag
         
@@ -179,15 +169,12 @@ class PERMAnalysis:
                'NEG_R' : {'min': 0, 'max': 0, 'score': 0, 'ctr': 0, 'score_list': []},
                'NEG_M' : {'min': 0, 'max': 0, 'score': 0, 'ctr': 0, 'score_list': []},
                'NEG_A' : {'min': 0, 'max': 0, 'score': 0, 'ctr': 0, 'score_list': []}}
-
-    def testLog(self):
-        Logger.log_dialogue_model_basic('YES TO PERMA')
         
         
-if __name__ == "__main__":
-    print('PERMA running...')
-    Logger.setup_loggers()
-    p = PERMAnalysis()
-    p.readLex("I feel like dying")
-    print("DONE")
+# if __name__ == "__main__":
+#     print('PERMA running...')
+#     Logger.setup_loggers()
+#     p = PERMAnalysis()
+#     p.readLex("I feel like dying")
+#     print("DONE")
     
