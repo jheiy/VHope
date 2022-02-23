@@ -14,8 +14,18 @@ import numpy as np
 
 if v_mode:
     from VHope.PERMA import PERMAnalysis
+    level_5 = 'in crisis'
+    level_4 = 'struggling'
+    level_3 = 'surviving'
+    level_2 = 'thriving'
+    level_1 = 'excelling'
 else:
     from MHBot.PERMAnalysis.PERMAnalysis import PERMAnalysis
+    level_5 = 'red'
+    level_4 = 'orange'
+    level_3 = 'white'
+    level_2 = 'green'
+    level_1 = 'black'
 
 class EDENDialoguePlanner(DialoguePlanner):
 
@@ -136,7 +146,7 @@ class EDENDialoguePlanner(DialoguePlanner):
             if last_move.dialogue_type == DIALOGUE_TYPE_E_LABEL:
                 for token in tokens:
                     if token in IS_AFFIRM:
-                        if self.curr_perma == 'red':
+                        if self.curr_perma == level_5:
                             self.isRed = True
                         self.ongoing_c_pumping = True
                         if not len(tokens) > 1:
@@ -268,7 +278,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                     print(lowest_label)
 
                     print('CURRENT PERMA SCORE:' + self.curr_perma)
-                    if self.curr_perma == 'green':
+                    
+                    if self.curr_perma == level_1 or self.curr_perma == level_2:
                         if lowest_label == "POS_P" or lowest_label == "POS_E":
                             for x in concept_and_topics:
                                 if x[2] == 'activity':
@@ -306,7 +317,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                                     return DIALOGUE_TYPE_A_GENERAL
                             if not concept_and_topics:
                                 return DIALOGUE_TYPE_A_GENERAL
-                    elif self.curr_perma == 'orange':
+                
+                    elif self.curr_perma == level_3 or self.curr_perma == level_4:
                         if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
                             for x in concept_and_topics:
                                 if x[2] == 'person':
@@ -351,7 +363,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                             if not concept_and_topics:
                                 return DIALOGUE_TYPE_E_GENERAL
                             
-                    elif self.curr_perma == 'red':
+                    elif self.curr_perma == level_5:
                         self.curr_emotion = emotion_event.emotion
                         if lowest_label == "POS_P" or lowest_label == "POS_R" or lowest_label == "POS_M":
                             for x in concept_and_topics:
@@ -413,6 +425,8 @@ class EDENDialoguePlanner(DialoguePlanner):
             if next_move !="" and destructive:
                 self.curr_event = emotion_event
                 if self.response not in IS_AFFIRM and self.response not in IS_DENY and self.response not in IS_END:
+                    if v_mode:
+                        Logger.V_log("EDEN PERMA check_affirm_deny")
                     self.perma_analysis.reset()
                     self.perma_texts = self.perma_texts + ' ' + self.response
                     self.curr_perma = self.perma_analysis.readLex(self.perma_texts)
@@ -449,6 +463,10 @@ class EDENDialoguePlanner(DialoguePlanner):
                         self.curr_event.emotion = self.response.upper()
                     
                     if self.response not in IS_AFFIRM and self.response not in IS_DENY and self.response not in IS_END:
+
+                        if v_mode:
+                            Logger.V_log("EDEN PERMA check_based_prev_move")
+
                         self.perma_analysis.reset()
                         self.perma_texts = self.perma_texts + ' ' + self.response
                         print("UPDATING PERMA TO:", self.response.upper())
@@ -472,9 +490,9 @@ class EDENDialoguePlanner(DialoguePlanner):
             elif (last_move.dialogue_type == DIALOGUE_TYPE_E_G_FOLLOWUP_N or last_move.dialogue_type == DIALOGUE_TYPE_M_G_FOLLOWUP_N
                   or last_move.dialogue_type == DIALOGUE_TYPE_R_G_FOLLOWUP or last_move.dialogue_type == DIALOGUE_TYPE_A_G_FOLLOWUP_N
                   or last_move.dialogue_type == DIALOGUE_TYPE_P_S_WISDOM):
-                if self.labeled_perma == 'orange':
+                if self.labeled_perma == level_3 or self.labeled_perma == level_4:
                     return DIALOGUE_TYPE_O_REFLECT
-                elif self.labeled_perma == 'green':
+                elif self.labeled_perma == level_1 or self.labeled_perma == level_2:
                     return DIALOGUE_TYPE_P_PRAISE
             elif last_move.dialogue_type == DIALOGUE_TYPE_MHBOT_CLOSING:
                 return DIALOGUE_TYPE_CLOSING_FOLLOWUP
@@ -488,9 +506,9 @@ class EDENDialoguePlanner(DialoguePlanner):
                   last_move.dialogue_type == DIALOGUE_TYPE_M_WISDOM or last_move.dialogue_type == DIALOGUE_TYPE_A_WISDOM or 
                   last_move.dialogue_type == DIALOGUE_TYPE_P_S_WISDOM or last_move.dialogue_type == DIALOGUE_TYPE_RM_S_WISDOM or
                   last_move.dialogue_type == DIALOGUE_TYPE_M_S_WISDOM or last_move.dialogue_type == DIALOGUE_TYPE_A_S_WISDOM):
-                if self.labeled_perma == 'orange':
+                if self.labeled_perma == level_3 or self.labeled_perma == level_4:
                     return DIALOGUE_TYPE_O_REFLECT
-                elif self.labeled_perma == 'green':
+                elif self.labeled_perma == level_1 or self.labeled_perma == level_2:
                     return DIALOGUE_TYPE_P_PRAISE
             elif (last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_E_SUGGEST or 
                     last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_A_SUGGEST):
@@ -509,7 +527,7 @@ class EDENDialoguePlanner(DialoguePlanner):
             elif (last_move.dialogue_type == DIALOGUE_TYPE_P_GENERAL or last_move.dialogue_type == DIALOGUE_TYPE_E_GENERAL or 
                   last_move.dialogue_type == DIALOGUE_TYPE_R_GENERAL or last_move.dialogue_type == DIALOGUE_TYPE_M_GENERAL or
                   last_move.dialogue_type == DIALOGUE_TYPE_A_GENERAL):
-                    if self.labeled_perma == 'green':
+                    if self.labeled_perma == level_1 or self.labeled_perma == level_2:
                         if self.low_perma == "POS_P" or self.low_perma == "POS_E":
                             for x in self.concepts_topics:
                                 if x[2] == 'activity':
@@ -549,7 +567,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                                 return DIALOGUE_TYPE_A_G_FOLLOWUP_N
                             
                             
-                    elif self.labeled_perma == 'orange':
+                    elif self.labeled_perma == level_3 or self.labeled_perma == level_4:
                         if self.low_perma == "POS_P" or self.low_perma == "POS_R" or self.low_perma == "POS_M":
                             for x in self.concepts_topics:
                                 if x[2] == 'person':
@@ -595,7 +613,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                             elif self.low_perma == "POS_A":
                                 return DIALOGUE_TYPE_A_G_FOLLOWUP_N
                             
-                    elif self.labeled_perma == 'red':
+                    elif self.labeled_perma == level_5:
                         emotion_event = self.curr_emotion
                         
                         if self.low_perma == "POS_P" or self.low_perma == "POS_R" or self.low_perma == "POS_M":
@@ -644,7 +662,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                             else:
                                 return DIALOGUE_TYPE_G_PRAISE
                 
-            elif self.labeled_perma == 'red':
+            elif self.labeled_perma == level_5:
                 if (last_move.dialogue_type == DIALOGUE_TYPE_PRM_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_E_SUGGEST or 
                     last_move.dialogue_type == DIALOGUE_TYPE_M_SUGGEST or last_move.dialogue_type == DIALOGUE_TYPE_A_SUGGEST):
                         if emotion_event in DISCIPLINARY_EMOTIONS or NEGATIVE_EMOTIONS:
