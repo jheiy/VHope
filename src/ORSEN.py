@@ -1,3 +1,4 @@
+from asyncio.log import logger
 import time
 
 from EDEN.constants import EVENT_EMOTION
@@ -14,6 +15,7 @@ from src.textunderstanding.InputDecoder import InputDecoder
 from src.dialoguemanager import *
 from src.models.events import *
 from EDEN.OCC import OCCManager
+from VHope.FTER.FTER import FTER
 
 if v_mode:
     from VHope.PERMA import PERMAnalysis
@@ -43,12 +45,13 @@ class ORSEN:
         self.user_start_time = time.time()
         self.user_end_time = time.time()
         
-        #MHBOT
+        #MHBOT and VHope
         self.perma_analysis = PERMAnalysis()
         self.lowest_perma = None
         self.subj = None
         self.pumping_type = None
         self.check_ifend = None
+        self.fter = FTER()
 
     def initialize_story_prerequisites(self):
         self.world = World()
@@ -88,6 +91,7 @@ class ORSEN:
 
         try:
             orsen_reply = self.perform_dialogue_manager(response, preselected_move=move_to_execute)
+
         except Exception as e:
             Logger.log_conversation("ERROR: " + str(e))
             Logger.log_dialogue_model("ERROR: " + str(e))
@@ -381,8 +385,6 @@ class ORSEN:
     def perform_eden_dialogue_manager(self, response, preselected_move=""):
         print('--==--==-- Perform EDEN Dialogue Manager --==--==--')
         punc = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
-        curr_event = None
-        move_to_execute = ""
 
         #set response in dialogue planner
         for x in response:
@@ -420,25 +422,31 @@ class ORSEN:
         else:
             self.perform_text_understanding(response)
             print(response)
-            # self.perma_analysis.reset()
-            # perma_state = self.perma_analysis.readLex(response)
             print("LAST FETCHED IS: ", len(self.world.last_fetched))
             Logger.log_occ_values_basic(response)
-            
-            self.perma_analysis.reset()
-            self.dialogue_planner.curr_perma = self.perma_analysis.readLex(response)
-            print('SET ' + self.dialogue_planner.curr_perma + ' TO ' + response)
+
+            if not v_mode:
+                Logger.V_log("not VHope ORSEN PERMA")
+                self.perma_analysis.reset()
+                self.dialogue_planner.curr_perma = self.perma_analysis.readLex(response)
+                Logger.V_log('-- SET ' + self.dialogue_planner.curr_perma + ' TO ' + response)
                     
             detected_event = self.dialogue_planner.get_latest_event(self.world.last_fetched)
+
             if detected_event is not None and detected_event.type == EVENT_EMOTION:
                 print("ADDED EMOTION EVENT: ", detected_event.sequence_number)
                 self.world.emotion_events.append(detected_event)
+                # compute PERMA only if with emotion detected
+                if v_mode:
+                    Logger.V_log("Emotion Event: " + self.world.emotion_events.append(detected_event))
+                    Logger.V_log("ORSEN PERMA Emotion ..")
+                    self.perma_analysis.reset()
+                    self.dialogue_planner.curr_perma = self.perma_analysis.readLex(response)
+                    Logger.V_log('-- SET ' + self.dialogue_planner.curr_perma + ' TO ' + response)
 
             new_move_from_old = self.dialogue_planner.\
                 check_based_curr_event(detected_event, self.world.curr_emotion_event)
-            print("----------EVENT: ", move_to_execute)
             
-
             if new_move_from_old == "":
                 #no new move found
                 if detected_event is not None and detected_event.type == EVENT_EMOTION and self.perma_analysis.isComplete() and not self.dialogue_planner.ongoing_c_pumping:
@@ -446,34 +454,25 @@ class ORSEN:
                     self.dialogue_planner.curr_event = self.world.curr_emotion_event
 
                     move_to_execute = DIALOGUE_TYPE_E_LABEL
+                    
                 elif self.world.curr_event:
                     move_to_execute = ""
                     self.dialogue_planner.curr_event = self.world.curr_event
-                    print("HATDOG >:(")
                     print(self.dialogue_planner.curr_event)
                     print(self.world.curr_event)
-                
-                # if perma_state != '' and self.perma_analysis.isComplete() and not self.dialogue_planner.ongoing_c_pumping:
-                #     print('PERMA_SCORE: ' + perma_state)
-                #     print('PERMA DONE: ')
-                #     print(self.perma_analysis.isComplete())
-                #     self.world.curr_emotion_event = detected_event
-                #     self.dialogue_planner.curr_event = self.world.curr_emotion_event
-                #     move_to_execute = DIALOGUE_TYPE_E_LABEL
-                # else:
-                #     move_to_execute = ""
-                #     self.dialogue_planner.curr_event = self.world.curr_event
                     
-
                 print("----------NO MOVE SELECTED: ", move_to_execute)
+
+                if(v_mode):
+                    Logger.V_log("EREN MOVE >> no move selected - " + str(move_to_execute))
+
             else:
                 #for emphasis
                 self.dialogue_planner.curr_event = self.world.curr_emotion_event
                 move_to_execute = new_move_from_old
 
-            
-            if(v_mode):
-                Logger.V_log("EREN MOVE >> new from event - " + str(move_to_execute))
+                if(v_mode):
+                    Logger.V_log("EREN MOVE >> new from event - " + str(move_to_execute))
                 
         if self.dialogue_planner.curr_event:
             print("HATDOG")
@@ -526,6 +525,12 @@ class ORSEN:
         followup_move = self.dialogue_planner.finalize_dialogue_move(move_to_execute)
         if followup_move != "":
             response = response + self.perform_dialogue_manager(response="", preselected_move=followup_move)
+
+        if v_mode:
+            Logger.V_log("EREN >> " + response)
+            Logger.V_log("EREN MOVE BEFORE FTER>> " + move_to_execute)
+            response = self.fter.generate(response + ' eof ' + response + ' eof ' + response)
+            Logger.V_log("FTER >> " + response)
 
         return response
         
