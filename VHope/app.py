@@ -25,6 +25,7 @@ mysql = MySQL(app)
 def login():
     status = True
     if request.method == 'POST':
+        session['first'] = 0
         email = request.form["name"]
         pwd = request.form["upass"]
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -34,11 +35,20 @@ def login():
             session['logged_in'] = True
             session['id'] = data['iduser']
             session['username'] = data['name']
+            session['first'] = data['first']
             session['history'] = ""
             session['move'] = ""
-            return redirect('chat')
+
         else:
             flash('Invalid Login. Try Again', 'danger')
+
+        if session['first'] == 1:
+            cur.execute("UPDATE users SET first=0 WHERE iduser = %s", str(session['id']))
+            mysql.connection.commit()
+            cur.close()
+
+        return redirect('chat')
+
     return render_template("login.html")
 
 #check if user logged in
@@ -57,8 +67,10 @@ def logout():
     session.pop('logged_in', None)
     session.pop('id', None)
     session.pop('username', None)
+    session.pop('first', None)
     session.pop('history', None)
     session.pop('move', None)
+
     return redirect(url_for('login'))
 
 @app.route("/chat")

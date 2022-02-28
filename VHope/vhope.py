@@ -7,6 +7,7 @@ from src import Logger, IS_AFFIRM, IS_DENY, IS_END, UserHandler, DIALOGUE_TYPE_E
 from src.constants import *
 from src.ORSEN import ORSEN
 from src.textunderstanding.InputDecoder import InputDecoder
+from VHope.FTER.FTER import FTER
 
 from flask import request, session
 
@@ -37,9 +38,18 @@ class VHope:
         else:
             print("J: Not the first time.")
 
-        # welcome_msg = "Hello, I am VHope. Please send me a message."
-        welcome_msg = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
+
+        if session['first'] == 1:
+            welcome_msg = "Hello precious one. Welcome! I am VHope, an AI chatbot that can listen to your stories everyday and I will try my best to give you empathetic responses. What do you want to talk about first?"
+        else:
+            welcome_msg = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
+
         Logger.V_log("MHBOT >> " + welcome_msg)
+
+        # fter = FTER()
+        # welcome_msg = fter.generate(welcome_msg)
+        # Logger.V_log("FTER >> " + welcome_msg)
+        
         session['history'] = welcome_msg
 
         return welcome_msg
@@ -55,19 +65,13 @@ class VHope:
         session['history'] = session['history'] + " eof " + usr_text
         print("J: USER=" + self.user_name + " TEXT= " + usr_text)
 
-        if usr_text in IS_END:
-            response_text = orsen.get_response("", move_to_execute = DIALOGUE_TYPE_E_END)
-            session['move'] = "end"
-        else:
-            response_text = orsen.get_response(usr_text)
+        response_text = orsen.get_response(usr_text)
 
-        # if with emotion, check well-being
-        if orsen.world.curr_emotion_event.emotion != None:
-            Logger.V_log("EMOTION: " + orsen.world.curr_emotion_event.emotion)
-            print("EMOTION TYPE " + str(type(orsen.world.curr_emotion_event.emotion)))
+        # if with emotion, check well-being -- on ORSEN
+        # if orsen.world.curr_emotion_event != None:
+        #     Logger.V_log("EMOTION: " + orsen.world.curr_emotion_event.emotion)
+        #     print("EMOTION TYPE " + str(type(orsen.world.curr_emotion_event.emotion)))
 
-        print("J: REPONSE TEXT= " + response_text)
-        Logger.V_log("MHBOT RESPONSE >> " + response_text)
         session['history'] = session['history'] + " eof " + response_text
 
         return response_text
