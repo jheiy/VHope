@@ -497,7 +497,7 @@ class ORSEN:
         if self.pumping_type:
             self.content_determination.pumping_type = self.pumping_type
         
-        response, chosen_template = self.content_determination.perform_content_determination()
+        bot_response, chosen_template = self.content_determination.perform_content_determination()
 
         """FINALIZE MOVES"""
 
@@ -506,14 +506,14 @@ class ORSEN:
         if self.dialogue_planner.is_repeat_story(move_to_execute):
             emotion_story = self.content_determination.repeat_emotion_story(self.world.curr_emotion_event, self.world.event_chains)
             if emotion_story == "":
-                response = ""
+                bot_response = ""
             else:
-                response = response + \
+                bot_response = bot_response + \
                            "\n" + emotion_story
 
         if self.dialogue_planner.get_second_to_last_dialogue_move() is not None and \
                 self.dialogue_planner.get_second_to_last_dialogue_move().dialogue_type == DIALOGUE_TYPE_E_FOLLOWUP:
-            response = "Thank you for clarifying that. " + response
+            bot_response = "Thank you for clarifying that. " + bot_response
         # update event chain with new emotion
         if move_to_execute == DIALOGUE_TYPE_C_PUMPING:
             self.world.curr_emotion_event.emotion = self.dialogue_planner.curr_event.emotion
@@ -524,15 +524,17 @@ class ORSEN:
 
         followup_move = self.dialogue_planner.finalize_dialogue_move(move_to_execute)
         if followup_move != "":
-            response = response + self.perform_dialogue_manager(response="", preselected_move=followup_move)
+            bot_response = bot_response + self.perform_dialogue_manager(response="", preselected_move=followup_move)
 
         if v_mode:
-            Logger.V_log("EREN >> " + response)
-            Logger.V_log("EREN MOVE BEFORE FTER>> " + move_to_execute)
-            response = self.fter.generate(response + ' eof ' + response + ' eof ' + response)
-            Logger.V_log("FTER >> " + response)
+            Logger.V_log("EREN >> " + bot_response)
+            if move_to_execute != "vhope_welcome":
+                Logger.V_log("EREN MOVE BEFORE FTER>> " + move_to_execute)
+                Logger.V_log("FTER Input >> " + response + ' eof ' + bot_response + ' eof ' + response)
+                bot_response = self.fter.generate(response + ' eof ' + bot_response + ' eof ' + response)
+                Logger.V_log("FTER >> " + bot_response)
 
-        return response
+        return bot_response
         
     def update_relation_score (self, triggered_move):
         if triggered_move == DIALOGUE_TYPE_SUGGESTING_AFFIRM:
