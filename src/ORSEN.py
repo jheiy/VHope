@@ -102,6 +102,7 @@ class ORSEN:
             if(v_mode):
                 Logger.V_log("!! ERROR: " + str(e))
                 Logger.V_log("EREN MOVE >> general pumping")
+                Logger.V_log("EREN >> " + orsen_reply)
 
         #Logger.log_conversation("ORSEN LATENCY TIME (seconds): " + str(time.time() - start_time))
         
@@ -530,8 +531,8 @@ class ORSEN:
             Logger.V_log("EREN >> " + bot_response)
             if move_to_execute != "vhope_welcome":
                 Logger.V_log("EREN MOVE BEFORE FTER>> " + move_to_execute)
-                Logger.V_log("FTER Input >> " + response + ' eof ' + bot_response + ' eof ' + response)
-                bot_response = self.fter.generate(response + ' eof ' + bot_response + ' eof ' + response)
+                Logger.V_log("FTER Input >> " + response + ' eos ' + bot_response + ' eos ' + response)
+                bot_response = self.fter.generate(response + ' eos ' + bot_response + ' eos ' + response)
                 Logger.V_log("FTER >> " + bot_response)
 
         return bot_response
