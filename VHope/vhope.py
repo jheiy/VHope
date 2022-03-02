@@ -40,11 +40,10 @@ class VHope:
 
 
         if session['first'] == 1:
-            welcome_msg = "Hello precious one. Welcome! I am VHope, an AI chatbot that can listen to your stories everyday and I will try my best to give you empathetic responses. What do you want to talk about first?"
+            welcome_msg = "Hello there precious one. Welcome! I am VHope, an AI chatbot that will listen to your stories everyday and I will try my best to make you feel validated by giving empathetic responses. What do you want to talk about first?"
+            Logger.V_log("EREN >> " + welcome_msg)
         else:
             welcome_msg = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
-
-        Logger.V_log("MHBOT >> " + welcome_msg)
 
         # fter = FTER()
         # welcome_msg = fter.generate(welcome_msg)
@@ -59,19 +58,20 @@ class VHope:
         return userText
 
     def get_response(self):
-
+        
         usr_text = VHope.get_input()
         Logger.V_log("UTTERANCE >> " + usr_text)
-        session['history'] = session['history'] + " eof " + usr_text
+        session['history'] = session['history'] + " eos " + usr_text
         print("J: USER=" + self.user_name + " TEXT= " + usr_text)
 
         response_text = orsen.get_response(usr_text)
+        # response_text = orsen.get_response(usr_text, move_to_execute='e-label')
 
         # if with emotion, check well-being -- on ORSEN
         # if orsen.world.curr_emotion_event != None:
         #     Logger.V_log("EMOTION: " + orsen.world.curr_emotion_event.emotion)
         #     print("EMOTION TYPE " + str(type(orsen.world.curr_emotion_event.emotion)))
 
-        session['history'] = session['history'] + " eof " + response_text
+        session['history'] = session['history'] + " eos " + response_text
 
         return response_text

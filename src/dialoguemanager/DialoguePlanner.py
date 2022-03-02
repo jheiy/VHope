@@ -41,7 +41,7 @@ class DialoguePlanner:
         self.seed_time = time.time()
         self.num_action_events = 0
         # TODO seed(Handle triggered
-        np.random.seed(DEFAULT_SEED)
+        # np.random.seed(DEFAULT_SEED)
         self.response = ""
 
     def set_state(self, curr_event, num_action_events):

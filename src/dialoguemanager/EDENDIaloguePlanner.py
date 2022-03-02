@@ -63,7 +63,7 @@ class EDENDialoguePlanner(DialoguePlanner):
         self.response = ""
         self.seed_time = time.time()
         self.usable_templates = []
-        np.random.seed(DEFAULT_SEED)
+        # np.random.seed(DEFAULT_SEED)
         self.occ_manager.reset_occ()
         self.curr_perma = None
         self.perma_analysis.reset()

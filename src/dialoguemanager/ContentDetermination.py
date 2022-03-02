@@ -17,7 +17,7 @@ class ContentDetermination:
         self.lowest_perma = ''
         self.subj = ''
         self.pumping_type = ''
-        np.random.seed(DEFAULT_SEED)
+        # np.random.seed(DEFAULT_SEED)
 
     def set_state(self, move_to_execute, curr_event, usable_template_list, world):
         self.move_to_execute = move_to_execute
@@ -34,7 +34,7 @@ class ContentDetermination:
         #choose template
         chosen_template = self.choose_template()
         
-        print(self.choose_template())
+        print("CHOSEN TEMPLATE: " + chosen_template)
         #fill template to use
         # if template has no fillable blanks, enter this particular if statement
         print("LENGTH: " )
