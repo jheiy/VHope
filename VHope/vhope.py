@@ -40,7 +40,7 @@ class VHope:
 
 
         if session['first'] == 1:
-            welcome_msg = "Hello there precious one. Welcome! I am VHope, an AI chatbot that will listen to your stories everyday and I will try my best to make you feel validated by giving empathetic responses. What do you want to talk about first?"
+            welcome_msg = "Hello there, precious one. Welcome! I am VHope, an AI chatbot that will listen to your stories everyday and I will try my best to make you feel validated by giving empathetic responses. What do you want to talk about first?"
             Logger.V_log("EREN >> " + welcome_msg)
         else:
             welcome_msg = orsen.get_response(move_to_execute = orsen.dialogue_planner.get_welcome_message_type())
