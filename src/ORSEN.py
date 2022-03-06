@@ -436,13 +436,20 @@ class ORSEN:
 
             if detected_event is not None and detected_event.type == EVENT_EMOTION:
                 print("ADDED EMOTION EVENT: ", detected_event.sequence_number)
+                print(detected_event.emotion)
                 self.world.emotion_events.append(detected_event)
                 # compute PERMA only if with emotion detected
                 if v_mode:
-                    Logger.V_log("Emotion Event: " + self.world.emotion_events.append(detected_event))
+                    emotion = detected_event.emotion
+                    print("ORSEN PERMA Emotion...")
+                    print(emotion)
+                    Logger.V_log("Emotion Event: " + emotion)
                     Logger.V_log("ORSEN PERMA Emotion ..")
                     self.perma_analysis.reset()
-                    self.dialogue_planner.curr_perma = self.perma_analysis.readLex(response)
+                    print("PERMA RESET")
+                    perma_input = response + " " + emotion
+                    self.dialogue_planner.curr_perma = self.perma_analysis.readLex(perma_input)
+                    print("PERMA READLEX")
                     Logger.V_log('-- SET ' + self.dialogue_planner.curr_perma + ' TO ' + response)
 
             new_move_from_old = self.dialogue_planner.\
@@ -486,11 +493,20 @@ class ORSEN:
         self.subj = self.dialogue_planner.get_subj()
         self.pumping_type = self.dialogue_planner.get_pump_type()
 
+        print("DELETE: AFTER HATDOG")
+
         self.dialogue_planner.perform_dialogue_planner(move_to_execute)
         #fetches templates of chosen dialogue move
         available_templates = self.dialogue_planner.chosen_dialogue_template
 
-        self.content_determination.set_state(move_to_execute, self.dialogue_planner.curr_event, available_templates, self.world)
+        print("DELETE: AFTER AVAILABLE TEMPLATES")
+
+        # Pass current perma to content determination
+        if v_mode:
+            self.content_determination.set_state(move_to_execute, self.dialogue_planner.curr_event, available_templates, self.world, self.dialogue_planner.curr_perma)
+        else:
+            self.content_determination.set_state(move_to_execute, self.dialogue_planner.curr_event, available_templates, self.world)
+
         if self.lowest_perma:
             self.content_determination.lowest_perma = self.lowest_perma
         if self.subj:
@@ -527,7 +543,7 @@ class ORSEN:
         if followup_move != "":
             bot_response = bot_response + self.perform_dialogue_manager(response="", preselected_move=followup_move)
 
-        if v_mode:
+        if v_mode and move_to_execute != DIALOGUE_TYPE_E_LABEL:
             Logger.V_log("EREN >> " + bot_response)
             if move_to_execute != "vhope_welcome":
                 Logger.V_log("EREN MOVE BEFORE FTER>> " + move_to_execute)

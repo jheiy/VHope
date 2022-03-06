@@ -10,14 +10,24 @@ class CPumpingDialogueTemplate(DialogueTemplate):
 
 
     def fill_blanks(self, curr_emotion_event):
-        response = copy.deepcopy(self.template)
+        if v_mode:
+            response = copy.deepcopy(self.template)
 
-        for i in range(len(self.nodes)):
-            to_insert = ""
-            curr_index = response.index(self.nodes[i])
-            if self.blanks[i] == 'Emotion':
-                to_insert = curr_emotion_event.emotion
-            response[curr_index] = to_insert
+            for i in range(len(self.nodes)):
+                to_insert = ""
+                curr_index = response.index(self.nodes[i])
+                if self.blanks[i] == 'Wellbeing':
+                    to_insert = curr_emotion_event
+                response[curr_index] = to_insert
+        else:
+            response = copy.deepcopy(self.template)
+
+            for i in range(len(self.nodes)):
+                to_insert = ""
+                curr_index = response.index(self.nodes[i])
+                if self.blanks[i] == 'Emotion':
+                    to_insert = curr_emotion_event.emotion
+                response[curr_index] = to_insert
         return response
 
     def get_usable_templates(self):

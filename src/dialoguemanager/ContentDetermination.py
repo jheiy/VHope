@@ -18,12 +18,14 @@ class ContentDetermination:
         self.subj = ''
         self.pumping_type = ''
         # np.random.seed(DEFAULT_SEED)
+        self.perma_label = ''
 
-    def set_state(self, move_to_execute, curr_event, usable_template_list, world):
+    def set_state(self, move_to_execute, curr_event, usable_template_list, world, perma):
         self.move_to_execute = move_to_execute
         self.curr_event = curr_event
         self.usable_template_list = usable_template_list
         self.world = world
+        self.perma_label = perma
 
     def reset_state(self):
         self.move_to_execute = ""
@@ -34,7 +36,9 @@ class ContentDetermination:
         #choose template
         chosen_template = self.choose_template()
         
-        print("CHOSEN TEMPLATE: " + chosen_template)
+        print("CHOSEN TEMPLATE: ")
+        print(chosen_template)
+        
         #fill template to use
         # if template has no fillable blanks, enter this particular if statement
         print("LENGTH: " )
@@ -56,6 +60,13 @@ class ContentDetermination:
         elif self.move_to_execute == DIALOGUE_TYPE_M_PUMP:
             response = chosen_template.fill_blanks(self.world, self.subj, self.pumping_type)
 
+        elif (self.move_to_execute == DIALOGUE_TYPE_E_LABEL or self.move_to_execute == DIALOGUE_TYPE_C_PUMPING or
+            self.move_to_execute == DIALOGUE_TYPE_D_PRAISE or self.move_to_execute == DIALOGUE_TYPE_E_EMPHASIS or
+            self.move_to_execute == DIALOGUE_TYPE_P_LABELLING or self.move_to_execute == DIALOGUE_TYPE_MHBOT_C_PUMPING) and v_mode:
+            print("DIALOGUE TYPES IN VHOPE MODE")
+            print(self.perma_label)
+            response = chosen_template.fill_blanks(self.perma_label)
+
         else:
             print("=============")
             print(self.curr_event)
@@ -71,6 +82,9 @@ class ContentDetermination:
             # TODO replace multiple occurences of spaces with only one space.
         else:
             str_response = response
+        
+        print("RESPONSE:")
+        print(str_response)
 
         self.reset_state()
         return str_response, chosen_template
@@ -80,9 +94,11 @@ class ContentDetermination:
         print(self.usable_template_list)
         
         if (len(self.usable_template_list) > 0):
+            print("RANDOM")
             return np.random.choice(self.usable_template_list)
         else:
             # return empty list lang? di ko sure if tama :(
+            print("ELSE TO")
             return self.usable_template_list
 
     def repeat_story(self, event_chains):
