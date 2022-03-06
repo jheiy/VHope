@@ -181,14 +181,22 @@ class DialoguePlanner:
         for x in template_list:
             Logger.log_dialogue_model_basic_example(x)
 
+        print("DISPLAY template_list:")
         print(template_list)
         # check which template is usable
         for X in template_list:
             print("Checking:", X)
             Logger.log_dialogue_model("Checking template " + str(X))
-            print(self.curr_event)
+            
+            # Adding usability to e-label
+            if move_to_execute == DIALOGUE_TYPE_E_LABEL:
+                usable_template_list.append(X)
+
             if X.is_usable(self.curr_event, self.get_num_usage(X.get_type())):
                 usable_template_list.append(X)
+
+        print("DISPLAY usable_template_list:")
+        print(usable_template_list)
 
         return usable_template_list
 
