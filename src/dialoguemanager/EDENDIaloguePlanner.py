@@ -477,7 +477,7 @@ class EDENDialoguePlanner(DialoguePlanner):
                         self.perma_analysis.reset()
                         self.perma_texts = self.perma_texts + ' ' + self.response
                         self.curr_perma = self.perma_analysis.readLex(self.perma_texts)
-                        Logger.V_log("UPDATING PERMA TO: " + self.curr_perma + " " + self.perma_texts)
+                        Logger.V_log("UPDATING PERMA TO: " + self.curr_perma + " = " + self.perma_texts)
 
                     self.ongoing_c_pumping = True
                 return DIALOGUE_TYPE_C_PUMPING

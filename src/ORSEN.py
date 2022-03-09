@@ -19,6 +19,7 @@ from VHope.FTER.FTER import FTER
 
 if v_mode:
     from VHope.PERMA import PERMAnalysis
+    from flask import session
 else:
     from MHBot.PERMAnalysis.PERMAnalysis import PERMAnalysis
 
@@ -386,6 +387,7 @@ class ORSEN:
     def perform_eden_dialogue_manager(self, response, preselected_move=""):
         print('--==--==-- Perform EDEN Dialogue Manager --==--==--')
         punc = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+        emotion = None
 
         #set response in dialogue planner
         for x in response:
@@ -433,7 +435,6 @@ class ORSEN:
                 Logger.V_log('-- SET ' + self.dialogue_planner.curr_perma + ' TO ' + response)
                     
             detected_event = self.dialogue_planner.get_latest_event(self.world.last_fetched)
-            emotion = None
 
             if detected_event is not None and detected_event.type == EVENT_EMOTION:
                 print("ADDED EMOTION EVENT: ", detected_event.sequence_number)
@@ -441,15 +442,16 @@ class ORSEN:
                 self.world.emotion_events.append(detected_event)
                 # VHope compute PERMA only if with emotion detected
                 if v_mode:
-                    emotion = detected_event.emotion
-                    print("ORSEN PERMA Emotion...")
-                    print(emotion)
-                    Logger.V_log("Emotion Event: " + emotion)
-                    Logger.V_log("ORSEN PERMA Emotion ..")
+                    # emotion = detected_event.emotion
+                    # print("ORSEN PERMA Emotion...")
+                    # print(emotion)
+                    # Logger.V_log("Emotion Event: " + emotion)
+                    # Logger.V_log("ORSEN PERMA Emotion ..")
                     print("PERMA RESET")
                     self.perma_analysis.reset()
-                    # concatinate emotion to input sentence before computing PERMA
-                    perma_input = response + " " + emotion
+                    # # concatinate emotion to input sentence before computing PERMA
+                    # perma_input = response + " " + emotion
+                    perma_input = response
                     self.dialogue_planner.curr_perma = self.perma_analysis.readLex(perma_input)
                     print("PERMA READLEX")
                     Logger.V_log('-- SET ' + self.dialogue_planner.curr_perma + ' TO ' + perma_input)
@@ -550,20 +552,33 @@ class ORSEN:
             move_to_execute != DIALOGUE_TYPE_P_LABELLING and move_to_execute != DIALOGUE_TYPE_VHOPE_INTRO):
             Logger.V_log("EREN MOVE BEFORE FTER>> " + move_to_execute)
             Logger.V_log("EREN >> " + bot_response)
-
-            # last_move = self.dialogue_planner.get_last_dialogue_move()
-            # Logger.V_log("LAST MOVE >> " + last_move)
             
-            if emotion is not None and self.dialogue_planner.curr_perma:
+            # if emotion is not None and self.dialogue_planner.curr_perma:
+            #     perma = self.dialogue_planner.curr_perma
+                
+            #     Logger.V_log("EMOTION AND PERMA >> " + emotion + ', ' + perma)
+            #     Logger.V_log("FTER Input >> " + response + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+            #     bot_response = self.fter.generate(response + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+            #     Logger.V_log("FTER >> " + bot_response)
+            # else:
+            #     Logger.V_log("FTER Input >> " + response + ' eos ' + bot_response + ' eos ' + response)
+            #     bot_response = self.fter.generate(response + ' eos ' + bot_response + ' eos ' + response)
+            #     Logger.V_log("FTER >> " + bot_response)
+
+            # WITH SESSION HISTORY
+            chat_history = session['history']
+            print("SESSION CHAT HISTORY: " + chat_history)
+
+            if emotion is not None and self.dialogue_planner.curr_perma is not None:
                 perma = self.dialogue_planner.curr_perma
                 
                 Logger.V_log("EMOTION AND PERMA >> " + emotion + ', ' + perma)
-                Logger.V_log("FTER Input >> " + response + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
-                bot_response = self.fter.generate(response + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+                Logger.V_log("FTER Input >> " + chat_history + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+                bot_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
                 Logger.V_log("FTER >> " + bot_response)
             else:
-                Logger.V_log("FTER Input >> " + response + ' eos ' + bot_response + ' eos ' + response)
-                bot_response = self.fter.generate(response + ' eos ' + bot_response + ' eos ' + response)
+                Logger.V_log("FTER Input >> " + chat_history + ' eos ' + bot_response + ' eos ' + response)
+                bot_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + response)
                 Logger.V_log("FTER >> " + bot_response)
 
         return bot_response
