@@ -119,15 +119,15 @@ class PERMAnalysis:
         # Logger.V_log("OVERALL: " + str(overall_score))
         # print("Positive Scores: " + str(positive_scores) + " & " + "Negative Scores: " + str(negative_scores))
 
-        if positive_scores >= 7 or negative_scores <= 1.9:
+        if positive_scores >= 7 or negative_scores <= 1:
             Logger.V_log("SPECTRUM: EXCELLING")
             self.logPERMA()
             return 'excelling'
-        elif positive_scores >= 6 or negative_scores <= 2:
+        elif positive_scores >= 5.5 or negative_scores <= 2:
             Logger.V_log("SPECTRUM: THRIVING")
             self.logPERMA()
             return 'thriving'
-        elif positive_scores >= 4.5 or negative_scores <= 3:
+        elif positive_scores >= 4 or negative_scores <= 3:
             Logger.V_log("SPECTRUM: SURVIVING")
             self.logPERMA()
             return 'surviving'
@@ -139,6 +139,27 @@ class PERMAnalysis:
             Logger.V_log("SPECTRUM: IN CRISIS")
             self.logPERMA()
             return 'in crisis'
+         
+        # if positive_scores < 3 or negative_scores > 5:
+        #     Logger.V_log("SPECTRUM: IN CRISIS")
+        #     self.logPERMA()
+        #     return 'in crisis'
+        # elif positive_scores >= 3 or negative_scores <= 4:
+        #     Logger.V_log("SPECTRUM: STRUGGLING")
+        #     self.logPERMA()
+        #     return 'struggling'
+        # elif positive_scores >= 4.5 or negative_scores <= 3:
+        #     Logger.V_log("SPECTRUM: SURVIVING")
+        #     self.logPERMA()
+        #     return 'surviving'
+        # elif positive_scores >= 6 or negative_scores <= 2:
+        #     Logger.V_log("SPECTRUM: THRIVING")
+        #     self.logPERMA()
+        #     return 'thriving'
+        # elif positive_scores >= 7 or negative_scores <= 1.9:
+        #     Logger.V_log("SPECTRUM: EXCELLING")
+        #     self.logPERMA()
+        #     return 'excelling'
     
     def get_lowest_score(self):
         return min(pos_labels, key=pos_labels.get)
@@ -175,6 +196,25 @@ class PERMAnalysis:
 #     print('PERMA running...')
 #     Logger.setup_loggers()
 #     p = PERMAnalysis()
-#     p.readLex("I feel like dying")
+#     # p.readLex("I hate everyone and i wanna kill myself.")
+#     # p.reset()
+#     # p.readLex("My brother hated me for dirtying his shoes.")
+#     # p.reset()
+#     # p.readLex("I hated going out and talking to people.")
+#     # p.reset()
+#     # p.readLex("I badly want to die and leave this world.")
+#     # p.reset()
+#     # p.readLex("I don't want to do anything today.")
+#     # p.reset()
+#     # p.readLex("I can't follow my teacher's lessons. I feel so bad.")
+#     # p.reset()
+#     # p.readLex("I feel so great after acing my exams!")
+#     # p.reset()
+#     # p.readLex("It feels so good to relax and enjoy time with my family every weekend.")
+#     # p.reset()
+#     # p.readLex("I am always doing great in my studies.")
+#     # p.reset()
+#     p.readLex("I want to sleep all day.")
+#     p.reset()
 #     print("DONE")
     
