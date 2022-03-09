@@ -1,3 +1,4 @@
+from distutils.log import Log
 from EDEN.OCC import OCCManager
 from EDEN.constants import * 
 from src import *
@@ -427,9 +428,15 @@ class EDENDialoguePlanner(DialoguePlanner):
                 if self.response not in IS_AFFIRM and self.response not in IS_DENY and self.response not in IS_END:
                     if v_mode:
                         Logger.V_log("EDEN PERMA check_affirm_deny")
-                    self.perma_analysis.reset()
-                    self.perma_texts = self.perma_texts + ' ' + self.response
-                    self.curr_perma = self.perma_analysis.readLex(self.perma_texts)
+                        self.perma_analysis.reset()
+                        self.perma_texts = self.perma_texts + ' ' + self.response
+                        self.curr_perma = self.perma_analysis.readLex(self.perma_texts)
+                        Logger.V_log('-- SET ' + self.curr_perma + ' TO ' + self.perma_texts)
+                    else:
+                        self.perma_analysis.reset()
+                        self.perma_texts = self.perma_texts + ' ' + self.response
+                        self.curr_perma = self.perma_analysis.readLex(self.perma_texts)
+
         return next_move
 
     def check_based_prev_move(self, destructive = True):
@@ -469,8 +476,9 @@ class EDENDialoguePlanner(DialoguePlanner):
 
                         self.perma_analysis.reset()
                         self.perma_texts = self.perma_texts + ' ' + self.response
-                        print("UPDATING PERMA TO:", self.response.upper())
                         self.curr_perma = self.perma_analysis.readLex(self.perma_texts)
+                        Logger.V_log("UPDATING PERMA TO: " + self.curr_perma + " " + self.perma_texts)
+
                     self.ongoing_c_pumping = True
                 return DIALOGUE_TYPE_C_PUMPING
             elif last_move.dialogue_type == DIALOGUE_TYPE_D_PUMPING:
