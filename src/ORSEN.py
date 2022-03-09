@@ -101,7 +101,7 @@ class ORSEN:
 
             if(v_mode):
                 Logger.V_log("!! ERROR: " + str(e))
-                Logger.V_log("EREN MOVE >> general pumping")
+                Logger.V_log("EREN MOVE >> general pumping from ERROR")
                 Logger.V_log("EREN >> " + orsen_reply)
 
         #Logger.log_conversation("ORSEN LATENCY TIME (seconds): " + str(time.time() - start_time))
@@ -433,24 +433,26 @@ class ORSEN:
                 Logger.V_log('-- SET ' + self.dialogue_planner.curr_perma + ' TO ' + response)
                     
             detected_event = self.dialogue_planner.get_latest_event(self.world.last_fetched)
+            emotion = None
 
             if detected_event is not None and detected_event.type == EVENT_EMOTION:
                 print("ADDED EMOTION EVENT: ", detected_event.sequence_number)
                 print(detected_event.emotion)
                 self.world.emotion_events.append(detected_event)
-                # compute PERMA only if with emotion detected
+                # VHope compute PERMA only if with emotion detected
                 if v_mode:
                     emotion = detected_event.emotion
                     print("ORSEN PERMA Emotion...")
                     print(emotion)
                     Logger.V_log("Emotion Event: " + emotion)
                     Logger.V_log("ORSEN PERMA Emotion ..")
-                    self.perma_analysis.reset()
                     print("PERMA RESET")
+                    self.perma_analysis.reset()
+                    # concatinate emotion to input sentence before computing PERMA
                     perma_input = response + " " + emotion
                     self.dialogue_planner.curr_perma = self.perma_analysis.readLex(perma_input)
                     print("PERMA READLEX")
-                    Logger.V_log('-- SET ' + self.dialogue_planner.curr_perma + ' TO ' + response)
+                    Logger.V_log('-- SET ' + self.dialogue_planner.curr_perma + ' TO ' + perma_input)
 
             new_move_from_old = self.dialogue_planner.\
                 check_based_curr_event(detected_event, self.world.curr_emotion_event)
@@ -543,10 +545,23 @@ class ORSEN:
         if followup_move != "":
             bot_response = bot_response + self.perform_dialogue_manager(response="", preselected_move=followup_move)
 
-        if v_mode and move_to_execute != DIALOGUE_TYPE_E_LABEL:
+        if (v_mode and move_to_execute != DIALOGUE_TYPE_E_LABEL and move_to_execute != DIALOGUE_TYPE_C_PUMPING and
+            move_to_execute != DIALOGUE_TYPE_D_PRAISE and move_to_execute != DIALOGUE_TYPE_E_EMPHASIS and
+            move_to_execute != DIALOGUE_TYPE_P_LABELLING and move_to_execute != DIALOGUE_TYPE_VHOPE_INTRO):
+            Logger.V_log("EREN MOVE BEFORE FTER>> " + move_to_execute)
             Logger.V_log("EREN >> " + bot_response)
-            if move_to_execute != "vhope_welcome":
-                Logger.V_log("EREN MOVE BEFORE FTER>> " + move_to_execute)
+
+            # last_move = self.dialogue_planner.get_last_dialogue_move()
+            # Logger.V_log("LAST MOVE >> " + last_move)
+            
+            if emotion is not None and self.dialogue_planner.curr_perma:
+                perma = self.dialogue_planner.curr_perma
+                
+                Logger.V_log("EMOTION AND PERMA >> " + emotion + ', ' + perma)
+                Logger.V_log("FTER Input >> " + response + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+                bot_response = self.fter.generate(response + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+                Logger.V_log("FTER >> " + bot_response)
+            else:
                 Logger.V_log("FTER Input >> " + response + ' eos ' + bot_response + ' eos ' + response)
                 bot_response = self.fter.generate(response + ' eos ' + bot_response + ' eos ' + response)
                 Logger.V_log("FTER >> " + bot_response)
