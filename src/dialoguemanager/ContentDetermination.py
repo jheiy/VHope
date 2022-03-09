@@ -62,7 +62,7 @@ class ContentDetermination:
 
         elif (self.move_to_execute == DIALOGUE_TYPE_E_LABEL or self.move_to_execute == DIALOGUE_TYPE_C_PUMPING or
             self.move_to_execute == DIALOGUE_TYPE_D_PRAISE or self.move_to_execute == DIALOGUE_TYPE_E_EMPHASIS or
-            self.move_to_execute == DIALOGUE_TYPE_P_LABELLING or self.move_to_execute == DIALOGUE_TYPE_MHBOT_C_PUMPING) and v_mode:
+            self.move_to_execute == DIALOGUE_TYPE_P_LABELLING) and v_mode:
             print("DIALOGUE TYPES IN VHOPE MODE")
             print(self.perma_label)
             response = chosen_template.fill_blanks(self.perma_label)

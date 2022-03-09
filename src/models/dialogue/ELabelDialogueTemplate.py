@@ -1,5 +1,4 @@
 from src import DialogueTemplateBuilder
-from src import Logger
 from . import DialogueTemplate
 from src.constants import *
 import copy
