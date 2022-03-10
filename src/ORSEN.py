@@ -574,12 +574,25 @@ class ORSEN:
                 
                 Logger.V_log("EMOTION AND PERMA >> " + emotion + ', ' + perma)
                 Logger.V_log("FTER Input >> " + chat_history + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
-                bot_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
-                Logger.V_log("FTER >> " + bot_response)
+                fter_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+                Logger.V_log("FTER >> " + fter_response)
             else:
                 Logger.V_log("FTER Input >> " + chat_history + ' eos ' + bot_response + ' eos ' + response)
-                bot_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + response)
-                Logger.V_log("FTER >> " + bot_response)
+                fter_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + response)
+                Logger.V_log("FTER >> " + fter_response)
+
+            # if generates only 1-3 words, generate again
+            len_check = len(fter_response.split())
+
+            while len_check < 4:
+                Logger.V_log("Generated less than 3 words, re-generating FROM ->" + chat_history + ' eos ' + bot_response + ' eos ' + response)
+                fter_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + response)
+                Logger.V_log("FTER >> " + fter_response)
+                len_check = len(fter_response.split())
+
+            bot_response = fter_response
+        
+        session['history'] = session['history'] + " eos " + bot_response
 
         return bot_response
         
