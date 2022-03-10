@@ -1,5 +1,6 @@
 from vhope import VHope
-# from flask import Flask, render_template, request
+from src import Logger
+from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
@@ -64,6 +65,7 @@ def is_logged_in(f):
 
 @app.route('/logout')
 def logout():
+    Logger.V_log("END: " + str(datetime.now()))
     session.pop('logged_in', None)
     session.pop('id', None)
     session.pop('username', None)
