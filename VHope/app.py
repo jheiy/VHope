@@ -39,6 +39,7 @@ def login():
             session['first'] = data['first']
             session['history'] = ""
             session['move'] = ""
+            session['past_utterance'] = ""
 
         else:
             flash('Invalid Login. Try Again', 'danger')
@@ -72,6 +73,7 @@ def logout():
     session.pop('first', None)
     session.pop('history', None)
     session.pop('move', None)
+    session.pop('past_utterance', None)
 
     return redirect(url_for('login'))
 
@@ -92,6 +94,29 @@ def get_bot_response():
         return str(V.get_response())
     else:
         print("HISTORY: " + session['history'])
+
+@app.route('/register', methods =['GET', 'POST'])
+def register():
+    msg = ''
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+        username = request.form['username']
+        password = request.form['password']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM users WHERE name = % s', (username, ))
+        account = cursor.fetchone()
+        if account:
+            msg = 'Account already exists !'
+        elif not re.match(r'[A-Za-z0-9]+', username):
+            msg = 'Username must contain only characters and numbers !'
+        elif not username or not password:
+            msg = 'Please fill out the form !'
+        else:
+            cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, %s)', (username, password, '1',))
+            mysql.connection.commit()
+            msg = 'You have successfully registered !'
+    elif request.method == 'POST':
+        msg = 'Please fill out the form !'
+    return render_template('register.html', msg = msg)
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0") # host="0.0.0.0" for running on own ip address
