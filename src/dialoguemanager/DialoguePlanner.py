@@ -189,7 +189,7 @@ class DialoguePlanner:
             Logger.log_dialogue_model("Checking template " + str(X))
             
             # Adding usability to e-label and c-pumping
-            if move_to_execute == DIALOGUE_TYPE_E_LABEL or move_to_execute == DIALOGUE_TYPE_C_PUMPING:
+            if move_to_execute == DIALOGUE_TYPE_E_LABEL or move_to_execute == DIALOGUE_TYPE_C_PUMPING or move_to_execute == DIALOGUE_TYPE_E_EMPHASIS or move_to_execute == DIALOGUE_TYPE_D_PRAISE or move_to_execute == DIALOGUE_TYPE_P_LABELLING:
                 usable_template_list.append(X)
 
             if X.is_usable(self.curr_event, self.get_num_usage(X.get_type())):
