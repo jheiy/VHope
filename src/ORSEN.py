@@ -419,7 +419,7 @@ class ORSEN:
             move_to_execute = self.dialogue_planner.check_based_prev_move()
             print("----------BASED ON PREV MOVE: ", move_to_execute)
 
-            if(v_mode):
+            if(v_mode):         
                 Logger.V_log("EREN MOVE >> on previous - " + str(move_to_execute))       
             
         else:
@@ -467,8 +467,23 @@ class ORSEN:
 
                     move_to_execute = DIALOGUE_TYPE_E_LABEL
                     
+                    if(v_mode):
+                        #  Add generic response for in crisis state
+                        if self.dialogue_planner.curr_perma != None:
+                            move = session['previous_move']
+                            if self.dialogue_planner.curr_perma == "in crisis" and move != DIALOGUE_TYPE_LOW_PERMA:
+                                move_to_execute = DIALOGUE_TYPE_LOW_PERMA
+                    
                 elif self.world.curr_event:
                     move_to_execute = ""
+
+                    move = session['previous_move']
+                    Logger.V_log("previous: " + str(move))
+                    if (move == DIALOGUE_TYPE_LOW_PERMA or move == DIALOGUE_TYPE_LOW_PERMA_NO) and response.lower() in IS_AFFIRM:
+                        move_to_execute = DIALOGUE_TYPE_LOW_PERMA_YES
+                    if (move == DIALOGUE_TYPE_LOW_PERMA or move == DIALOGUE_TYPE_LOW_PERMA_YES) and response.lower() in IS_DENY:
+                        move_to_execute = DIALOGUE_TYPE_LOW_PERMA_NO
+
                     self.dialogue_planner.curr_event = self.world.curr_event
                     print(self.dialogue_planner.curr_event)
                     print(self.world.curr_event)
@@ -485,7 +500,10 @@ class ORSEN:
 
                 if(v_mode):
                     Logger.V_log("EREN MOVE >> new from event - " + str(move_to_execute))
-                
+        
+        if v_mode:
+            session['previous_move'] = move_to_execute
+
         if self.dialogue_planner.curr_event:
             print("HATDOG")
             print(self.dialogue_planner.curr_event)
@@ -549,50 +567,58 @@ class ORSEN:
 
         if (v_mode and move_to_execute != DIALOGUE_TYPE_E_LABEL and move_to_execute != DIALOGUE_TYPE_C_PUMPING and
             move_to_execute != DIALOGUE_TYPE_D_PRAISE and move_to_execute != DIALOGUE_TYPE_E_EMPHASIS and
-            move_to_execute != DIALOGUE_TYPE_P_LABELLING and move_to_execute != DIALOGUE_TYPE_VHOPE_INTRO):
+            move_to_execute != DIALOGUE_TYPE_P_LABELLING and move_to_execute != DIALOGUE_TYPE_VHOPE_INTRO and
+            move_to_execute != DIALOGUE_TYPE_LOW_PERMA and move_to_execute != DIALOGUE_TYPE_LOW_PERMA_NO and move_to_execute != DIALOGUE_TYPE_LOW_PERMA_YES):
             Logger.V_log("EREN MOVE BEFORE FTER>> " + move_to_execute)
             Logger.V_log("EREN >> " + bot_response)
             
-            # if emotion is not None and self.dialogue_planner.curr_perma:
+            # response is equal to user input (utterance)
+            if emotion is not None and self.dialogue_planner.curr_perma is not None:
+                perma = self.dialogue_planner.curr_perma
+
+                Logger.V_log("EMOTION AND PERMA >> " + emotion + ', ' + perma)
+                Logger.V_log("FTER Input >> " + session['past_utterance'] + ' eos ' + session['past_fter'] + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+                fter_response = self.fter.generate(session['past_utterance'] + ' eos ' + session['past_fter'] + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+                Logger.V_log("FTER >> " + fter_response)
+            else:
+                Logger.V_log("FTER Input >> " + session['past_utterance'] + ' eos ' + session['past_fter'] + ' eos ' + bot_response + ' eos ' + response)
+                fter_response = self.fter.generate(session['past_utterance'] + ' eos ' + session['past_fter'] + ' eos ' + bot_response + ' eos ' + response)
+                Logger.V_log("FTER >> " + fter_response)
+                
+
+            # # WITH SESSION HISTORY
+            # chat_history = session['history']
+            # print("SESSION CHAT HISTORY: " + chat_history)
+
+            # if emotion is not None and self.dialogue_planner.curr_perma is not None:
             #     perma = self.dialogue_planner.curr_perma
                 
             #     Logger.V_log("EMOTION AND PERMA >> " + emotion + ', ' + perma)
-            #     Logger.V_log("FTER Input >> " + response + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
-            #     bot_response = self.fter.generate(response + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
-            #     Logger.V_log("FTER >> " + bot_response)
+            #     Logger.V_log("FTER Input >> " + chat_history + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+            #     fter_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
+            #     Logger.V_log("FTER >> " + fter_response)
             # else:
-            #     Logger.V_log("FTER Input >> " + response + ' eos ' + bot_response + ' eos ' + response)
-            #     bot_response = self.fter.generate(response + ' eos ' + bot_response + ' eos ' + response)
-            #     Logger.V_log("FTER >> " + bot_response)
-
-            # WITH SESSION HISTORY
-            chat_history = session['history']
-            print("SESSION CHAT HISTORY: " + chat_history)
-
-            if emotion is not None and self.dialogue_planner.curr_perma is not None:
-                perma = self.dialogue_planner.curr_perma
-                
-                Logger.V_log("EMOTION AND PERMA >> " + emotion + ', ' + perma)
-                Logger.V_log("FTER Input >> " + chat_history + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
-                fter_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + emotion + ' eos ' + perma + ' eos ' + response)
-                Logger.V_log("FTER >> " + fter_response)
-            else:
-                Logger.V_log("FTER Input >> " + chat_history + ' eos ' + bot_response + ' eos ' + response)
-                fter_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + response)
-                Logger.V_log("FTER >> " + fter_response)
+            #     Logger.V_log("FTER Input >> " + chat_history + ' eos ' + bot_response + ' eos ' + response)
+            #     fter_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + response)
+            #     Logger.V_log("FTER >> " + fter_response)
 
             # if generates only 1-3 words, generate again
             len_check = len(fter_response.split())
 
             while len_check < 4:
-                Logger.V_log("Generated less than 3 words, re-generating FROM ->" + chat_history + ' eos ' + bot_response + ' eos ' + response)
-                fter_response = self.fter.generate(chat_history + ' eos ' + bot_response + ' eos ' + response)
+                Logger.V_log("Generated less than 3 words, re-generating FROM -> " + session['past_utterance'] + ' eos ' + session['past_fter'] + ' eos ' + bot_response + ' eos ' + response)
+                # fter_response = self.fter.generate(response + ' eos ' + bot_response + ' eos ' + response)
+                fter_response = self.fter.generate(session['past_utterance'] + ' eos ' + session['past_utterance'] + ' eos ' + bot_response + ' eos ' + response)
                 Logger.V_log("FTER >> " + fter_response)
                 len_check = len(fter_response.split())
 
             bot_response = fter_response
         
-        session['history'] = session['history'] + " eos " + bot_response
+        else:
+            if v_mode:
+                Logger.V_log("EREN >> " + bot_response)
+        
+        # session['history'] = session['history'] + " eos " + bot_response
 
         return bot_response
         

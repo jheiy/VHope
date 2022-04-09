@@ -211,6 +211,16 @@ class EDENDialoguePlanner(DialoguePlanner):
                 print("CHECKMATE")
                 if destructive:
                     self.ongoing_c_pumping = False
+
+            # VHOPE: for generic response on 'in crisis' state            
+            elif last_move.dialogue_type == DIALOGUE_TYPE_LOW_PERMA or last_move.dialogue_type == DIALOGUE_TYPE_LOW_PERMA_NO or last_move.dialogue_type == DIALOGUE_TYPE_LOW_PERMA_YES:
+                print("VHOPE AFFIRM_DENY")
+                if self.response in IS_DENY:
+                    next_move = DIALOGUE_TYPE_LOW_PERMA_NO
+                if self.response in IS_AFFIRM:
+                    next_move = DIALOGUE_TYPE_LOW_PERMA_YES
+                print("NEXT MOVE: ", next_move)
+
                 # return DIALOGUE_TYPE_PUMPING_GENERAL
             # elif self.ongoing_c_pumping and self.response.lower() in IS_DONE_EXPLAINING:
             if not self.ongoing_c_pumping and self.response.lower() in IS_END and (last_move.dialogue_type == DIALOGUE_TYPE_E_PUMPING or last_move.dialogue_type == DIALOGUE_TYPE_PUMPING_GENERAL or 
@@ -278,7 +288,8 @@ class EDENDialoguePlanner(DialoguePlanner):
                     self.labeled_perma = self.curr_perma
                     print(lowest_label)
 
-                    print('CURRENT PERMA SCORE:' + self.curr_perma)
+                    Logger.V_log('CURRENT PERMA SCORE: ' + self.curr_perma)
+                    Logger.V_log('CURRENT LOWEST PERMA SCORE: ' + self.low_perma)
                     
                     if self.curr_perma == level_1 or self.curr_perma == level_2:
                         if lowest_label == "POS_P" or lowest_label == "POS_E":
@@ -528,6 +539,13 @@ class EDENDialoguePlanner(DialoguePlanner):
                     return DIALOGUE_TYPE_M_S_WISDOM
                 elif last_move.dialogue_type == DIALOGUE_TYPE_A_SUGGEST: 
                     return DIALOGUE_TYPE_A_S_WISDOM
+
+            # VHOPE: for generic response on 'in crisis' state
+            elif last_move.dialogue_type == DIALOGUE_TYPE_LOW_PERMA or last_move.dialogue_type == DIALOGUE_TYPE_LOW_PERMA_NO or last_move.dialogue_type == DIALOGUE_TYPE_LOW_PERMA_YES:
+                if self.response in IS_DENY:
+                    return DIALOGUE_TYPE_LOW_PERMA_NO
+                if self.response in IS_AFFIRM:
+                    return DIALOGUE_TYPE_LOW_PERMA_YES
                 
 
                 #     return DIALOGUE_TYPE_PE_ADVICE
