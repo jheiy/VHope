@@ -40,6 +40,8 @@ def login():
             session['history'] = ""
             session['move'] = ""
             session['past_utterance'] = ""
+            session['past_fter'] = ""
+            session['previous_move'] = ""
 
         else:
             flash('Invalid Login. Try Again', 'danger')
@@ -74,6 +76,8 @@ def logout():
     session.pop('history', None)
     session.pop('move', None)
     session.pop('past_utterance', None)
+    session.pop('past_fter', None)
+    session.pop('previous_move', None)
 
     return redirect(url_for('login'))
 
