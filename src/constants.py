@@ -122,6 +122,9 @@ DIALOGUE_TYPE_EDEN_WELCOME = "eden_welcome"
 
 # VHope
 DIALOGUE_TYPE_VHOPE_INTRO = "vhope_welcome"
+DIALOGUE_TYPE_LOW_PERMA = "low_perma"
+DIALOGUE_TYPE_LOW_PERMA_NO = "low_perma_no"
+DIALOGUE_TYPE_LOW_PERMA_YES = "low_perma_yes"
 
 #MHBOT
 DIALOGUE_TYPE_MHBOT_INTRO = "mhbot_intro"
